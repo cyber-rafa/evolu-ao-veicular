@@ -1598,126 +1598,185 @@ nav {
 }
 
 /* Responsividade para celulares */
-@media (max-width: 768px) {
-    .hero {
-        padding: 100px 0 60px;
-        min-height: 100vh;
-    }
-    
+/* Menu responsivo */
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
+/* Media queries para responsividade */
+@media (max-width: 992px) {
     .hero-container {
         grid-template-columns: 1fr;
-        gap: 2rem;
-        padding: 0 1rem;
+        gap: 3rem;
         text-align: center;
-    }
-    
-    .hero-title {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-    }
-    
-    .hero-description {
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
+        padding: 0 1.5rem;
     }
     
     .hero-stats {
         justify-content: center;
+    }
+    
+    .hero-actions {
+        justify-content: center;
+    }
+    
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    
+    .hero-visual {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Menu responsivo */
+    .menu-toggle {
+        display: block;
+        z-index: 1001;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: right 0.3s ease;
+        z-index: 1000;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    }
+    
+    .nav-links.active {
+        right: 0;
+    }
+    
+    .nav-links li {
+        margin: 1.5rem 0;
+    }
+    
+    /* Ajustes para a seção hero */
+    .hero {
+        padding: 100px 0 60px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+    }
+    
+    .hero-stats {
+        flex-wrap: wrap;
         gap: 1rem;
-        margin-bottom: 2rem;
+    }
+    
+    .stat-item {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .cta-button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    /* Ajustes para o carro 3D */
+    .car-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .car-body-3d {
+        width: 100%;
+        max-width: 350px;
+        height: 180px;
+        margin: 0 auto;
+    }
+    
+    .car-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    nav {
+        padding: 0 1rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-description {
+        font-size: 0.9rem;
     }
     
     .stat-item {
         padding: 0.8rem;
-        min-width: 80px;
     }
     
     .stat-number {
         font-size: 1.5rem;
     }
     
-    .hero-actions {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
+    .stat-label {
+        font-size: 0.8rem;
     }
     
-    .cta-button {
+    #show-interactive-car {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
         width: 100%;
         max-width: 280px;
-        justify-content: center;
-        padding: 1rem 1.5rem;
     }
     
-    .evolution-showcase {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-    
-    .transformation-arrow {
-        transform: rotate(90deg);
-        margin: 1rem 0;
-    }
-    
-    .car-container-old, .car-container-electric {
-        padding: 1.5rem 1rem;
-        max-width: 200px;
-        margin: 0 auto;
-    }
-    
-    .timeline-points {
-        flex-wrap: wrap;
-        gap: 0.5rem;
+    .control-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
         justify-content: center;
     }
     
-    .point {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.7rem;
+    .control-btn i {
+        margin-right: 0.3rem;
     }
     
-    .orb-1, .orb-2, .orb-3 {
-        width: 150px;
-        height: 150px;
+    /* Melhorias para timeline em mobile */
+    .timeline-item {
+        padding: 1rem;
     }
     
-    .scroll-indicator {
-        bottom: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 2rem;
+    .timeline-year {
+        font-size: 1.2rem;
     }
     
-    .hero-description {
-        font-size: 1rem;
-    }
-    
-    .hero-stats {
-        flex-direction: column;
-        gap: 0.8rem;
-    }
-    
-    .stat-item {
-        width: 100%;
-        max-width: 200px;
-        margin: 0 auto;
-    }
-    
-    .car-container-old, .car-container-electric {
-        max-width: 180px;
-    }
-    
-    .old-car-body, .electric-car-body {
-        width: 100px;
-        height: 50px;
-    }
-    
-    .wheel-old, .wheel-electric {
-        width: 20px;
-        height: 20px;
+    .timeline-title {
+        font-size: 1.1rem;
     }
 }
 
@@ -1731,24 +1790,105 @@ nav {
     transform: scale(2) !important;
 }
 
-/* Responsivo */
+/* Melhorias para touch em dispositivos móveis */
+.touch-friendly {
+    cursor: pointer;
+    min-height: 44px; /* Tamanho mínimo recomendado para alvos touch */
+    min-width: 44px;
+}
+
+/* Otimização de performance para dispositivos móveis */
 @media (max-width: 768px) {
-    .car-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+    .particle {
+        display: none; /* Desativa partículas em dispositivos móveis para melhorar performance */
     }
     
-    .car-body-3d {
-        width: 350px;
-        height: 180px;
+    .orb {
+        opacity: 0.2; /* Reduz a opacidade dos orbs para melhorar performance */
     }
     
-    .car-controls {
-        gap: 0.5rem;
+    /* Simplifica animações em dispositivos móveis */
+    .hero-badge, .hero-title, .hero-description, .hero-stats, .hero-actions {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Estilos para o botão de exibir carro interativo */
+#show-interactive-car {
+    margin: 2rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+#show-interactive-car:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+}
+
+#show-interactive-car .btn-icon {
+    margin-left: 10px;
+    font-size: 1.4rem;
+}
+
+/* Animação para exibir o carro interativo */
+.fade-in {
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Melhorias adicionais para responsividade */
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+.timeline-section, .how-it-works-section, .comparison-section {
+    padding: 4rem 2rem;
+}
+
+@media (max-width: 768px) {
+    .timeline-section, .how-it-works-section, .comparison-section {
+        padding: 3rem 1rem;
     }
     
-    .control-btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
+    .timeline-item {
+        flex-direction: column;
+        margin-bottom: 3rem;
+    }
+    
+    .timeline-content {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+    
+    .timeline-marker {
+        margin: 0 auto;
+    }
+    
+    .media-container {
+        max-width: 100%;
     }
 }

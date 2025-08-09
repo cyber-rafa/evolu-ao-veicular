@@ -212,34 +212,48 @@ function setupAdvancedInteractiveCar() {
         const charger = document.querySelector('.charger-3d');
         charger.classList.add('active');
         
+        // Resetar progresso para garantir que comece do zero
         let progress = 0;
-        const chargingInterval = setInterval(() => {
-            progress += 2;
-            
-            infoPanel.innerHTML = `
-                <div class="charging-status">
-                    <h4 style="color: #6f42c1;">⚡ Carregamento em Progresso</h4>
-                    <div class="charging-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${progress}%; background: #6f42c1;"></div>
+        
+        // Criar elemento de progresso fora do intervalo para evitar recriação
+        infoPanel.innerHTML = `
+            <div class="charging-status">
+                <h4 style="color: #6f42c1;">⚡ Carregamento em Progresso</h4>
+                <div class="charging-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%; background: #6f42c1;"></div>
+                    </div>
+                    <div class="charging-stats">
+                        <div class="stat">
+                            <span>Nível da Bateria:</span>
+                            <span class="battery-level" style="color: #6f42c1;">0%</span>
                         </div>
-                        <div class="charging-stats">
-                            <div class="stat">
-                                <span>Nível da Bateria:</span>
-                                <span style="color: #6f42c1;">${progress}%</span>
-                            </div>
-                            <div class="stat">
-                                <span>Potência:</span>
-                                <span style="color: #6f42c1;">150 kW</span>
-                            </div>
-                            <div class="stat">
-                                <span>Tempo Restante:</span>
-                                <span style="color: #6f42c1;">${Math.max(0, 30 - Math.floor(progress/3))} min</span>
-                            </div>
+                        <div class="stat">
+                            <span>Potência:</span>
+                            <span style="color: #6f42c1;">150 kW</span>
+                        </div>
+                        <div class="stat">
+                            <span>Tempo Restante:</span>
+                            <span class="time-remaining" style="color: #6f42c1;">30 min</span>
                         </div>
                     </div>
                 </div>
-            `;
+            </div>
+        `;
+        
+        // Obter referências aos elementos que serão atualizados
+        const progressFill = infoPanel.querySelector('.progress-fill');
+        const batteryLevel = infoPanel.querySelector('.battery-level');
+        const timeRemaining = infoPanel.querySelector('.time-remaining');
+        
+        // Usar requestAnimationFrame para animação mais suave
+        const chargingInterval = setInterval(() => {
+            progress += 1;
+            
+            // Atualizar apenas os elementos necessários em vez de recriar todo o HTML
+            if (progressFill) progressFill.style.width = `${progress}%`;
+            if (batteryLevel) batteryLevel.textContent = `${progress}%`;
+            if (timeRemaining) timeRemaining.textContent = `${Math.max(0, 30 - Math.floor(progress/3))} min`;
             
             if (progress >= 100) {
                 clearInterval(chargingInterval);
@@ -611,6 +625,62 @@ function setupResponsiveHero() {
     window.addEventListener('resize', adjustHeroForMobile);
 }
 
+// Menu responsivo
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelector('.nav-links');
+    
+    mobileMenu.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+        
+        // Alternar ícone do menu
+        const icon = mobileMenu.querySelector('i');
+        if (icon.classList.contains('fa-bars')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    });
+    
+    // Fechar menu ao clicar em um link
+    const navItems = document.querySelectorAll('.nav-links a');
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+            const icon = mobileMenu.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        });
+    });
+});
+
+// Função para mostrar o carro interativo
+function setupInteractiveCarButton() {
+    const showButton = document.getElementById('show-interactive-car');
+    const carExperience = document.getElementById('car-experience-container');
+    
+    if (showButton && carExperience) {
+        showButton.addEventListener('click', function() {
+            // Ocultar o botão
+            showButton.style.display = 'none';
+            
+            // Mostrar o carro interativo com animação
+            carExperience.style.display = 'block';
+            carExperience.classList.add('fade-in');
+            
+            // Inicializar os componentes interativos após exibir
+            setTimeout(() => {
+                // Reinicializar os componentes interativos
+                setupAdvancedInteractiveCar();
+            }, 500);
+        });
+    }
+}
+
+// Remover a função setupInteractiveCarButton() inteira
+
 // Atualizar a inicialização
 document.addEventListener('DOMContentLoaded', () => {
     animateTimeline();
@@ -620,4 +690,84 @@ document.addEventListener('DOMContentLoaded', () => {
     setupHeroAnimations();
     setupCarHoverEffects();
     setupResponsiveHero();
+    // Remover a chamada setupInteractiveCarButton();
+});
+
+// Detectar dispositivos móveis e ajustar a experiência
+function detectMobileDevice() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    
+    if (isMobile) {
+        document.body.classList.add('mobile-device');
+        setupMobileExperience();
+    }
+}
+
+// Configurar experiência otimizada para dispositivos móveis
+function setupMobileExperience() {
+    // Adicionar menu hamburguer para navegação
+    const menuToggle = document.createElement('div');
+    menuToggle.className = 'menu-toggle';
+    menuToggle.innerHTML = '☰';
+    
+    const nav = document.querySelector('nav');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (nav && !document.querySelector('.menu-toggle')) {
+        nav.insertBefore(menuToggle, navLinks);
+        
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Fechar menu ao clicar em um link
+        const links = document.querySelectorAll('.nav-links a');
+        links.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+            });
+        });
+    }
+    
+    // Ajustar interação para componentes 3D em touch
+    const components = document.querySelectorAll('.component-3d');
+    components.forEach(component => {
+        component.addEventListener('touchstart', function(e) {
+            // Prevenir comportamento padrão para evitar problemas de scroll
+            e.preventDefault();
+            
+            // Remover classe active de todos os componentes
+            components.forEach(c => c.classList.remove('active'));
+            
+            // Adicionar classe active ao componente tocado
+            this.classList.add('active');
+            
+            // Mostrar informações do componente
+            const componentClass = this.classList[1];
+            showComponentInfo(componentClass);
+        });
+    });
+}
+
+// Inicializar detecção de dispositivo quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', function() {
+    detectMobileDevice();
+    
+    // Adicionar instruções para dispositivos touch
+    const carExperience = document.querySelector('.car-experience');
+    if (carExperience) {
+        const touchInstructions = document.createElement('div');
+        touchInstructions.className = 'touch-instructions';
+        touchInstructions.innerHTML = 'Toque nos componentes para ver mais detalhes';
+        carExperience.insertBefore(touchInstructions, carExperience.firstChild);
+    }
+});
+
+// Ajustar layout quando a orientação do dispositivo mudar
+window.addEventListener('resize', function() {
+    if (window.innerWidth < 768) {
+        document.body.classList.add('mobile-device');
+    } else {
+        document.body.classList.remove('mobile-device');
+    }
 });

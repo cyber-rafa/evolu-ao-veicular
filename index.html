@@ -23,9 +23,9 @@
     </header>
 
     <main>
-        <!-- Seção Hero Melhorada -->
+        
         <section id="home" class="hero">
-            <!-- Efeitos de fundo animados -->
+
             <div class="hero-background">
                 <div class="floating-particles">
                     <div class="particle"></div>
@@ -156,7 +156,7 @@
                         </div>
                     </div>
 
-                    <!-- Indicadores de progresso -->
+            
                     <div class="progress-indicators">
                         <div class="progress-line">
                             <div class="progress-fill"></div>
@@ -193,7 +193,7 @@
                         <p>Karl Benz cria o primeiro automóvel com motor de combustão interna</p>
                         <div class="media-container">
                             <div class="video-placeholder">
-                                <p>🎥 Vídeo: Primeiro Automóvel de Benz</p>
+                                <p><iframe width="560" height="315" src="https://www.youtube.com/embed/eFzUUQb0fwc?si=ycY64gligOA1lfX0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
                             </div>
                         </div>
                     </div>
@@ -248,7 +248,9 @@
                         <p>Primeiro carro elétrico esportivo de alta performance</p>
                         <div class="media-container">
                             <div class="video-placeholder">
-                                <p>🎥 Vídeo: Tesla Roadster em Ação</p>
+                                <p>🎥 Vídeo: Tesla Roadster em Ação
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/8wP_tiO-xYM?si=PwtcRI8TXiqkKrXc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -307,95 +309,103 @@
 
             <div class="interactive-car">
                 <h3>Explore um Carro Elétrico Interativo</h3>
-                <div class="car-experience">
-                    <div class="car-container">
-                        <!-- Carro 3D com perspectiva -->
-                        <div class="car-3d">
-                            <div class="car-body-3d">
-                                <!-- Carroceria principal -->
-                                <div class="main-body"></div>
-                                <div class="windshield"></div>
-                                <div class="roof"></div>
-                                
-                                <!-- Rodas com animação -->
-                                <div class="wheel front-wheel">
-                                    <div class="rim"></div>
-                                    <div class="tire"></div>
-                                </div>
-                                <div class="wheel rear-wheel">
-                                    <div class="rim"></div>
-                                    <div class="tire"></div>
-                                </div>
-                                
-                                <!-- Componentes interativos com efeitos -->
-                                <div class="component-3d battery-3d" data-info="Bateria de íons de lítio de alta capacidade (75-100 kWh) que alimenta todo o sistema elétrico">
-                                    <div class="component-glow"></div>
-                                    <div class="component-icon">🔋</div>
-                                    <span class="component-label-3d">Bateria</span>
-                                    <div class="energy-flow"></div>
-                                </div>
-                                
-                                <div class="component-3d motor-3d" data-info="Motor elétrico síncrono que converte energia elétrica em movimento rotacional com 95% de eficiência">
-                                    <div class="component-glow"></div>
-                                    <div class="component-icon">⚙️</div>
-                                    <span class="component-label-3d">Motor</span>
-                                    <div class="rotation-indicator"></div>
-                                </div>
-                                
-                                <div class="component-3d inverter-3d" data-info="Inversor que converte corrente contínua da bateria em corrente alternada para o motor">
-                                    <div class="component-glow"></div>
-                                    <div class="component-icon">🔄</div>
-                                    <span class="component-label-3d">Inversor</span>
-                                    <div class="signal-waves"></div>
-                                </div>
-                                
-                                <div class="component-3d charger-3d" data-info="Sistema de carregamento rápido que permite recarregar até 80% em 30 minutos">
-                                    <div class="component-glow"></div>
-                                    <div class="component-icon">⚡</div>
-                                    <span class="component-label-3d">Carregador</span>
-                                    <div class="charging-indicator"></div>
-                                </div>
-                                
-                                <div class="component-3d controller-3d" data-info="Controlador eletrônico que gerencia toda a distribuição de energia e performance">
-                                    <div class="component-glow"></div>
-                                    <div class="component-icon">🧠</div>
-                                    <span class="component-label-3d">Controlador</span>
-                                    <div class="data-flow"></div>
-                                </div>
+                
+                <!-- Botão para redirecionar para a página do carro 3D imersivo -->
+                <button id="show-interactive-car" class="cta-button primary" onclick="window.location.href='carro-3d.html'">
+                    <span class="btn-text">Explorar Carro Elétrico 3D</span>
+                    <span class="btn-icon">🚗</span>
+                </button>
+                
+                <!-- Remover a seção oculta, pois agora teremos uma página dedicada -->
+            </div>
+            <div id="car-experience-container" class="car-experience" style="display: none;">
+                <div class="car-container">
+                    <!-- Carro 3D com perspectiva -->
+                    <div class="car-3d">
+                        <div class="car-body-3d">
+                            <!-- Carroceria principal -->
+                            <div class="main-body"></div>
+                            <div class="windshield"></div>
+                            <div class="roof"></div>
+                            
+                            <!-- Rodas com animação -->
+                            <div class="wheel front-wheel">
+                                <div class="rim"></div>
+                                <div class="tire"></div>
+                            </div>
+                            <div class="wheel rear-wheel">
+                                <div class="rim"></div>
+                                <div class="tire"></div>
                             </div>
                             
-                            <!-- Efeitos visuais de energia -->
-                            <div class="energy-visualization">
-                                <div class="energy-particle"></div>
-                                <div class="energy-particle"></div>
-                                <div class="energy-particle"></div>
-                                <div class="energy-particle"></div>
-                                <div class="energy-particle"></div>
+                            <!-- Componentes interativos com efeitos -->
+                            <div class="component-3d battery-3d" data-info="Bateria de íons de lítio de alta capacidade (75-100 kWh) que alimenta todo o sistema elétrico">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">🔋</div>
+                                <span class="component-label-3d">Bateria</span>
+                                <div class="energy-flow"></div>
+                            </div>
+                            
+                            <div class="component-3d motor-3d" data-info="Motor elétrico síncrono que converte energia elétrica em movimento rotacional com 95% de eficiência">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">⚙️</div>
+                                <span class="component-label-3d">Motor</span>
+                                <div class="rotation-indicator"></div>
+                            </div>
+                            
+                            <div class="component-3d inverter-3d" data-info="Inversor que converte corrente contínua da bateria em corrente alternada para o motor">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">🔄</div>
+                                <span class="component-label-3d">Inversor</span>
+                                <div class="signal-waves"></div>
+                            </div>
+                            
+                            <div class="component-3d charger-3d" data-info="Sistema de carregamento rápido que permite recarregar até 80% em 30 minutos">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">⚡</div>
+                                <span class="component-label-3d">Carregador</span>
+                                <div class="charging-indicator"></div>
+                            </div>
+                            
+                            <div class="component-3d controller-3d" data-info="Controlador eletrônico que gerencia toda a distribuição de energia e performance">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">🧠</div>
+                                <span class="component-label-3d">Controlador</span>
+                                <div class="data-flow"></div>
                             </div>
                         </div>
                         
-                        <!-- Painel de informações avançado -->
-                        <div class="info-panel-advanced">
-                            <div class="panel-header">
-                                <h4>Informações do Componente</h4>
-                                <div class="status-indicator"></div>
-                            </div>
-                            <div class="panel-content">
-                                <div class="default-info">
-                                    <p>🚗 Passe o mouse sobre os componentes para explorar</p>
-                                    <div class="stats-preview">
-                                        <div class="stat">
-                                            <span class="stat-label">Eficiência</span>
-                                            <span class="stat-value">95%</span>
-                                        </div>
-                                        <div class="stat">
-                                            <span class="stat-label">Autonomia</span>
-                                            <span class="stat-value">450km</span>
-                                        </div>
-                                        <div class="stat">
-                                            <span class="stat-label">Potência</span>
-                                            <span class="stat-value">350hp</span>
-                                        </div>
+                        <!-- Efeitos visuais de energia -->
+                        <div class="energy-visualization">
+                            <div class="energy-particle"></div>
+                            <div class="energy-particle"></div>
+                            <div class="energy-particle"></div>
+                            <div class="energy-particle"></div>
+                            <div class="energy-particle"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Painel de informações avançado -->
+                    <div class="info-panel-advanced">
+                        <div class="panel-header">
+                            <h4>Informações do Componente</h4>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="panel-content">
+                            <div class="default-info">
+                                <p>🚗 Passe o mouse sobre os componentes para explorar</p>
+                                <div class="stats-preview">
+                                    <div class="stat">
+                                        <span class="stat-label">Eficiência</span>
+                                        <span class="stat-value">95%</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Autonomia</span>
+                                        <span class="stat-value">450km</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Potência</span>
+                                        <span class="stat-value">350hp</span>
                                     </div>
                                 </div>
                             </div>

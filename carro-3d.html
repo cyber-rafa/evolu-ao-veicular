@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Carro Elétrico 3D Imersivo | Evolução Veicular</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="carro-3d.css"> <!-- Novo arquivo CSS específico -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="immersive-container">
+        <!-- Barra superior com logo e botão de voltar -->
+        <div class="top-bar">
+            <div class="logo">
+                <h1>🚗 Evolução Veicular</h1>
+            </div>
+            <button class="back-button" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+        </div>
+        
+        <!-- Conteúdo principal -->
+        <div class="immersive-content">
+            <h1 class="immersive-title">Explore um Carro Elétrico Interativo</h1>
+            <p class="immersive-subtitle">Interaja com os componentes para descobrir como funciona um veículo elétrico moderno</p>
+            
+            <!-- Carro 3D Imersivo -->
+            <div class="car-experience">
+                <div class="car-container">
+                    <!-- Carro 3D com perspectiva -->
+                    <div class="car-3d">
+                        <div class="car-body-3d">
+                            <!-- Carroceria principal -->
+                            <div class="main-body"></div>
+                            <div class="windshield"></div>
+                            <div class="roof"></div>
+                            
+                            <!-- Rodas com animação -->
+                            <div class="wheel front-wheel">
+                                <div class="rim"></div>
+                                <div class="tire"></div>
+                            </div>
+                            <div class="wheel rear-wheel">
+                                <div class="rim"></div>
+                                <div class="tire"></div>
+                            </div>
+                            
+                            <!-- Componentes interativos com efeitos -->
+                            <div class="component-3d battery-3d" data-info="Bateria de íons de lítio de alta capacidade (75-100 kWh) que alimenta todo o sistema elétrico">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">🔋</div>
+                                <span class="component-label-3d">Bateria</span>
+                                <div class="energy-flow"></div>
+                            </div>
+                            
+                            <div class="component-3d motor-3d" data-info="Motor elétrico síncrono que converte energia elétrica em movimento rotacional com 95% de eficiência">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">⚙️</div>
+                                <span class="component-label-3d">Motor</span>
+                                <div class="rotation-indicator"></div>
+                            </div>
+                            
+                            <div class="component-3d inverter-3d" data-info="Inversor que converte corrente contínua da bateria em corrente alternada para o motor">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">🔄</div>
+                                <span class="component-label-3d">Inversor</span>
+                                <div class="signal-waves"></div>
+                            </div>
+                            
+                            <div class="component-3d charger-3d" data-info="Sistema de carregamento rápido que permite recarregar até 80% em 30 minutos">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">⚡</div>
+                                <span class="component-label-3d">Carregador</span>
+                                <div class="charging-indicator"></div>
+                            </div>
+                            
+                            <div class="component-3d controller-3d" data-info="Controlador eletrônico que gerencia toda a distribuição de energia e performance">
+                                <div class="component-glow"></div>
+                                <div class="component-icon">🧠</div>
+                                <span class="component-label-3d">Controlador</span>
+                                <div class="data-flow"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Efeitos visuais de energia -->
+                        <div class="energy-visualization">
+                            <div class="energy-particle"></div>
+                            <div class="energy-particle"></div>
+                            <div class="energy-particle"></div>
+                            <div class="energy-particle"></div>
+                            <div class="energy-particle"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Painel de informações avançado -->
+                    <div class="info-panel-advanced">
+                        <div class="panel-header">
+                            <h4>Informações do Componente</h4>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="panel-content">
+                            <div class="default-info">
+                                <p class="desktop-text">🚗 Passe o mouse sobre os componentes para explorar</p>
+                                <p class="mobile-text">🚗 Toque nos componentes para explorar</p>
+                                <div class="mobile-instruction">Toque e segure para ver mais detalhes</div>
+                                <div class="stats-preview">
+                                    <div class="stat">
+                                        <span class="stat-label">Eficiência</span>
+                                        <span class="stat-value">95%</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Autonomia</span>
+                                        <span class="stat-value">450km</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Potência</span>
+                                        <span class="stat-value">350hp</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Controles interativos -->
+                <div class="car-controls">
+                    <button class="control-btn" data-action="start">
+                        <span class="btn-icon">🔋</span>
+                        Ligar Sistema
+                    </button>
+                    <button class="control-btn" data-action="charge">
+                        <span class="btn-icon">⚡</span>
+                        Simular Carregamento
+                    </button>
+                    <button class="control-btn" data-action="drive">
+                        <span class="btn-icon">🚗</span>
+                        Modo Condução
+                    </button>
+                    <button class="control-btn" data-action="reset">
+                        <span class="btn-icon">🔄</span>
+                        Resetar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Partículas de fundo -->
+        <div class="background-particles">
+            <div class="particle" style="width: 10px; height: 10px; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="width: 15px; height: 15px; left: 20%; animation-delay: 2s;"></div>
+            <div class="particle" style="width: 8px; height: 8px; left: 30%; animation-delay: 4s;"></div>
+            <div class="particle" style="width: 12px; height: 12px; left: 40%; animation-delay: 6s;"></div>
+            <div class="particle" style="width: 7px; height: 7px; left: 50%; animation-delay: 8s;"></div>
+            <div class="particle" style="width: 14px; height: 14px; left: 60%; animation-delay: 10s;"></div>
+            <div class="particle" style="width: 9px; height: 9px; left: 70%; animation-delay: 12s;"></div>
+            <div class="particle" style="width: 11px; height: 11px; left: 80%; animation-delay: 14s;"></div>
+            <div class="particle" style="width: 6px; height: 6px; left: 90%; animation-delay: 16s;"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Script específico para a página imersiva
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar os componentes interativos
+            setupAdvancedInteractiveCar();
+            
+            // Adicionar efeito de rotação 3D ao mover o mouse/tocar na tela
+            const carBody = document.querySelector('.car-body-3d');
+            const container = document.querySelector('.immersive-content');
+            
+            if (carBody && container) {
+                // Para desktop
+                container.addEventListener('mousemove', (e) => {
+                    const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                    const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                    carBody.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                });
+                
+                // Resetar ao sair
+                container.addEventListener('mouseleave', () => {
+                    carBody.style.transform = 'rotateY(0deg) rotateX(0deg)';
+                });
+                
+                // Para dispositivos móveis
+                container.addEventListener('touchmove', (e) => {
+                    // Removido e.preventDefault() para permitir rolagem
+                    const touch = e.touches[0];
+                    const xAxis = (window.innerWidth / 2 - touch.pageX) / 15;
+                    const yAxis = (window.innerHeight / 2 - touch.pageY) / 15;
+                    carBody.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                });
+                
+                container.addEventListener('touchend', () => {
+                    carBody.style.transform = 'rotateY(0deg) rotateX(0deg)';
+                });
+            }
+            
+            // Detectar se é dispositivo móvel
+            const isMobile = window.innerWidth <= 768;
+            
+            // Ajustar interatividade para dispositivos móveis
+            if (isMobile) {
+                const components = document.querySelectorAll('.component-3d');
+                const infoPanel = document.querySelector('.panel-content');
+                
+                components.forEach(component => {
+                    // Remover eventos de mouse existentes
+                    const clone = component.cloneNode(true);
+                    component.parentNode.replaceChild(clone, component);
+                    
+                    // Adicionar eventos de toque
+                    clone.addEventListener('touchstart', (e) => {
+                        // Não prevenir o comportamento padrão completamente
+                        // para permitir rolagem, mas parar a propagação
+                        e.stopPropagation();
+                        
+                        // Remover classe ativa de todos os componentes
+                        components.forEach(c => c.classList.remove('active'));
+                        
+                        // Ativar o componente atual
+                        const componentClass = Array.from(clone.classList).find(cls => cls.endsWith('-3d'));
+                        if (componentClass && typeof showComponentInfo === 'function') {
+                            showComponentInfo(componentClass);
+                            clone.classList.add('active');
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

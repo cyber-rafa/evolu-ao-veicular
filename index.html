@@ -23,18 +23,161 @@
     </header>
 
     <main>
-        <!-- Seção Hero -->
+        <!-- Seção Hero Melhorada -->
         <section id="home" class="hero">
-            <div class="hero-content">
-                <h1>A Evolução dos Automóveis</h1>
-                <p>Descubra a fascinante jornada dos carros de combustão até os veículos elétricos modernos</p>
-                <button class="cta-button" onclick="scrollToSection('timeline')">Explorar Timeline</button>
+            <!-- Efeitos de fundo animados -->
+            <div class="hero-background">
+                <div class="floating-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                <div class="gradient-orbs">
+                    <div class="orb orb-1"></div>
+                    <div class="orb orb-2"></div>
+                    <div class="orb orb-3"></div>
+                </div>
             </div>
-            <div class="hero-animation">
-                <div class="car-evolution">
-                    <div class="car old-car">🚗</div>
-                    <div class="arrow">→</div>
-                    <div class="car electric-car">⚡🚗</div>
+
+            <div class="hero-container">
+                <!-- Conteúdo principal -->
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="badge-icon">🌱</span>
+                        <span class="badge-text">Futuro Sustentável</span>
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        <span class="title-line">A Evolução dos</span>
+                        <span class="title-highlight">Automóveis</span>
+                    </h1>
+                    
+                    <p class="hero-description">
+                        Descubra a fascinante jornada dos carros de combustão até os 
+                        <span class="highlight-text">veículos elétricos modernos</span> 
+                        e como eles estão transformando o futuro da mobilidade
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">95%</div>
+                            <div class="stat-label">Eficiência</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Emissões</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">500km</div>
+                            <div class="stat-label">Autonomia</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-actions">
+                        <button class="cta-button primary" onclick="scrollToSection('timeline')">
+                            <span class="btn-text">Explorar Timeline</span>
+                            <span class="btn-icon">🚀</span>
+                        </button>
+                        <button class="cta-button secondary" onclick="scrollToSection('how-it-works')">
+                            <span class="btn-text">Como Funciona</span>
+                            <span class="btn-icon">⚡</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Animação visual melhorada -->
+                <div class="hero-visual">
+                    <div class="evolution-showcase">
+                        <!-- Carro antigo -->
+                        <div class="car-stage old-stage">
+                            <div class="car-container-old">
+                                <div class="old-car-body">
+                                    <div class="car-main"></div>
+                                    <div class="car-wheels">
+                                        <div class="wheel-old wheel-front"></div>
+                                        <div class="wheel-old wheel-rear"></div>
+                                    </div>
+                                    <div class="exhaust-smoke">
+                                        <div class="smoke-particle"></div>
+                                        <div class="smoke-particle"></div>
+                                        <div class="smoke-particle"></div>
+                                    </div>
+                                </div>
+                                <div class="stage-label">1885 - Combustão</div>
+                                <div class="stage-stats">
+                                    <div class="stat">25% eficiência</div>
+                                    <div class="stat">Alto CO₂</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seta de transformação -->
+                        <div class="transformation-arrow">
+                            <div class="arrow-body">
+                                <div class="arrow-line"></div>
+                                <div class="arrow-head"></div>
+                            </div>
+                            <div class="transformation-text">Evolução</div>
+                            <div class="energy-flow-arrow">
+                                <div class="energy-dot"></div>
+                                <div class="energy-dot"></div>
+                                <div class="energy-dot"></div>
+                            </div>
+                        </div>
+
+                        <!-- Carro elétrico -->
+                        <div class="car-stage electric-stage">
+                            <div class="car-container-electric">
+                                <div class="electric-car-body">
+                                    <div class="car-main-electric"></div>
+                                    <div class="car-wheels-electric">
+                                        <div class="wheel-electric wheel-front-e"></div>
+                                        <div class="wheel-electric wheel-rear-e"></div>
+                                    </div>
+                                    <div class="electric-effects">
+                                        <div class="lightning-bolt"></div>
+                                        <div class="energy-aura"></div>
+                                    </div>
+                                    <div class="charging-port">
+                                        <div class="port-indicator"></div>
+                                    </div>
+                                </div>
+                                <div class="stage-label electric-label">2024 - Elétrico</div>
+                                <div class="stage-stats electric-stats">
+                                    <div class="stat">95% eficiência</div>
+                                    <div class="stat">Zero emissões</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indicadores de progresso -->
+                    <div class="progress-indicators">
+                        <div class="progress-line">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="timeline-points">
+                            <div class="point active" data-year="1885">1885</div>
+                            <div class="point" data-year="1908">1908</div>
+                            <div class="point" data-year="1970">1970</div>
+                            <div class="point" data-year="1997">1997</div>
+                            <div class="point" data-year="2008">2008</div>
+                            <div class="point highlight" data-year="2024">2024</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="scroll-indicator">
+                <div class="scroll-text">Role para explorar</div>
+                <div class="scroll-arrow">
+                    <div class="arrow-down"></div>
                 </div>
             </div>
         </section>

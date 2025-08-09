@@ -445,9 +445,179 @@ function addAdvancedCarStyles() {
     document.head.appendChild(style);
 }
 
+// Melhorias para a seção hero
+function setupEnhancedHero() {
+    const timelinePoints = document.querySelectorAll('.point');
+    const progressFill = document.querySelector('.progress-fill');
+    const heroVisual = document.querySelector('.hero-visual');
+    
+    // Interatividade dos pontos da timeline
+    timelinePoints.forEach(point => {
+        point.addEventListener('click', () => {
+            const year = point.getAttribute('data-year');
+            animateToYear(year);
+            
+            // Remover classe ativa de outros pontos
+            timelinePoints.forEach(p => p.classList.remove('active', 'highlight'));
+            point.classList.add('active');
+            
+            if (year === '2024') {
+                point.classList.add('highlight');
+            }
+        });
+    });
+    
+    function animateToYear(year) {
+        const carStages = document.querySelectorAll('.car-stage');
+        const transformationArrow = document.querySelector('.transformation-arrow');
+        
+        // Reset animations
+        carStages.forEach(stage => {
+            stage.style.transform = 'scale(1)';
+            stage.style.opacity = '0.7';
+        });
+        
+        // Highlight based on year
+        if (parseInt(year) <= 1970) {
+            document.querySelector('.old-stage').style.transform = 'scale(1.1)';
+            document.querySelector('.old-stage').style.opacity = '1';
+        } else {
+            document.querySelector('.electric-stage').style.transform = 'scale(1.1)';
+            document.querySelector('.electric-stage').style.opacity = '1';
+        }
+        
+        // Animate transformation arrow
+        transformationArrow.style.animation = 'none';
+        setTimeout(() => {
+            transformationArrow.style.animation = 'pulse 1s ease-in-out';
+        }, 100);
+    }
+    
+    // Auto-play da timeline
+    let currentPointIndex = 0;
+    setInterval(() => {
+        if (timelinePoints.length > 0) {
+            timelinePoints[currentPointIndex].click();
+            currentPointIndex = (currentPointIndex + 1) % timelinePoints.length;
+        }
+    }, 4000);
+    
+    // Parallax effect para o hero
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        if (heroVisual) {
+            heroVisual.style.transform = `translateY(${rate}px)`;
+        }
+        
+        // Fade out do hero conforme o scroll
+        const hero = document.querySelector('.hero');
+        const heroHeight = hero.offsetHeight;
+        const opacity = Math.max(0, 1 - (scrolled / heroHeight));
+        hero.style.opacity = opacity;
+    });
+}
+
+// Animação de entrada dos elementos
+function setupHeroAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+    
+    // Observar elementos para animação
+    const animatedElements = document.querySelectorAll('.hero-badge, .hero-title, .hero-description, .hero-stats, .hero-actions, .evolution-showcase');
+    animatedElements.forEach(el => observer.observe(el));
+}
+
+// Efeitos de hover nos carros
+function setupCarHoverEffects() {
+    const oldCar = document.querySelector('.car-container-old');
+    const electricCar = document.querySelector('.car-container-electric');
+    
+    if (oldCar) {
+        oldCar.addEventListener('mouseenter', () => {
+            // Intensificar fumaça
+            const smokeParticles = oldCar.querySelectorAll('.smoke-particle');
+            smokeParticles.forEach(particle => {
+                particle.style.animationDuration = '1s';
+            });
+        });
+        
+        oldCar.addEventListener('mouseleave', () => {
+            const smokeParticles = oldCar.querySelectorAll('.smoke-particle');
+            smokeParticles.forEach(particle => {
+                particle.style.animationDuration = '2s';
+            });
+        });
+    }
+    
+    if (electricCar) {
+        electricCar.addEventListener('mouseenter', () => {
+            // Intensificar efeitos elétricos
+            const lightningBolt = electricCar.querySelector('.lightning-bolt');
+            const energyAura = electricCar.querySelector('.energy-aura');
+            
+            if (lightningBolt) {
+                lightningBolt.style.animationDuration = '0.5s';
+            }
+            if (energyAura) {
+                energyAura.style.animationDuration = '1s';
+            }
+        });
+        
+        electricCar.addEventListener('mouseleave', () => {
+            const lightningBolt = electricCar.querySelector('.lightning-bolt');
+            const energyAura = electricCar.querySelector('.energy-aura');
+            
+            if (lightningBolt) {
+                lightningBolt.style.animationDuration = '2s';
+            }
+            if (energyAura) {
+                energyAura.style.animationDuration = '2s';
+            }
+        });
+    }
+}
+
+// Responsividade dinâmica
+function setupResponsiveHero() {
+    function adjustHeroForMobile() {
+        const isMobile = window.innerWidth <= 768;
+        const heroContainer = document.querySelector('.hero-container');
+        const evolutionShowcase = document.querySelector('.evolution-showcase');
+        
+        if (isMobile) {
+            // Ajustes para mobile
+            if (evolutionShowcase) {
+                evolutionShowcase.style.flexDirection = 'column';
+            }
+        } else {
+            // Ajustes para desktop
+            if (evolutionShowcase) {
+                evolutionShowcase.style.flexDirection = 'row';
+            }
+        }
+    }
+    
+    // Executar na carga e no redimensionamento
+    adjustHeroForMobile();
+    window.addEventListener('resize', adjustHeroForMobile);
+}
+
 // Atualizar a inicialização
 document.addEventListener('DOMContentLoaded', () => {
     animateTimeline();
     setupAdvancedInteractiveCar();
     addAdvancedCarStyles();
+    setupEnhancedHero();
+    setupHeroAnimations();
+    setupCarHoverEffects();
+    setupResponsiveHero();
 });

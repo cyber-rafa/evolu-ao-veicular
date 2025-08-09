@@ -1,0 +1,889 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.nav-links a:hover {
+    opacity: 0.8;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 120px 2rem 80px;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.cta-button {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+}
+
+.hero-animation {
+    margin-top: 3rem;
+    animation: fadeInUp 1s ease-out 0.9s both;
+}
+
+.car-evolution {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    font-size: 3rem;
+}
+
+.car {
+    animation: bounce 2s infinite;
+}
+
+.electric-car {
+    animation: bounce 2s infinite 0.5s;
+}
+
+.arrow {
+    font-size: 2rem;
+    animation: pulse 2s infinite;
+}
+
+/* Timeline */
+.timeline-section {
+    padding: 80px 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.timeline-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #333;
+}
+
+.timeline {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #667eea, #764ba2);
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    margin: 4rem 0;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease-out;
+}
+
+.timeline-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+    margin-left: 0;
+    margin-right: 60%;
+    text-align: right;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+    margin-left: 60%;
+    margin-right: 0;
+    text-align: left;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    width: 20px;
+    height: 20px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    border: 4px solid white;
+    box-shadow: 0 0 0 4px #667eea;
+    z-index: 10;
+}
+
+.timeline-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+}
+
+.timeline-content h3 {
+    color: #667eea;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.media-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.video-placeholder {
+    background: #e9ecef;
+    padding: 2rem;
+    border-radius: 8px;
+    border: 2px dashed #adb5bd;
+}
+
+/* Animações dos componentes */
+.assembly-line {
+    height: 100px;
+    position: relative;
+    background: linear-gradient(to right, #ddd, #eee);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.car-frame {
+    width: 60px;
+    height: 30px;
+    background: #333;
+    position: absolute;
+    top: 35px;
+    left: 20px;
+    border-radius: 5px;
+    animation: moveAssembly 3s infinite linear;
+}
+
+.worker {
+    width: 20px;
+    height: 40px;
+    background: #ff6b6b;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    border-radius: 10px 10px 0 0;
+    animation: work 1s infinite alternate;
+}
+
+.charging-animation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.charging-station {
+    width: 60px;
+    height: 80px;
+    background: #28a745;
+    border-radius: 8px;
+    position: relative;
+}
+
+.charging-station::after {
+    content: '⚡';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    color: white;
+}
+
+.electric-car-charging {
+    width: 80px;
+    height: 40px;
+    background: #007bff;
+    border-radius: 20px;
+    position: relative;
+    animation: charging 2s infinite;
+}
+
+/* Como Funciona */
+.how-it-works {
+    background: #f8f9fa;
+    padding: 80px 2rem;
+}
+
+.how-it-works h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #333;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 0 auto 4rem;
+}
+
+.engine-type {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.engine-type h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.engine-animation {
+    height: 150px;
+    margin: 2rem 0;
+    position: relative;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.combustion-engine {
+    background: linear-gradient(45deg, #ff9a9e, #fecfef);
+}
+
+.electric-engine {
+    background: linear-gradient(45deg, #a8edea, #fed6e3);
+}
+
+.piston {
+    width: 30px;
+    height: 60px;
+    background: #333;
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    border-radius: 5px;
+    animation: pistonMove 1s infinite alternate;
+}
+
+.rotor {
+    width: 60px;
+    height: 60px;
+    background: #007bff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    animation: rotate 2s infinite linear;
+}
+
+.rotor::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: white;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 50%;
+}
+
+.engine-type ul {
+    list-style: none;
+    text-align: left;
+}
+
+.engine-type li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.engine-type li:last-child {
+    border-bottom: none;
+}
+
+/* Carro Interativo 3D - Versão Melhorada */
+.interactive-car {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2rem;
+}
+
+.interactive-car h3 {
+    margin-bottom: 3rem;
+    color: #333;
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.car-experience {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 25px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.car-experience::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 70%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.car-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    min-height: 500px;
+}
+
+/* Carro 3D */
+.car-3d {
+    position: relative;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.car-body-3d {
+    position: relative;
+    width: 500px;
+    height: 250px;
+    margin: 0 auto;
+    transform: rotateX(15deg) rotateY(-10deg);
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+}
+
+.car-body-3d:hover {
+    transform: rotateX(10deg) rotateY(5deg) scale(1.05);
+}
+
+/* Carroceria principal */
+.main-body {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 25px 25px 15px 15px;
+    position: relative;
+    box-shadow: 
+        0 10px 30px rgba(102, 126, 234, 0.3),
+        inset 0 2px 10px rgba(255,255,255,0.2);
+    transform: translateZ(20px);
+}
+
+.main-body::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    right: 10%;
+    height: 30%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+    border-radius: 15px;
+    transform: skewY(-2deg);
+}
+
+.windshield {
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    right: 15%;
+    height: 40%;
+    background: linear-gradient(135deg, rgba(173, 216, 230, 0.8) 0%, rgba(135, 206, 250, 0.6) 100%);
+    border-radius: 15px 15px 5px 5px;
+    transform: translateZ(25px);
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.roof {
+    position: absolute;
+    top: 10%;
+    left: 20%;
+    right: 20%;
+    height: 25%;
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    border-radius: 20px;
+    transform: translateZ(30px);
+    box-shadow: 0 5px 15px rgba(90, 103, 216, 0.4);
+}
+
+/* Rodas com animação */
+.wheel {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    bottom: -20px;
+    transform: translateZ(-10px);
+}
+
+.front-wheel {
+    left: 80px;
+}
+
+.rear-wheel {
+    right: 80px;
+}
+
+.rim {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #333 30%, #666  70%, #999 100%);
+    border-radius: 50%;
+    position: relative;
+    animation: wheelSpin 2s linear infinite;
+    box-shadow: 
+        0 0 20px rgba(0,0,0,0.3),
+        inset 0 0 20px rgba(255,255,255,0.2);
+}
+
+.rim::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: #222;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tire {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 90px;
+    height: 90px;
+    border: 5px solid #111;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Componentes 3D interativos */
+.component-3d {
+    position: absolute;
+    width: 80px;
+    height: 60px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+}
+
+.component-3d:hover {
+    transform: translateZ(20px) scale(1.1);
+}
+
+.component-3d:hover .component-glow {
+    opacity: 1;
+    transform: scale(1.5);
+}
+
+.component-glow {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 15px;
+    opacity: 0;
+    transition: all 0.4s ease;
+    pointer-events: none;
+}
+
+.component-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    z-index: 2;
+}
+
+.component-label-3d {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.component-3d:hover .component-label-3d {
+    opacity: 1;
+}
+
+/* Posicionamento dos componentes */
+.battery-3d {
+    bottom: 20px;
+    left: 50px;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.battery-3d .component-glow {
+    background: radial-gradient(circle, rgba(40, 167, 69, 0.6) 0%, transparent 70%);
+}
+
+.motor-3d {
+    bottom: 20px;
+    right: 50px;
+    background: linear-gradient(135deg, #dc3545, #e83e8c);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+}
+
+.motor-3d .component-glow {
+    background: radial-gradient(circle, rgba(220, 53, 69, 0.6) 0%, transparent 70%);
+}
+
+.inverter-3d {
+    top: 30px;
+    left: 60px;
+    background: linear-gradient(135deg, #fd7e14, #ffc107);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(253, 126, 20, 0.3);
+}
+
+.inverter-3d .component-glow {
+    background: radial-gradient(circle, rgba(253, 126, 20, 0.6) 0%, transparent 70%);
+}
+
+.charger-3d {
+    top: 30px;
+    right: 60px;
+    background: linear-gradient(135deg, #6f42c1, #e83e8c);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(111, 66, 193, 0.3);
+}
+
+.charger-3d .component-glow {
+    background: radial-gradient(circle, rgba(111, 66, 193, 0.6) 0%, transparent 70%);
+}
+
+.controller-3d {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #17a2b8, #6610f2);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(23, 162, 184, 0.3);
+}
+
+.controller-3d .component-glow {
+    background: radial-gradient(circle, rgba(23, 162, 184, 0.6) 0%, transparent 70%);
+}
+
+/* Efeitos visuais de energia */
+.energy-visualization {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.energy-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00ff88;
+    animation: energyFlow 3s infinite linear;
+}
+
+.energy-particle:nth-child(1) { animation-delay: 0s; }
+.energy-particle:nth-child(2) { animation-delay: 0.6s; }
+.energy-particle:nth-child(3) { animation-delay: 1.2s; }
+.energy-particle:nth-child(4) { animation-delay: 1.8s; }
+.energy-particle:nth-child(5) { animation-delay: 2.4s; }
+
+/* Painel de informações avançado */
+.info-panel-advanced {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    height: fit-content;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.panel-header h4 {
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    background: #28a745;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+.panel-content {
+    min-height: 200px;
+}
+
+.default-info p {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.stats-preview {
+    display: grid;
+    gap: 1rem;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.stat-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.stat-value {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 1.1rem;
+}
+
+/* Controles interativos */
+.car-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.control-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.control-btn:active {
+    transform: translateY(-1px);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+/* Animações */
+@keyframes wheelSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes energyFlow {
+    0% {
+        left: 10%;
+        top: 80%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    50% {
+        left: 50%;
+        top: 50%;
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        left: 90%;
+        top: 20%;
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+/* Estados ativos dos componentes */
+.component-3d.active {
+    transform: translateZ(30px) scale(1.2) !important;
+}
+
+.component-3d.active .component-glow {
+    opacity: 1 !important;
+    transform: scale(2) !important;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .car-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .car-body-3d {
+        width: 350px;
+        height: 180px;
+    }
+    
+    .car-controls {
+        gap: 0.5rem;
+    }
+    
+    .control-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+}

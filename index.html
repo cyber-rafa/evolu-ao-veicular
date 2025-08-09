@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolução dos Carros: Do Combustível ao Elétrico</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>🚗 Evolução Veicular</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#timeline">Linha do Tempo</a></li>
+                <li><a href="#how-it-works">Como Funciona</a></li>
+                <li><a href="#comparison">Comparação</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Seção Hero -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>A Evolução dos Automóveis</h1>
+                <p>Descubra a fascinante jornada dos carros de combustão até os veículos elétricos modernos</p>
+                <button class="cta-button" onclick="scrollToSection('timeline')">Explorar Timeline</button>
+            </div>
+            <div class="hero-animation">
+                <div class="car-evolution">
+                    <div class="car old-car">🚗</div>
+                    <div class="arrow">→</div>
+                    <div class="car electric-car">⚡🚗</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Cronológica -->
+        <section id="timeline" class="timeline-section">
+            <h2>Linha do Tempo da Evolução Automotiva</h2>
+            <div class="timeline">
+                <div class="timeline-item" data-year="1885">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>1885 - Primeiro Automóvel</h3>
+                        <p>Karl Benz cria o primeiro automóvel com motor de combustão interna</p>
+                        <div class="media-container">
+                            <div class="video-placeholder">
+                                <p>🎥 Vídeo: Primeiro Automóvel de Benz</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-year="1908">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>1908 - Ford Model T</h3>
+                        <p>Henry Ford revoluciona a produção em massa de automóveis</p>
+                        <div class="media-container">
+                            <div class="animation-container">
+                                <div class="assembly-line">
+                                    <div class="car-frame"></div>
+                                    <div class="worker"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-year="1970">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>1970s - Crise do Petróleo</h3>
+                        <p>Início da busca por alternativas aos combustíveis fósseis</p>
+                        <div class="media-container">
+                            <div class="chart-animation">
+                                <div class="oil-price-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-year="1997">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>1997 - Toyota Prius</h3>
+                        <p>Primeiro carro híbrido produzido em massa</p>
+                        <div class="media-container">
+                            <div class="hybrid-animation">
+                                <div class="engine-electric-combo"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-year="2008">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>2008 - Tesla Roadster</h3>
+                        <p>Primeiro carro elétrico esportivo de alta performance</p>
+                        <div class="media-container">
+                            <div class="video-placeholder">
+                                <p>🎥 Vídeo: Tesla Roadster em Ação</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-year="2020">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>2020+ - Era Elétrica</h3>
+                        <p>Explosão de veículos elétricos e infraestrutura de carregamento</p>
+                        <div class="media-container">
+                            <div class="charging-animation">
+                                <div class="charging-station"></div>
+                                <div class="electric-car-charging"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Como Funciona -->
+        <section id="how-it-works" class="how-it-works">
+            <h2>Como Funcionam os Carros Elétricos</h2>
+            <div class="comparison-grid">
+                <div class="engine-type">
+                    <h3>Motor a Combustão</h3>
+                    <div class="engine-animation combustion-engine">
+                        <div class="piston"></div>
+                        <div class="fuel-injection"></div>
+                        <div class="exhaust"></div>
+                    </div>
+                    <ul>
+                        <li>Queima combustível fóssil</li>
+                        <li>Produz gases poluentes</li>
+                        <li>Eficiência ~25-30%</li>
+                        <li>Muitas partes móveis</li>
+                    </ul>
+                </div>
+
+                <div class="engine-type">
+                    <h3>Motor Elétrico</h3>
+                    <div class="engine-animation electric-engine">
+                        <div class="rotor"></div>
+                        <div class="battery-flow"></div>
+                        <div class="magnetic-field"></div>
+                    </div>
+                    <ul>
+                        <li>Usa energia elétrica</li>
+                        <li>Zero emissões locais</li>
+                        <li>Eficiência ~90-95%</li>
+                        <li>Poucas partes móveis</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="interactive-car">
+                <h3>Explore um Carro Elétrico Interativo</h3>
+                <div class="car-experience">
+                    <div class="car-container">
+                        <!-- Carro 3D com perspectiva -->
+                        <div class="car-3d">
+                            <div class="car-body-3d">
+                                <!-- Carroceria principal -->
+                                <div class="main-body"></div>
+                                <div class="windshield"></div>
+                                <div class="roof"></div>
+                                
+                                <!-- Rodas com animação -->
+                                <div class="wheel front-wheel">
+                                    <div class="rim"></div>
+                                    <div class="tire"></div>
+                                </div>
+                                <div class="wheel rear-wheel">
+                                    <div class="rim"></div>
+                                    <div class="tire"></div>
+                                </div>
+                                
+                                <!-- Componentes interativos com efeitos -->
+                                <div class="component-3d battery-3d" data-info="Bateria de íons de lítio de alta capacidade (75-100 kWh) que alimenta todo o sistema elétrico">
+                                    <div class="component-glow"></div>
+                                    <div class="component-icon">🔋</div>
+                                    <span class="component-label-3d">Bateria</span>
+                                    <div class="energy-flow"></div>
+                                </div>
+                                
+                                <div class="component-3d motor-3d" data-info="Motor elétrico síncrono que converte energia elétrica em movimento rotacional com 95% de eficiência">
+                                    <div class="component-glow"></div>
+                                    <div class="component-icon">⚙️</div>
+                                    <span class="component-label-3d">Motor</span>
+                                    <div class="rotation-indicator"></div>
+                                </div>
+                                
+                                <div class="component-3d inverter-3d" data-info="Inversor que converte corrente contínua da bateria em corrente alternada para o motor">
+                                    <div class="component-glow"></div>
+                                    <div class="component-icon">🔄</div>
+                                    <span class="component-label-3d">Inversor</span>
+                                    <div class="signal-waves"></div>
+                                </div>
+                                
+                                <div class="component-3d charger-3d" data-info="Sistema de carregamento rápido que permite recarregar até 80% em 30 minutos">
+                                    <div class="component-glow"></div>
+                                    <div class="component-icon">⚡</div>
+                                    <span class="component-label-3d">Carregador</span>
+                                    <div class="charging-indicator"></div>
+                                </div>
+                                
+                                <div class="component-3d controller-3d" data-info="Controlador eletrônico que gerencia toda a distribuição de energia e performance">
+                                    <div class="component-glow"></div>
+                                    <div class="component-icon">🧠</div>
+                                    <span class="component-label-3d">Controlador</span>
+                                    <div class="data-flow"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Efeitos visuais de energia -->
+                            <div class="energy-visualization">
+                                <div class="energy-particle"></div>
+                                <div class="energy-particle"></div>
+                                <div class="energy-particle"></div>
+                                <div class="energy-particle"></div>
+                                <div class="energy-particle"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Painel de informações avançado -->
+                        <div class="info-panel-advanced">
+                            <div class="panel-header">
+                                <h4>Informações do Componente</h4>
+                                <div class="status-indicator"></div>
+                            </div>
+                            <div class="panel-content">
+                                <div class="default-info">
+                                    <p>🚗 Passe o mouse sobre os componentes para explorar</p>
+                                    <div class="stats-preview">
+                                        <div class="stat">
+                                            <span class="stat-label">Eficiência</span>
+                                            <span class="stat-value">95%</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-label">Autonomia</span>
+                                            <span class="stat-value">450km</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-label">Potência</span>
+                                            <span class="stat-value">350hp</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Controles interativos -->
+                    <div class="car-controls">
+                        <button class="control-btn" data-action="start">
+                            <span class="btn-icon">🔋</span>
+                            Ligar Sistema
+                        </button>
+                        <button class="control-btn" data-action="charge">
+                            <span class="btn-icon">⚡</span>
+                            Simular Carregamento
+                        </button>
+                        <button class="control-btn" data-action="drive">
+                            <span class="btn-icon">🚗</span>
+                            Modo Condução
+                        </button>
+                        <button class="control-btn" data-action="reset">
+                            <span class="btn-icon">🔄</span>
+                            Resetar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparação -->
+        <section id="comparison" class="comparison">
+            <h2>Comparação: Combustão vs Elétrico</h2>
+            <div class="comparison-table">
+                <div class="comparison-header">
+                    <div class="aspect">Aspecto</div>
+                    <div class="combustion">Combustão</div>
+                    <div class="electric">Elétrico</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="aspect">Emissões</div>
+                    <div class="combustion">Alto CO₂</div>
+                    <div class="electric">Zero local</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="aspect">Eficiência</div>
+                    <div class="combustion">25-30%</div>
+                    <div class="electric">90-95%</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="aspect">Manutenção</div>
+                    <div class="combustion">Alta</div>
+                    <div class="electric">Baixa</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="aspect">Ruído</div>
+                    <div class="combustion">Alto</div>
+                    <div class="electric">Silencioso</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="aspect">Autonomia</div>
+                    <div class="combustion">500-800 km</div>
+                    <div class="electric">200-600 km</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Evolução Veicular - Educação sobre Carros Elétricos</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

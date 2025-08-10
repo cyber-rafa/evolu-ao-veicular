@@ -338,6 +338,7 @@ body {
 .three-overlay { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: 1rem; pointer-events: none; }
 .three-overlay .overlay-title { pointer-events: auto; background: rgba(0,0,0,.35); color: #fff; padding: .45rem .8rem; border: 1px solid rgba(255,255,255,.12); border-radius: 10px; font-weight: 700; letter-spacing: .3px; box-shadow: 0 10px 24px rgba(0,0,0,.25); }
 .three-overlay .overlay-actions { pointer-events: auto; display: flex; gap: .5rem; }
+.hud-hint { pointer-events: none; position: absolute; bottom: .75rem; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,.35); color: rgba(255,255,255,.9); padding: .35rem .7rem; border-radius: 999px; font-size: .85rem; display: none; }
 
 .three-loader { position: absolute; inset: 0; display: grid; place-items: center; gap: .8rem; background: radial-gradient(600px 400px at 50% 40%, rgba(0,0,0,.35), rgba(0,0,0,.15)); color: #fff; font-weight: 600; }
 .three-loader.hidden { animation: fadeOut .35s ease forwards; }
@@ -355,6 +356,21 @@ body {
   .three-overlay { align-items: stretch; flex-direction: column; gap: .75rem; }
   .three-overlay .overlay-actions { justify-content: flex-start; flex-wrap: wrap; }
   .control-btn { padding: .5rem .8rem; }
+  .hud-hint { display: block; }
+}
+
+/* Info panel text visibility for mobile/desktop */
+.desktop-text { display: block; }
+.mobile-text { display: none; }
+@media (max-width: 768px) {
+  .desktop-text { display: none; }
+  .mobile-text { display: block; }
+}
+
+/* Force immersive mobile: hide overlay action buttons */
+@media (max-width: 768px) {
+  .three-overlay .overlay-actions { display: none !important; }
+  .panel-content { position: fixed; right: 0.75rem; bottom: 0.75rem; top: auto; left: auto; width: min(85vw, 320px); opacity: .95; }
 }
 
 @media (max-width: 480px) {

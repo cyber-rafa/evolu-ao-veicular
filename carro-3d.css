@@ -312,6 +312,51 @@ body {
     }
 }
 
+/* --- Three.js elegant viewer overrides and styles --- */
+/* Container tweaks */
+.car-experience {
+    width: 92%;
+    max-width: 1280px;
+    height: 78vh;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(245,247,250,0.08) 0%, rgba(195,207,226,0.06) 100%);
+    border-radius: 22px;
+    box-shadow: 0 24px 70px rgba(0,0,0,.35);
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.immersive-title {
+    margin-bottom: .75rem;
+    font-size: 2.2rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,.45);
+}
+
+/* Three.js stage */
+.three-stage { position: relative; width: 100%; height: 100%; border-radius: 18px; overflow: hidden; background: radial-gradient(1200px 600px at 30% -10%, rgba(255,255,255,.06), transparent 60%), linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08)); }
+#three-root { position: absolute; inset: 0; }
+
+.three-overlay { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: 1rem; pointer-events: none; }
+.three-overlay .overlay-title { pointer-events: auto; background: rgba(0,0,0,.35); color: #fff; padding: .45rem .8rem; border: 1px solid rgba(255,255,255,.12); border-radius: 10px; font-weight: 700; letter-spacing: .3px; box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+.three-overlay .overlay-actions { pointer-events: auto; display: flex; gap: .5rem; }
+
+.three-loader { position: absolute; inset: 0; display: grid; place-items: center; gap: .8rem; background: radial-gradient(600px 400px at 50% 40%, rgba(0,0,0,.35), rgba(0,0,0,.15)); color: #fff; font-weight: 600; }
+.three-loader.hidden { animation: fadeOut .35s ease forwards; }
+.spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
+
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+
+/* Buttons for overlay */
+.control-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .55rem .85rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); color: #fff; background: rgba(255,255,255,.08); backdrop-filter: blur(8px); cursor: pointer; transition: transform .15s ease, background .2s ease, border-color .2s ease; }
+.control-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.28); }
+.control-btn.active { box-shadow: 0 0 0 2px rgba(79,140,255,.35) inset; background: rgba(79,140,255,.18); border-color: rgba(79,140,255,.5); }
+.btn-icon { filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
+
+@media (max-width: 768px) {
+  .three-overlay { align-items: stretch; flex-direction: column; gap: .75rem; }
+  .three-overlay .overlay-actions { justify-content: flex-start; flex-wrap: wrap; }
+  .control-btn { padding: .5rem .8rem; }
+}
+
 @media (max-width: 480px) {
     .top-bar {
         padding: 0.8rem 1rem;

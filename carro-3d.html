@@ -26,115 +26,45 @@
             <h1 class="immersive-title">Explore um Carro Elétrico Interativo</h1>
             <p class="immersive-subtitle">Interaja com os componentes para descobrir como funciona um veículo elétrico moderno</p>
             
-            <!-- Carro 3D Imersivo -->
+            <!-- Carro 3D Imersivo (Three.js Viewer) -->
             <div class="car-experience">
-                <div class="car-container">
-                    <!-- Carro 3D com perspectiva -->
-                    <div class="car-3d">
-                        <div class="car-body-3d">
-                            <!-- Carroceria principal -->
-                            <div class="main-body"></div>
-                            <div class="windshield"></div>
-                            <div class="roof"></div>
-                            
-                            <!-- Rodas com animação -->
-                            <div class="wheel front-wheel">
-                                <div class="rim"></div>
-                                <div class="tire"></div>
-                            </div>
-                            <div class="wheel rear-wheel">
-                                <div class="rim"></div>
-                                <div class="tire"></div>
-                            </div>
-                            
-                            <!-- Componentes interativos com efeitos -->
-                            <div class="component-3d battery-3d" data-info="Bateria de íons de lítio de alta capacidade (75-100 kWh) que alimenta todo o sistema elétrico">
-                                <div class="component-glow"></div>
-                                <div class="component-icon">🔋</div>
-                                <span class="component-label-3d">Bateria</span>
-                                <div class="energy-flow"></div>
-                            </div>
-                            
-                            <div class="component-3d motor-3d" data-info="Motor elétrico síncrono que converte energia elétrica em movimento rotacional com 95% de eficiência">
-                                <div class="component-glow"></div>
-                                <div class="component-icon">⚙️</div>
-                                <span class="component-label-3d">Motor</span>
-                                <div class="rotation-indicator"></div>
-                            </div>
-                            
-                            <div class="component-3d inverter-3d" data-info="Inversor que converte corrente contínua da bateria em corrente alternada para o motor">
-                                <div class="component-glow"></div>
-                                <div class="component-icon">🔄</div>
-                                <span class="component-label-3d">Inversor</span>
-                                <div class="signal-waves"></div>
-                            </div>
-                            
-                            <div class="component-3d charger-3d" data-info="Sistema de carregamento rápido que permite recarregar até 80% em 30 minutos">
-                                <div class="component-glow"></div>
-                                <div class="component-icon">⚡</div>
-                                <span class="component-label-3d">Carregador</span>
-                                <div class="charging-indicator"></div>
-                            </div>
-                            
-                            <div class="component-3d controller-3d" data-info="Controlador eletrônico que gerencia toda a distribuição de energia e performance">
-                                <div class="component-glow"></div>
-                                <div class="component-icon">🧠</div>
-                                <span class="component-label-3d">Controlador</span>
-                                <div class="data-flow"></div>
-                            </div>
+                <div class="three-stage">
+                    <div id="three-root"></div>
+                    <div class="three-overlay">
+                        <div class="overlay-title">Tesla 3D</div>
+                        <div class="overlay-actions">
+                            <button id="reset-view" class="control-btn"><span class="btn-icon">🎯</span> Resetar Visão</button>
+                            <button id="toggle-rotation" class="control-btn"><span class="btn-icon">🌀</span> Rotação</button>
+                            <button id="btn-start" class="control-btn"><span class="btn-icon">🔋</span> Ligar</button>
+                            <button id="btn-charge" class="control-btn"><span class="btn-icon">⚡</span> Carregar</button>
+                            <button id="btn-drive" class="control-btn"><span class="btn-icon">🚗</span> Condução</button>
+                            <button id="btn-reset" class="control-btn"><span class="btn-icon">🔄</span> Reset</button>
                         </div>
-                        
-                        <!-- Efeitos visuais de energia -->
-                        <div class="energy-visualization">
-                            <div class="energy-particle"></div>
-                            <div class="energy-particle"></div>
-                            <div class="energy-particle"></div>
-                            <div class="energy-particle"></div>
-                            <div class="energy-particle"></div>
+                    </div>
+                    <div class="three-loader" id="three-loader">
+                        <div class="spinner"></div>
+                        <div>Carregando modelo...</div>
                         </div>
                     </div>
                         <div class="panel-content">
                             <div class="default-info">
-                                <p class="desktop-text">🚗 Passe o mouse sobre os componentes para explorar</p>
-                                <p class="mobile-text">🚗 Toque nos componentes para explorar</p>
-                                <div class="mobile-instruction">Toque e segure para ver mais detalhes</div>
+                        <p class="desktop-text">🧭 Use o mouse para girar, rolar para aproximar</p>
+                        <p class="mobile-text">🧭 Use os dedos para girar e aproximar</p>
                                 <div class="stats-preview">
                                     <div class="stat">
-                                        <span class="stat-label">Eficiência</span>
-                                        <span class="stat-value">95%</span>
+                                <span class="stat-label">Modelo</span>
+                                <span class="stat-value">Tesla (GLB)</span>
                                     </div>
                                     <div class="stat">
-                                        <span class="stat-label">Autonomia</span>
-                                        <span class="stat-value">450km</span>
+                                <span class="stat-label">Iluminação</span>
+                                <span class="stat-value">HDRI Room</span>
                                     </div>
                                     <div class="stat">
-                                        <span class="stat-label">Potência</span>
-                                        <span class="stat-value">350hp</span>
-                                    </div>
-                                </div>
+                                <span class="stat-label">Qualidade</span>
+                                <span class="stat-value">Alta</span>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Controles interativos -->
-                <div class="car-controls">
-                    <button class="control-btn" data-action="start">
-                        <span class="btn-icon">🔋</span>
-                        Ligar Sistema
-                    </button>
-                    <button class="control-btn" data-action="charge">
-                        <span class="btn-icon">⚡</span>
-                        Simular Carregamento
-                    </button>
-                    <button class="control-btn" data-action="drive">
-                        <span class="btn-icon">🚗</span>
-                        Modo Condução
-                    </button>
-                    <button class="control-btn" data-action="reset">
-                        <span class="btn-icon">🔄</span>
-                        Resetar
-                    </button>
                 </div>
             </div>
         </div>
@@ -154,75 +84,299 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        // Script específico para a página imersiva
-        document.addEventListener('DOMContentLoaded', () => {
-            // Inicializar os componentes interativos
-            setupAdvancedInteractiveCar();
-            
-            // Adicionar efeito de rotação 3D ao mover o mouse/tocar na tela
-            const carBody = document.querySelector('.car-body-3d');
-            const container = document.querySelector('.immersive-content');
-            
-            if (carBody && container) {
-                // Para desktop
-                container.addEventListener('mousemove', (e) => {
-                    const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-                    const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-                    carBody.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-                });
-                
-                // Resetar ao sair
-                container.addEventListener('mouseleave', () => {
-                    carBody.style.transform = 'rotateY(0deg) rotateX(0deg)';
-                });
-                
-                // Para dispositivos móveis
-                container.addEventListener('touchmove', (e) => {
-                    // Removido e.preventDefault() para permitir rolagem
-                    const touch = e.touches[0];
-                    const xAxis = (window.innerWidth / 2 - touch.pageX) / 15;
-                    const yAxis = (window.innerHeight / 2 - touch.pageY) / 15;
-                    carBody.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-                });
-                
-                container.addEventListener('touchend', () => {
-                    carBody.style.transform = 'rotateY(0deg) rotateX(0deg)';
-                });
+    <!-- Import map para resolver módulos do Three.js no navegador -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+        import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+        const root = document.getElementById('three-root');
+        const loaderEl = document.getElementById('three-loader');
+        let renderer, scene, camera, controls, tesla, autoRotate = true;
+        let effectRing = null, headLightL = null, headLightR = null, wheelMeshes = [];
+        let timers = [];
+
+        init();
+        animate();
+
+        function init() {
+            scene = new THREE.Scene();
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(root.clientWidth, root.clientHeight);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            root.appendChild(renderer.domElement);
+
+            camera = new THREE.PerspectiveCamera(50, root.clientWidth / root.clientHeight, 0.1, 100);
+            camera.position.set(2.4, 1.2, 3.2);
+
+            const environment = new RoomEnvironment();
+            const pmrem = new THREE.PMREMGenerator(renderer);
+            scene.environment = pmrem.fromScene(environment, 0.04).texture;
+
+            // Luzes
+            const hemi = new THREE.HemisphereLight(0xffffff, 0x334155, 0.6);
+            scene.add(hemi);
+
+            const dir = new THREE.DirectionalLight(0xffffff, 1.0);
+            dir.position.set(3, 5, 4);
+            dir.castShadow = true;
+            dir.shadow.mapSize.set(2048, 2048);
+            scene.add(dir);
+
+            // Chão suave
+            const groundGeo = new THREE.PlaneGeometry(10, 10);
+            const groundMat = new THREE.ShadowMaterial({ opacity: 0.25 });
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.y = 0;
+            ground.receiveShadow = true;
+            scene.add(ground);
+
+            // Efeito de anel sob o carro (quando ligado)
+            const ringGeo = new THREE.RingGeometry(0.2, 1.8, 64);
+            const ringMat = new THREE.MeshBasicMaterial({ color: 0x2dd4bf, transparent: true, opacity: 0, side: THREE.DoubleSide });
+            effectRing = new THREE.Mesh(ringGeo, ringMat);
+            effectRing.rotation.x = -Math.PI / 2;
+            effectRing.position.y = 0.01;
+            scene.add(effectRing);
+
+            // Controles
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.target.set(0, 0.6, 0);
+            controls.autoRotate = autoRotate;
+            controls.autoRotateSpeed = 1.2;
+
+            // Resize
+            window.addEventListener('resize', onResize);
+
+            // UI
+            const resetBtn = document.getElementById('reset-view');
+            const rotBtn = document.getElementById('toggle-rotation');
+            resetBtn?.addEventListener('click', () => {
+                controls.reset();
+                camera.position.set(2.4, 1.2, 3.2);
+            });
+            rotBtn?.addEventListener('click', () => {
+                autoRotate = !autoRotate;
+                controls.autoRotate = autoRotate;
+                rotBtn.classList.toggle('active', autoRotate);
+            });
+
+            // Botões de experiência
+            document.getElementById('btn-start')?.addEventListener('click', startSystem);
+            document.getElementById('btn-charge')?.addEventListener('click', simulateCharging3D);
+            document.getElementById('btn-drive')?.addEventListener('click', simulateDriving3D);
+            document.getElementById('btn-reset')?.addEventListener('click', resetSystem);
+
+            // Construir Tesla estilizado
+            buildTesla();
+            const title = document.querySelector('.overlay-title');
+            if (title) title.textContent = 'Tesla 3D (Estilizado)';
+            loaderEl?.classList.add('hidden');
+        }
+
+        function buildTesla() {
+            tesla = new THREE.Group();
+            // Car paint material
+            const bodyMat = new THREE.MeshStandardMaterial({ color: 0xc81e1e, metalness: 0.6, roughness: 0.3, envMapIntensity: 1.0 });
+            const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x111111, roughness: 0.05, transmission: 0.0, transparent: true, opacity: 0.75, metalness: 0.0 });
+            const blackMat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.4, roughness: 0.6 });
+            const rimMat = new THREE.MeshStandardMaterial({ color: 0xb8c2cc, metalness: 1.0, roughness: 0.2 });
+
+            // Body
+            const body = new THREE.Mesh(new RoundedBoxGeometry(2.2, 0.6, 1.2, 8, 0.1), bodyMat);
+            body.position.y = 0.7;
+            body.castShadow = true; body.receiveShadow = true;
+            tesla.add(body);
+
+            // Roof
+            const roof = new THREE.Mesh(new RoundedBoxGeometry(1.6, 0.25, 1.15, 8, 0.08), bodyMat);
+            roof.position.set(0, 0.95, 0);
+            roof.castShadow = true; tesla.add(roof);
+
+            // Windshield
+            const windshield = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.42), glassMat);
+            windshield.position.set(0.35, 0.9, 0.59);
+            windshield.rotation.set(-0.1, 0, 0);
+            windshield.rotateY(Math.PI);
+            tesla.add(windshield);
+
+            // Side windows (left/right)
+            const sideWinGeo = new THREE.PlaneGeometry(0.75, 0.35);
+            const leftWin = new THREE.Mesh(sideWinGeo, glassMat); leftWin.position.set(-0.2, 0.9, 0.61); tesla.add(leftWin);
+            const rightWin = new THREE.Mesh(sideWinGeo, glassMat); rightWin.position.set(-0.2, 0.9, -0.61); rightWin.rotateY(Math.PI); tesla.add(rightWin);
+
+            // Wheels
+            function makeWheel(x, z) {
+                const wheel = new THREE.Group();
+                const tyre = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.24, 28), blackMat);
+                tyre.rotation.z = Math.PI / 2; tyre.castShadow = true; tyre.receiveShadow = true;
+                const rim = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.03, 12, 24), rimMat);
+                rim.rotation.y = Math.PI / 2; rim.position.x = 0.01;
+                wheel.add(tyre); wheel.add(rim);
+                wheel.position.set(x, 0.35, z);
+                tesla.add(wheel);
+                wheelMeshes.push(wheel);
             }
-            
-            // Detectar se é dispositivo móvel
-            const isMobile = window.innerWidth <= 768;
-            
-            // Ajustar interatividade para dispositivos móveis
-            if (isMobile) {
-                const components = document.querySelectorAll('.component-3d');
-                const infoPanel = document.querySelector('.panel-content');
-                
-                components.forEach(component => {
-                    // Remover eventos de mouse existentes
-                    const clone = component.cloneNode(true);
-                    component.parentNode.replaceChild(clone, component);
-                    
-                    // Adicionar eventos de toque
-                    clone.addEventListener('touchstart', (e) => {
-                        // Não prevenir o comportamento padrão completamente
-                        // para permitir rolagem, mas parar a propagação
-                        e.stopPropagation();
-                        
-                        // Remover classe ativa de todos os componentes
-                        components.forEach(c => c.classList.remove('active'));
-                        
-                        // Ativar o componente atual
-                        const componentClass = Array.from(clone.classList).find(cls => cls.endsWith('-3d'));
-                        if (componentClass && typeof showComponentInfo === 'function') {
-                            showComponentInfo(componentClass);
-                            clone.classList.add('active');
-                        }
-                    });
-                });
+            makeWheel(0.85, 0.55); // front-right
+            makeWheel(-0.85, 0.55); // rear-right
+            makeWheel(0.85, -0.55); // front-left
+            makeWheel(-0.85, -0.55); // rear-left
+
+            // Charge port indicator
+            const chargePort = new THREE.Mesh(new THREE.CircleGeometry(0.06, 16), new THREE.MeshBasicMaterial({ color: 0x00e5ff }));
+            chargePort.position.set(-1.05, 0.86, -0.62); tesla.add(chargePort);
+
+            // Headlights (off by default)
+            headLightL = new THREE.SpotLight(0x9be7ff, 0, 10, Math.PI/7, 0.6, 1);
+            headLightR = new THREE.SpotLight(0x9be7ff, 0, 10, Math.PI/7, 0.6, 1);
+            [headLightL, headLightR].forEach(l => { l.castShadow = false; tesla.add(l); tesla.add(l.target); });
+            headLightL.position.set(1.15, 0.65, 0.35); headLightL.target.position.set(3, 0.4, 0.35);
+            headLightR.position.set(1.15, 0.65, -0.35); headLightR.target.position.set(3, 0.4, -0.35);
+
+            // Position the car
+            tesla.position.y = 0;
+            scene.add(tesla);
+        }
+
+        // ---- Experiência: ligar, carregar, conduzir, resetar ----
+        function startSystem() {
+            // ring fade-in
+            if (effectRing) {
+                effectRing.material.opacity = 0.0;
+                let o = 0;
+                const t = setInterval(() => {
+                    o += 0.05; effectRing.material.opacity = Math.min(0.6, o);
+                    if (o >= 0.6) clearInterval(t);
+                }, 30); timers.push(t);
             }
-        });
+            // headlights on
+            if (headLightL && headLightR) { headLightL.intensity = 2.2; headLightR.intensity = 2.2; }
+            updatePanelStatus('🚗 Sistema Ligado', '#28a745', [
+                '✅ Iluminação ativa',
+                '✅ Sistemas prontos',
+                '✅ Pronto para condução'
+            ]);
+        }
+
+        function simulateCharging3D() {
+            updatePanelCharging();
+        }
+
+        function simulateDriving3D() {
+            // spin wheels and slight sway
+            const spinTime = 3000; const start = performance.now();
+            const t = setInterval(() => {
+                const now = performance.now();
+                const p = Math.min(1, (now - start) / spinTime);
+                const angle = p * Math.PI * 8;
+                if (wheelMeshes.length) wheelMeshes.forEach(w => w.rotation.x = angle);
+                if (tesla) tesla.rotation.y = Math.sin(angle/4) * 0.06;
+                if (p >= 1) clearInterval(t);
+            }, 16); timers.push(t);
+            updatePanelStatus('🚗 Modo Condução', '#dc3545', [
+                'Velocidade: 80 km/h',
+                'Potência: 200 kW',
+                'Consumo: 18 kWh/100km'
+            ]);
+        }
+
+        function resetSystem() {
+            // stop timers
+            timers.forEach(id => clearInterval(id)); timers = [];
+            // reset visuals
+            if (effectRing) effectRing.material.opacity = 0;
+            if (headLightL && headLightR) { headLightL.intensity = 0; headLightR.intensity = 0; }
+            if (tesla) tesla.rotation.set(0,0,0);
+            if (wheelMeshes.length) wheelMeshes.forEach(w => w.rotation.x = 0);
+            // panel
+            defaultPanel();
+        }
+
+        // ---- Painel ----
+        function panelEl() { return document.querySelector('.panel-content'); }
+        function defaultPanel() {
+            const el = panelEl(); if (!el) return;
+            el.innerHTML = `
+                <div class="default-info">
+                    <p class="desktop-text">🧭 Use o mouse para girar, rolar para aproximar</p>
+                    <p class="mobile-text">🧭 Use os dedos para girar e aproximar</p>
+                    <div class="stats-preview">
+                        <div class="stat"><span class="stat-label">Modelo</span><span class="stat-value">Tesla (GLB)</span></div>
+                        <div class="stat"><span class="stat-label">Iluminação</span><span class="stat-value">HDRI Room</span></div>
+                        <div class="stat"><span class="stat-label">Qualidade</span><span class="stat-value">Alta</span></div>
+                    </div>
+                </div>`;
+        }
+        function updatePanelStatus(title, color, items) {
+            const el = panelEl(); if (!el) return;
+            el.innerHTML = `
+                <div class="system-status">
+                    <h4 style="color:${color}; margin:0 0 .5rem">${title}</h4>
+                    <div class="startup-sequence">
+                        ${items.map(i => `<div class="sequence-item completed">${i}</div>`).join('')}
+                    </div>
+                </div>`;
+        }
+        function updatePanelCharging() {
+            const el = panelEl(); if (!el) return;
+            el.innerHTML = `
+                <div class="charging-status">
+                    <h4 style="color:#6f42c1; margin:0 0 .5rem">⚡ Carregamento em Progresso</h4>
+                    <div class="charging-progress">
+                        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                        <div class="charging-stats">
+                            <div class="stat"><span>Nível da Bateria:</span><span class="battery-level" style="color:#6f42c1">0%</span></div>
+                            <div class="stat"><span>Potência:</span><span style="color:#6f42c1">150 kW</span></div>
+                            <div class="stat"><span>Tempo Restante:</span><span class="time-remaining" style="color:#6f42c1">30 min</span></div>
+                        </div>
+                    </div>
+                </div>`;
+            let progress = 0;
+            const fill = el.querySelector('.progress-fill');
+            const lvl = el.querySelector('.battery-level');
+            const time = el.querySelector('.time-remaining');
+            const t = setInterval(() => {
+                progress += 1;
+                if (fill) fill.style.width = `${progress}%`;
+                if (lvl) lvl.textContent = `${progress}%`;
+                if (time) time.textContent = `${Math.max(0, 30 - Math.floor(progress/3))} min`;
+                if (progress >= 100) {
+                    clearInterval(t);
+                    updatePanelStatus('✅ Carregamento Completo', '#28a745', ['Autonomia: 450 km']);
+                }
+            }, 100); timers.push(t);
+        }
+
+        function onResize() {
+            const w = root.clientWidth;
+            const h = root.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls?.update();
+            renderer?.render(scene, camera);
+        }
     </script>
 </body>
 </html>

@@ -464,22 +464,20 @@ function setupEnhancedHero() {
     const timelinePoints = document.querySelectorAll('.point');
     const progressFill = document.querySelector('.progress-fill');
     const heroVisual = document.querySelector('.hero-visual');
+    const hasHero = !!document.querySelector('.hero');
     
     // Interatividade dos pontos da timeline
-    timelinePoints.forEach(point => {
-        point.addEventListener('click', () => {
-            const year = point.getAttribute('data-year');
-            animateToYear(year);
-            
-            // Remover classe ativa de outros pontos
-            timelinePoints.forEach(p => p.classList.remove('active', 'highlight'));
-            point.classList.add('active');
-            
-            if (year === '2024') {
-                point.classList.add('highlight');
-            }
+    if (timelinePoints.length) {
+        timelinePoints.forEach(point => {
+            point.addEventListener('click', () => {
+                const year = point.getAttribute('data-year');
+                animateToYear(year);
+                timelinePoints.forEach(p => p.classList.remove('active', 'highlight'));
+                point.classList.add('active');
+                if (year === '2024') point.classList.add('highlight');
+            });
         });
-    });
+    }
     
     function animateToYear(year) {
         const carStages = document.querySelectorAll('.car-stage');
@@ -508,29 +506,31 @@ function setupEnhancedHero() {
     }
     
     // Auto-play da timeline
-    let currentPointIndex = 0;
-    setInterval(() => {
-        if (timelinePoints.length > 0) {
-            timelinePoints[currentPointIndex].click();
-            currentPointIndex = (currentPointIndex + 1) % timelinePoints.length;
-        }
-    }, 4000);
+    if (timelinePoints.length) {
+        let currentPointIndex = 0;
+        setInterval(() => {
+            if (timelinePoints.length > 0) {
+                timelinePoints[currentPointIndex].click();
+                currentPointIndex = (currentPointIndex + 1) % timelinePoints.length;
+            }
+        }, 4000);
+    }
     
     // Parallax effect para o hero
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const rate = scrolled * -0.5;
-        
-        if (heroVisual) {
-            heroVisual.style.transform = `translateY(${rate}px)`;
-        }
-        
-        // Fade out do hero conforme o scroll
-        const hero = document.querySelector('.hero');
-        const heroHeight = hero.offsetHeight;
-        const opacity = Math.max(0, 1 - (scrolled / heroHeight));
-        hero.style.opacity = opacity;
-    });
+    if (hasHero) {
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            if (heroVisual) {
+                heroVisual.style.transform = `translateY(${rate}px)`;
+            }
+            const hero = document.querySelector('.hero');
+            if (!hero) return;
+            const heroHeight = hero.offsetHeight || 1;
+            const opacity = Math.max(0, 1 - (scrolled / heroHeight));
+            hero.style.opacity = opacity;
+        });
+    }
 }
 
 // Animação de entrada dos elementos
@@ -629,12 +629,11 @@ function setupResponsiveHero() {
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenu = document.getElementById('mobile-menu');
     const navLinks = document.querySelector('.nav-links');
-    
+    if (!mobileMenu || !navLinks) return;
     mobileMenu.addEventListener('click', function() {
         navLinks.classList.toggle('active');
-        
-        // Alternar ícone do menu
         const icon = mobileMenu.querySelector('i');
+        if (!icon) return;
         if (icon.classList.contains('fa-bars')) {
             icon.classList.remove('fa-bars');
             icon.classList.add('fa-times');
@@ -643,13 +642,12 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.classList.add('fa-bars');
         }
     });
-    
-    // Fechar menu ao clicar em um link
     const navItems = document.querySelectorAll('.nav-links a');
     navItems.forEach(item => {
         item.addEventListener('click', function() {
             navLinks.classList.remove('active');
             const icon = mobileMenu.querySelector('i');
+            if (!icon) return;
             icon.classList.remove('fa-times');
             icon.classList.add('fa-bars');
         });
@@ -683,14 +681,22 @@ function setupInteractiveCarButton() {
 
 // Atualizar a inicialização
 document.addEventListener('DOMContentLoaded', () => {
-    animateTimeline();
-    setupAdvancedInteractiveCar();
-    addAdvancedCarStyles();
-    setupEnhancedHero();
-    setupHeroAnimations();
-    setupCarHoverEffects();
-    setupResponsiveHero();
-    // Remover a chamada setupInteractiveCarButton();
+    const hasHero = !!document.querySelector('.hero');
+    const hasThree = !!document.querySelector('.three-stage');
+
+    // Página inicial
+    if (hasHero) {
+        animateTimeline();
+        setupEnhancedHero();
+        setupHeroAnimations();
+        setupCarHoverEffects();
+        setupResponsiveHero();
+    }
+
+    // Experiência imersiva (pode reutilizar estilos avançados do painel)
+    if (hasThree) {
+        addAdvancedCarStyles();
+    }
 });
 
 // Detectar dispositivos móveis e ajustar a experiência

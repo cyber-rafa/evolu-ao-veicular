@@ -1,21 +1,4 @@
-/*
-  Base global styles and components for Evolução Veicular
-  - Reset and variables
-  - Typography and layout
-  - Header/Nav
-  - Hero (background, particles, orbs, content, evolution showcase)
-  - Progress indicators
-  - Timeline
-  - How it works
-  - Comparison table
-  - Buttons
-  - Utilities and animations
-  - Responsive adjustments
-*/
-
-/* ------------------------------
-   Reset and variables
------------------------------- */
+/* Reset and variables */
 :root {
   --color-bg: #0b1020;
   --color-surface: #101833;
@@ -61,9 +44,7 @@ a:hover { color: var(--color-primary-600); }
 
 .container { width: min(100% - 2rem, var(--container-max)); margin-inline: auto; }
 
-/* ------------------------------
-   Header and Navigation
------------------------------- */
+/* Header and Navigation */
 header { position: sticky; top: 0; z-index: 50; background: rgba(6, 10, 25, .65); backdrop-filter: blur(10px); border-bottom: var(--line); }
 nav { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-2); padding: var(--spacing-2) 1.25rem; }
 .logo h1 { font-size: 1.25rem; margin: 0; letter-spacing: .3px; }
@@ -71,7 +52,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .nav-links a { color: var(--color-text); padding: .5rem .9rem; border-radius: var(--radius-round); transition: background .2s ease, color .2s ease; }
 .nav-links a:hover { background: rgba(255,255,255,.07); color: #fff; }
 
-/* Mobile injected toggle (created via JS on mobile) */
+/* Mobile injected toggle */
 .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; color: var(--color-text); padding: .25rem .6rem; border-radius: var(--radius-round); }
 .menu-toggle:hover { background: rgba(255,255,255,.08); }
 
@@ -81,9 +62,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
   .nav-links.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
 }
 
-/* ------------------------------
-   Hero section
------------------------------- */
+/* Hero section */
 .hero { position: relative; min-height: 100vh; display: grid; align-items: center; padding: var(--spacing-5) 0 var(--spacing-5); overflow: hidden; }
 .hero-container { width: min(100% - 2rem, var(--container-max)); margin-inline: auto; display: grid; grid-template-columns: 1.05fr .95fr; gap: var(--spacing-5); position: relative; z-index: 1; }
 
@@ -128,7 +107,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .stage-label { position: absolute; left: 1rem; top: .75rem; font-weight: 800; color: var(--color-text); }
 .stage-stats { position: absolute; right: 1rem; top: .75rem; display: grid; gap: .25rem; text-align: right; color: var(--color-text-muted); font-size: .9rem; }
 
-/* Old combustion car (simplified) */
+/* Old combustion car */
 .car-container-old { position: relative; height: 220px; display: grid; place-items: center; }
 .old-car-body { position: relative; width: 88%; height: 120px; }
 .car-main { position: absolute; inset: auto 0 30px 0; margin: 0 auto; width: 70%; height: 60px; background: linear-gradient(180deg, #6b7280, #4b5563); border-radius: 14px; box-shadow: inset 0 0 0 2px rgba(0,0,0,.2); }
@@ -140,7 +119,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .smoke-particle:nth-child(2) { animation-delay: .3s; left: 12px; }
 .smoke-particle:nth-child(3) { animation-delay: .6s; left: 24px; }
 
-/* Electric car (simplified) */
+/* Electric car */
 .car-container-electric { position: relative; height: 220px; display: grid; place-items: center; }
 .electric-car-body { position: relative; width: 88%; height: 120px; }
 .car-main-electric { position: absolute; inset: auto 0 30px 0; margin: 0 auto; width: 70%; height: 60px; background: linear-gradient(180deg, #2955d9, #1e40af); border-radius: 16px; box-shadow: inset 0 0 0 2px rgba(0,0,0,.2); }
@@ -179,9 +158,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .scroll-text { font-size: .9rem; color: var(--color-text-muted); }
 .scroll-arrow .arrow-down { width: 10px; height: 10px; border-right: 2px solid var(--color-text-muted); border-bottom: 2px solid var(--color-text-muted); transform: rotate(45deg); animation: bounce 1.6s ease-in-out infinite; }
 
-/* ------------------------------
-   Timeline section
------------------------------- */
+/* Timeline section */
 .timeline-section { padding: var(--spacing-5) 0; }
 .timeline-section h2 { text-align: center; margin: 0 0 var(--spacing-4); font-size: clamp(1.5rem, 2.6vw + .6rem, 2.2rem); }
 .timeline { position: relative; width: min(100% - 2rem, var(--container-max)); margin-inline: auto; display: grid; gap: var(--spacing-3); }
@@ -219,9 +196,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .electric-car-charging { width: 120px; height: 36px; border-radius: 9px; background: linear-gradient(90deg, #2563eb, #1e40af); position: relative; box-shadow: inset 0 0 0 2px rgba(0,0,0,.2); }
 .electric-car-charging::after { content: ''; position: absolute; left: 8px; top: 50%; width: 0; height: 0; border-left: 8px solid #0ea5e9; border-top: 4px solid transparent; border-bottom: 4px solid transparent; transform: translateY(-50%); animation: plugPulse 1.2s ease-in-out infinite; }
 
-/* ------------------------------
-   How it works section
------------------------------- */
+/* How it works section */
 .how-it-works { padding: var(--spacing-5) 0; }
 .how-it-works h2 { text-align: center; margin: 0 0 var(--spacing-4); font-size: clamp(1.5rem, 2.4vw + .6rem, 2.1rem); }
 .comparison-grid { width: min(100% - 2rem, var(--container-max)); margin-inline: auto; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1.25rem; }
@@ -241,9 +216,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 
 .engine-type ul { margin: 0; padding-left: 1.1rem; color: var(--color-text-muted); display: grid; gap: .25rem; }
 
-/* ------------------------------
-   Comparison table
------------------------------- */
+/* Comparison table */
 .comparison { padding: var(--spacing-5) 0; }
 .comparison h2 { text-align: center; margin: 0 0 var(--spacing-4); }
 .comparison-table { width: min(100% - 2rem, var(--container-max)); margin-inline: auto; background: rgba(255,255,255,.06); border: var(--line); border-radius: var(--radius-2); overflow: hidden; box-shadow: var(--shadow-1); }
@@ -255,9 +228,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .combustion { color: #fca5a5; }
 .electric { color: #86efac; }
 
-/* ------------------------------
-   Buttons
------------------------------- */
+/* Buttons */
 .cta-button { position: relative; display: inline-flex; align-items: center; gap: .6rem; padding: .75rem 1.1rem; border: 1px solid transparent; border-radius: var(--radius-round); font-weight: 700; letter-spacing: .2px; cursor: pointer; transition: transform .15s ease, filter .2s ease, background .2s ease; }
 .cta-button .btn-icon { filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
 .cta-button.primary { background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); color: #fff; box-shadow: 0 10px 22px rgba(79,140,255,.25); }
@@ -273,14 +244,10 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
   #show-interactive-car { width: 100%; font-size: 1.15rem; padding: 1.1rem 1.6rem; }
 }
 
-/* ------------------------------
-   Footer
------------------------------- */
+/* Footer */
 footer { border-top: var(--line); padding: 1.25rem; text-align: center; color: var(--color-text-muted); background: rgba(6,10,25,.35); }
 
-/* ------------------------------
-   Utilities & shared animations
------------------------------- */
+/* Utilities & shared animations */
 .fade-in { animation: fadeIn .6s ease both; }
 .animate-in { opacity: 1 !important; transform: translateY(0) !important; }
 /* Default hidden state for hero elements observed by JS */
@@ -304,9 +271,7 @@ footer { border-top: var(--line); padding: 1.25rem; text-align: center; color: v
 @keyframes upDown { 0%, 100% { transform: translateY(8px); } 50% { transform: translateY(-8px); } }
 @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 
-/* ------------------------------
-   Responsive adjustments
------------------------------- */
+/* Responsive adjustments */
 @media (max-width: 1024px) {
   .hero-container { grid-template-columns: 1fr; gap: var(--spacing-4); }
   .evolution-showcase { gap: .9rem; }

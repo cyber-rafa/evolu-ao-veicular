@@ -1,10 +1,8 @@
-// Função para scroll suave
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     section.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Animação da timeline ao fazer scroll
 function animateTimeline() {
     const timelineItems = document.querySelectorAll('.timeline-item');
     
@@ -31,7 +29,6 @@ function setupAdvancedInteractiveCar() {
     const carBody = document.querySelector('.car-body-3d');
     const energyParticles = document.querySelectorAll('.energy-particle');
     
-    // Informações detalhadas dos componentes
     const componentInfo = {
         'battery-3d': {
             title: '🔋 Bateria de Íons de Lítio',
@@ -90,7 +87,6 @@ function setupAdvancedInteractiveCar() {
         }
     };
     
-    // Função para mostrar informações do componente
     function showComponentInfo(componentClass) {
         const info = componentInfo[componentClass];
         if (!info) return;
@@ -118,7 +114,6 @@ function setupAdvancedInteractiveCar() {
             </div>
         `;
         
-        // Animar a barra de status
         setTimeout(() => {
             const statusFill = infoPanel.querySelector('.status-fill');
             if (statusFill) {
@@ -127,14 +122,12 @@ function setupAdvancedInteractiveCar() {
         }, 100);
     }
     
-    // Eventos dos componentes
     components.forEach(component => {
         component.addEventListener('mouseenter', () => {
             const componentClass = Array.from(component.classList).find(cls => cls.endsWith('-3d'));
             showComponentInfo(componentClass);
             component.classList.add('active');
             
-            // Ativar partículas de energia
             energyParticles.forEach(particle => {
                 particle.style.animationPlayState = 'running';
             });
@@ -145,7 +138,6 @@ function setupAdvancedInteractiveCar() {
         });
         
         component.addEventListener('click', () => {
-            // Efeito de clique
             component.style.transform = 'translateZ(40px) scale(1.3)';
             setTimeout(() => {
                 component.style.transform = '';
@@ -153,7 +145,6 @@ function setupAdvancedInteractiveCar() {
         });
     });
     
-    // Controles do carro
     controlButtons.forEach(button => {
         button.addEventListener('click', () => {
             const action = button.getAttribute('data-action');
@@ -181,7 +172,6 @@ function setupAdvancedInteractiveCar() {
     function startCarSystem() {
         carBody.style.animation = 'carStartup 2s ease-in-out';
         
-        // Ativar componentes sequencialmente
         const componentOrder = ['.controller-3d', '.battery-3d', '.inverter-3d', '.motor-3d'];
         componentOrder.forEach((selector, index) => {
             setTimeout(() => {
@@ -191,7 +181,6 @@ function setupAdvancedInteractiveCar() {
             }, index * 500);
         });
         
-        // Mostrar status no painel
         setTimeout(() => {
             infoPanel.innerHTML = `
                 <div class="system-status">
@@ -212,10 +201,8 @@ function setupAdvancedInteractiveCar() {
         const charger = document.querySelector('.charger-3d');
         charger.classList.add('active');
         
-        // Resetar progresso para garantir que comece do zero
         let progress = 0;
         
-        // Criar elemento de progresso fora do intervalo para evitar recriação
         infoPanel.innerHTML = `
             <div class="charging-status">
                 <h4 style="color: #6f42c1;">⚡ Carregamento em Progresso</h4>
@@ -241,16 +228,13 @@ function setupAdvancedInteractiveCar() {
             </div>
         `;
         
-        // Obter referências aos elementos que serão atualizados
         const progressFill = infoPanel.querySelector('.progress-fill');
         const batteryLevel = infoPanel.querySelector('.battery-level');
         const timeRemaining = infoPanel.querySelector('.time-remaining');
         
-        // Usar requestAnimationFrame para animação mais suave
         const chargingInterval = setInterval(() => {
             progress += 1;
             
-            // Atualizar apenas os elementos necessários em vez de recriar todo o HTML
             if (progressFill) progressFill.style.width = `${progress}%`;
             if (batteryLevel) batteryLevel.textContent = `${progress}%`;
             if (timeRemaining) timeRemaining.textContent = `${Math.max(0, 30 - Math.floor(progress/3))} min`;
@@ -315,19 +299,16 @@ function setupAdvancedInteractiveCar() {
     }
     
     function resetCarSystem() {
-        // Remover todas as classes ativas
         components.forEach(component => {
             component.classList.remove('active');
         });
         
-        // Resetar animações
         carBody.style.animation = '';
         const wheels = document.querySelectorAll('.rim');
         wheels.forEach(wheel => {
             wheel.style.animationDuration = '2s';
         });
         
-        // Resetar painel
         infoPanel.innerHTML = `
             <div class="default-info">
                 <p>🚗 Sistema resetado. Passe o mouse sobre os componentes para explorar</p>

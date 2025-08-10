@@ -1,327 +1,419 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Carro Elétrico 3D Imersivo | Evolução Veicular</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="carro-3d.css"> <!-- Novo arquivo CSS específico -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carro Elétrico 3D - Evolução Veicular</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="carro-3d.css">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="Carro elétrico 3D simples e leve com Three.js, compatível com PC e dispositivos móveis.">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
 </head>
 <body>
-    <div class="immersive-container">
-        <!-- Barra superior com logo e botão de voltar -->
-        <div class="top-bar">
-            <div class="logo">
-                <h1>🚗 Evolução Veicular</h1>
-            </div>
-            <button class="back-button" onclick="window.location.href='index.html'">
-                <i class="fas fa-arrow-left"></i> Voltar
-            </button>
-        </div>
-        
-        <!-- Conteúdo principal -->
-        <div class="immersive-content">
-            <h1 class="immersive-title">Explore um Carro Elétrico Interativo</h1>
-            <p class="immersive-subtitle">Interaja com os componentes para descobrir como funciona um veículo elétrico moderno</p>
-            
-            <!-- Carro 3D Imersivo (Three.js Viewer) -->
-            <div class="car-experience">
-                <div class="three-stage">
-                    <div id="three-root"></div>
-                    <div class="three-overlay">
-                        <div class="overlay-title">Tesla 3D</div>
-                        <div class="overlay-actions">
-                            <button id="reset-view" class="control-btn"><span class="btn-icon">🎯</span> Resetar Visão</button>
-                            <button id="toggle-rotation" class="control-btn"><span class="btn-icon">🌀</span> Rotação</button>
-                        </div>
-                        <div class="hud-hint">Toque e arraste para girar. Toque para pausar/retomar.</div>
-                    </div>
-                    <div class="three-loader" id="three-loader">
-                        <div class="spinner"></div>
-                        <div>Carregando modelo...</div>
-                        </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Partículas de fundo -->
-        <div class="background-particles">
-            <div class="particle" style="width: 10px; height: 10px; left: 10%; animation-delay: 0s;"></div>
-            <div class="particle" style="width: 15px; height: 15px; left: 20%; animation-delay: 2s;"></div>
-            <div class="particle" style="width: 8px; height: 8px; left: 30%; animation-delay: 4s;"></div>
-            <div class="particle" style="width: 12px; height: 12px; left: 40%; animation-delay: 6s;"></div>
-            <div class="particle" style="width: 7px; height: 7px; left: 50%; animation-delay: 8s;"></div>
-            <div class="particle" style="width: 14px; height: 14px; left: 60%; animation-delay: 10s;"></div>
-            <div class="particle" style="width: 9px; height: 9px; left: 70%; animation-delay: 12s;"></div>
-            <div class="particle" style="width: 11px; height: 11px; left: 80%; animation-delay: 14s;"></div>
-            <div class="particle" style="width: 6px; height: 6px; left: 90%; animation-delay: 16s;"></div>
-        </div>
-    </div>
+  <div class="topbar">
+    <a href="index.html#how-it-works">⬅ Voltar</a>
+    <div style="color:#b7c0d1;font-weight:600;">Carro Elétrico 3D (PC e Mobile)</div>
+  </div>
 
-    <script src="script.js"></script>
-    <!-- Import map para resolver módulos do Three.js no navegador -->
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+  <div class="stage" id="stage"></div>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <div class="panels" id="panels">
+    <section class="panel" data-step="intro">
+      <div class="inner">
+        <h2>Carro elétrico 3D</h2>
+        <p>Role para explorar. Veja bateria, motor/rodas e porta de carregamento em destaque.</p>
+      </div>
+    </section>
+    <section class="panel" data-step="battery">
+      <div class="inner">
+        <h2>Bateria</h2>
+        <p>Pacote sob o assoalho com eficiência e baixo centro de gravidade.</p>
+      </div>
+    </section>
+    <section class="panel" data-step="motor">
+      <div class="inner">
+        <h2>Motor e rodas</h2>
+        <p>Tração elétrica instantânea. Rodas giram ao entrar nesta seção.</p>
+      </div>
+    </section>
+    <section class="panel" data-step="port">
+      <div class="inner">
+        <h2>Porta de carregamento</h2>
+        <p>Suporte a carregamento rápido DC.</p>
+      </div>
+    </section>
+    <section class="panel" data-step="outro">
+      <div class="inner">
+        <h2>Visão geral</h2>
+        <p>Gire o telefone ou use o mouse para observar enquanto conclui a rolagem.</p>
+      </div>
+    </section>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || innerWidth < 768;
+    const container = document.getElementById('stage');
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      antialias: !isMobile, alpha: true, powerPreference: 'high-performance'
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    // Scene & Camera
+    const scene = new THREE.Scene();
+    scene.background = null;
+
+    const camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(4.2, 2.2, 4.8);
+
+    // Lights
+    scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+    const dir = new THREE.DirectionalLight(0xffffff, 1.0);
+    dir.position.set(4, 6, 3);
+    dir.castShadow = false;
+    scene.add(dir);
+
+    // Ground
+    const grid = new THREE.GridHelper(30, 30, 0x3b82f6, 0x1f2937);
+    grid.material.opacity = 0.25;
+    grid.material.transparent = true;
+    scene.add(grid);
+
+    // Car group
+    const car = new THREE.Group();
+    scene.add(car);
+
+    // Materials
+    const blue = new THREE.MeshStandardMaterial({ color: 0x1e40af, roughness: 0.6, metalness: 0.2 });
+    const blackRubber = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9, metalness: 0.0 });
+    const silver = new THREE.MeshStandardMaterial({ color: 0xbfc7d5, roughness: 0.3, metalness: 0.7 });
+    const glass = new THREE.MeshPhysicalMaterial({ color: 0x9dd6ff, roughness: 0.05, metalness: 0, transparent: true, opacity: 0.45, transmission: 0.6, thickness: 0.2 });
+    const headlightMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xc8ecff, emissiveIntensity: 1.4, roughness: 0.3 });
+    const taillightMat = new THREE.MeshStandardMaterial({ color: 0xff3b30, emissive: 0xff2a1f, emissiveIntensity: 1.6, roughness: 0.4 });
+    const electricMat = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, emissive: 0x20d3ff, emissiveIntensity: 0.8, roughness: 0.5 });
+
+    // Body (chassi)
+    const body = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.6, 1.2), blue);
+    body.position.y = 0.5;
+    body.castShadow = false;
+    car.add(body);
+
+    // Cabin
+    const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.5, 1.05), glass);
+    cabin.position.set(-0.1, 0.95, 0);
+    car.add(cabin);
+
+    // Small roof spoiler
+    const roof = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.06, 0.9), blue);
+    roof.position.set(-0.1, 1.2, 0);
+    car.add(roof);
+
+    // Wheels
+    const wheelGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.22, isMobile ? 16 : 24);
+    wheelGeo.rotateZ(Math.PI / 2);
+
+    function makeWheel() {
+      const g = new THREE.Group();
+      const tire = new THREE.Mesh(wheelGeo, blackRubber);
+      g.add(tire);
+      const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.24, 12), silver);
+      rim.rotation.z = Math.PI / 2;
+      g.add(rim);
+      return g;
+    }
+
+    const wheelFL = makeWheel(); wheelFL.position.set(0.95, 0.35, 0.55);
+    const wheelFR = makeWheel(); wheelFR.position.set(0.95, 0.35, -0.55);
+    const wheelRL = makeWheel(); wheelRL.position.set(-0.95, 0.35, 0.55);
+    const wheelRR = makeWheel(); wheelRR.position.set(-0.95, 0.35, -0.55);
+    car.add(wheelFL, wheelFR, wheelRL, wheelRR);
+
+    // Headlights & taillights
+    const headL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.22), headlightMat);
+    const headR = headL.clone();
+    headL.position.set(1.35, 0.6, 0.35);
+    headR.position.set(1.35, 0.6, -0.35);
+    car.add(headL, headR);
+
+    const tailL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.22), taillightMat);
+    const tailR = tailL.clone();
+    tailL.position.set(-1.35, 0.6, 0.35);
+    tailR.position.set(-1.35, 0.6, -0.35);
+    car.add(tailL, tailR);
+
+    // Charging port (visual azul)
+    const port = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.04, 16), electricMat);
+    port.rotation.x = Math.PI / 2;
+    port.position.set(0.4, 0.65, -0.62);
+    car.add(port);
+
+    // Battery block underfloor
+    const battery = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.12, 0.8), new THREE.MeshStandardMaterial({
+      color: 0x22c55e, emissive: 0x14e36c, emissiveIntensity: 0.35, roughness: 0.7
+    }));
+    battery.position.set(0, 0.32, 0);
+    car.add(battery);
+
+    // Section-specific 3D objects (initially hidden)
+    const batteryFX = new THREE.Group();
+    {
+      // Glowing torus around battery area
+      const ringMat = new THREE.MeshStandardMaterial({ color: 0x22c55e, emissive: 0x16ff8b, emissiveIntensity: 0.6, roughness: 0.6, metalness: 0.1 });
+      const torus = new THREE.Mesh(new THREE.TorusGeometry(0.95, 0.03, 12, 64), ringMat);
+      torus.rotation.x = Math.PI / 2;
+      torus.position.set(0, 0.34, 0);
+      batteryFX.add(torus);
+      // Small pulsing sphere
+      const pulse = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), new THREE.MeshStandardMaterial({ color: 0x22c55e, emissive: 0x16ff8b, emissiveIntensity: 1.2 }));
+      pulse.position.set(0.6, 0.5, 0);
+      batteryFX.add(pulse);
+    }
+    batteryFX.visible = false;
+    car.add(batteryFX);
+
+    const motorFX = new THREE.Group();
+    {
+      const haloMat = new THREE.MeshStandardMaterial({ color: 0x60a5fa, emissive: 0x60a5fa, emissiveIntensity: 0.9, transparent: true });
+      haloMat.depthTest = false;
+      const haloFL = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.03, 12, 64), haloMat);
+      haloFL.position.copy(new THREE.Vector3(0.95, 0.35, 0.55));
+      haloFL.rotation.set(Math.PI / 2, 0, 0);
+      const haloFR = haloFL.clone();
+      haloFR.position.set(0.95, 0.35, -0.55);
+      motorFX.add(haloFL, haloFR);
+
+      // Simple torque arrow near FL wheel
+      const arrowMat = new THREE.MeshStandardMaterial({ color: 0x93c5fd, emissive: 0x3b82f6, emissiveIntensity: 1.2, transparent: true });
+      arrowMat.depthTest = false;
+      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 12), arrowMat);
+      shaft.position.set(0.95, 0.7, 0.55);
+      const tip = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.16, 12), arrowMat);
+      tip.position.set(0.95, 0.98, 0.55);
+      motorFX.add(shaft, tip);
+    }
+    motorFX.visible = false;
+    car.add(motorFX);
+
+    const portFX = new THREE.Group();
+    {
+      // Simple charging post
+      const post = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.7, 0.18), new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.9 }));
+      post.position.set(1.2, 0.35, -1.2);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.1, 0.14), new THREE.MeshStandardMaterial({ color: 0x0ea5e9, emissive: 0x22d3ee, emissiveIntensity: 0.8 }));
+      screen.position.set(1.2, 0.55, -1.11);
+      screen.rotation.y = Math.PI; // face the car
+      portFX.add(post, screen);
+      // Cable from post to port
+      const start = new THREE.Vector3(1.15, 0.5, -1.1);
+      const end = new THREE.Vector3(0.4, 0.65, -0.62);
+      const mid = start.clone().lerp(end, 0.5).add(new THREE.Vector3(0, 0.1, 0));
+      const curve = new THREE.CatmullRomCurve3([start, mid, end]);
+      const tube = new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 60, 0.02, 8, false),
+        new THREE.MeshStandardMaterial({ color: 0x6b7280, roughness: 0.9, metalness: 0.1 })
+      );
+      portFX.add(tube);
+      // Connector glow at the port
+      const plugMat = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, emissive: 0x22d3ee, emissiveIntensity: 1.4, transparent: true });
+      plugMat.depthTest = false;
+      const plug = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 12), plugMat);
+      plug.position.copy(end);
+      portFX.add(plug);
+    }
+    portFX.visible = false;
+    car.add(portFX);
+
+    // Immersive motor + wheel detail (exploded view near FL)
+    const motorDetail = new THREE.Group();
+    motorDetail.position.copy(wheelFL.position);
+    car.add(motorDetail);
+
+    // Detail: wheel parts
+    const detailTire = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.18, 28), blackRubber.clone());
+    detailTire.rotation.z = Math.PI / 2;
+    const detailRim = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.2, 16), silver.clone());
+    detailRim.rotation.z = Math.PI / 2;
+    const brakeDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.02, 24), new THREE.MeshStandardMaterial({ color: 0xbdbdbd, roughness: 0.5, metalness: 0.8 }));
+    brakeDisc.rotation.z = Math.PI / 2;
+    const caliper = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.14), new THREE.MeshStandardMaterial({ color: 0xff4d6d, emissive: 0xff3b5c, emissiveIntensity: 0.6 }));
+    caliper.position.set(0, 0.0, 0.2);
+
+    // Detail: motor (stator + rotor) and shaft
+    const statorMat = new THREE.MeshStandardMaterial({ color: 0x2563eb, emissive: 0x3b82f6, emissiveIntensity: 0.7, metalness: 0.3, roughness: 0.4 });
+    const rotorMat = new THREE.MeshStandardMaterial({ color: 0x93c5fd, emissive: 0x93c5fd, emissiveIntensity: 0.9, metalness: 0.1, roughness: 0.2 });
+    const stator = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.22, 32, 1, true), statorMat);
+    stator.rotation.z = Math.PI / 2;
+    const rotor = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.22, 24), rotorMat);
+    rotor.rotation.z = Math.PI / 2;
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.35, 12), silver.clone());
+    shaft.rotation.z = Math.PI / 2;
+
+    const motorLight = new THREE.PointLight(0x60a5fa, 0.6, 2.5);
+    motorLight.position.set(-0.25, 0.1, 0);
+
+    const motorGroup = new THREE.Group();
+    motorGroup.add(stator, rotor, shaft, motorLight);
+    motorGroup.position.set(-0.28, 0, 0); // inboard
+
+    const wheelGroup = new THREE.Group();
+    wheelGroup.add(detailTire, detailRim, brakeDisc, caliper);
+
+    motorDetail.add(motorGroup, wheelGroup);
+    motorDetail.visible = true; // we animate reveal
+
+    let showMotorDetail = false;
+    let motorRevealT = 0; // 0 hidden, 1 expanded
+
+    // Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0.6, 0);
+    controls.enableDamping = true;
+    controls.dampingFactor = isMobile ? 0.05 : 0.08;
+    controls.enablePan = false;
+    controls.minDistance = 3;
+    controls.maxDistance = 10;
+    controls.minPolarAngle = 0.2;
+    controls.maxPolarAngle = Math.PI / 2.05;
+    controls.autoRotate = false;
+    controls.autoRotateSpeed = 0.8;
+
+    // Scroll storytelling
+    const panels = Array.from(document.querySelectorAll('.panel'));
+    const sectionFor = step => panels.find(p => p.dataset.step === step);
+    let spinWheels = false;
+    const desiredTarget = new THREE.Vector3(0, 0.6, 0);
+    const desiredPosition = new THREE.Vector3(4.2, 2.2, 4.8);
+
+    function setActive(step) {
+      panels.forEach(p => p.classList.toggle('active', p.dataset.step === step));
+      // Toggle 3D overlays
+      batteryFX.visible = (step === 'battery');
+      motorFX.visible = false; // replaced by immersive detail
+      portFX.visible = (step === 'port');
+      if (step === 'intro') {
+        showMotorDetail = false; wheelFL.visible = true;
+        desiredTarget.set(0, 0.6, 0);
+        desiredPosition.set(4.2, 2.2, 4.8);
+        spinWheels = false;
+      } else if (step === 'battery') {
+        showMotorDetail = false; wheelFL.visible = true;
+        desiredTarget.set(0, 0.35, 0);
+        desiredPosition.set(2.2, 1.2, 2.4);
+        spinWheels = false;
+      } else if (step === 'motor') {
+        showMotorDetail = true; wheelFL.visible = false;
+        desiredTarget.set(0.95, 0.4, 0.55);
+        desiredPosition.set(1.8, 1.2, 1.9);
+        spinWheels = true;
+      } else if (step === 'port') {
+        showMotorDetail = false; wheelFL.visible = true;
+        desiredTarget.set(0.4, 0.65, -0.62);
+        desiredPosition.set(0.9, 0.9, -0.4);
+        spinWheels = false;
+      } else if (step === 'outro') {
+        showMotorDetail = false; wheelFL.visible = true;
+        desiredTarget.set(0, 0.6, 0);
+        desiredPosition.set(5.2, 2.6, 0.6);
+        spinWheels = false;
+      }
+    }
+
+    // Observa painéis para acionar estados
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const step = entry.target.dataset.step;
+          setActive(step);
+        }
+      });
+    }, { root: null, threshold: 0.6 });
+
+    panels.forEach(p => io.observe(p));
+
+    // Resize
+    function onResize() {
+      const w = container.clientWidth, h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+    }
+    window.addEventListener('resize', onResize);
+
+    // Animate
+    const clock = new THREE.Clock();
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = clock.getDelta();
+      t += dt;
+
+      if (spinWheels) {
+        const speed = 6.0 * dt;
+        wheelFL.rotation.x += speed;
+        wheelFR.rotation.x += speed;
+        wheelRL.rotation.x += speed;
+        wheelRR.rotation.x += speed;
+      }
+
+      // Subtle FX animations
+      if (batteryFX.visible) {
+        batteryFX.rotation.y += dt * 0.6;
+        if (batteryFX.children[1]) {
+          const s = 1 + Math.sin(t * 2.5) * 0.15;
+          batteryFX.children[1].scale.setScalar(s);
         }
       }
-    </script>
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-        import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+      if (motorFX.visible) {
+        motorFX.rotation.y += dt * 0.8;
+      }
+      if (portFX.visible) {
+        portFX.rotation.y += dt * 0.2;
+      }
 
-        const root = document.getElementById('three-root');
-        const loaderEl = document.getElementById('three-loader');
-        let renderer, scene, camera, controls, tesla, autoRotate = true;
-        let effectRing = null, headLightL = null, headLightR = null, wheelMeshes = [];
-        let timers = [];
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      // Smooth camera and target transitions
+      camera.position.lerp(desiredPosition, 0.08);
+      controls.target.lerp(desiredTarget, 0.1);
 
-        init();
-        animate();
+      // Motor detail reveal/animate
+      const targetReveal = showMotorDetail ? 1 : 0;
+      motorRevealT += (targetReveal - motorRevealT) * 0.08;
+      // Separate components along Z (outward) and X (inboard motor)
+      wheelGroup.position.z = 0.0 + motorRevealT * 0.25;
+      motorGroup.position.z = 0.0 - motorRevealT * 0.2;
+      shaft.scale.x = 1 + motorRevealT * 0.8;
+      rotor.rotation.x += dt * 6.0; // spin rotor
+      // Pulse emissive
+      rotorMat.emissiveIntensity = 0.6 + Math.sin(t * 4) * 0.4 * motorRevealT;
+      statorMat.emissiveIntensity = 0.5 + Math.sin(t * 2.5) * 0.25 * motorRevealT;
 
-        function init() {
-            scene = new THREE.Scene();
-
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
-            renderer.setSize(root.clientWidth, root.clientHeight);
-            renderer.outputColorSpace = THREE.SRGBColorSpace;
-            renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.0;
-            renderer.shadowMap.enabled = !isMobile ? true : false;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            root.appendChild(renderer.domElement);
-
-            camera = new THREE.PerspectiveCamera(50, root.clientWidth / root.clientHeight, 0.1, 100);
-            camera.position.set(2.4, 1.2, 3.2);
-
-            const environment = new RoomEnvironment();
-            const pmrem = new THREE.PMREMGenerator(renderer);
-            const envTex = pmrem.fromScene(environment, 0.04).texture;
-            scene.environment = envTex;
-            scene.background = null; // mantêm fundo do container
-
-            // Luzes
-            const hemi = new THREE.HemisphereLight(0xffffff, 0x334155, 0.6);
-            scene.add(hemi);
-
-            const dir = new THREE.DirectionalLight(0xffffff, 0.9);
-            dir.position.set(3, 5, 4);
-            dir.castShadow = true;
-            dir.shadow.mapSize.set(2048, 2048);
-            scene.add(dir);
-
-            // Chão suave
-            const groundGeo = new THREE.PlaneGeometry(10, 10);
-            const groundMat = new THREE.ShadowMaterial({ opacity: 0.25 });
-            const ground = new THREE.Mesh(groundGeo, groundMat);
-            ground.rotation.x = -Math.PI / 2;
-            ground.position.y = 0;
-            ground.receiveShadow = true;
-            scene.add(ground);
-
-            // Efeito de anel sob o carro (quando ligado)
-            const ringGeo = new THREE.RingGeometry(0.2, 1.8, 64);
-            const ringMat = new THREE.MeshBasicMaterial({ color: 0x2dd4bf, transparent: true, opacity: 0, side: THREE.DoubleSide });
-            effectRing = new THREE.Mesh(ringGeo, ringMat);
-            effectRing.rotation.x = -Math.PI / 2;
-            effectRing.position.y = 0.01;
-            scene.add(effectRing);
-
-            // Controles
-            controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.target.set(0, 0.6, 0);
-            controls.autoRotate = autoRotate;
-            controls.autoRotateSpeed = isMobile ? 0.8 : 1.2;
-
-            // Resize
-            window.addEventListener('resize', onResize);
-
-            // UI
-            const resetBtn = document.getElementById('reset-view');
-            const rotBtn = document.getElementById('toggle-rotation');
-            resetBtn?.addEventListener('click', () => {
-                controls.reset();
-                camera.position.set(2.4, 1.2, 3.2);
-            });
-            rotBtn?.addEventListener('click', () => {
-                autoRotate = !autoRotate;
-                controls.autoRotate = autoRotate;
-                rotBtn.classList.toggle('active', autoRotate);
-            });
-
-            // Botões de experiência
-            document.getElementById('btn-start')?.addEventListener('click', startSystem);
-            document.getElementById('btn-charge')?.addEventListener('click', simulateCharging3D);
-            document.getElementById('btn-drive')?.addEventListener('click', simulateDriving3D);
-            document.getElementById('btn-reset')?.addEventListener('click', resetSystem);
-
-            // Construir Tesla estilizado
-            buildTesla();
-            const title = document.querySelector('.overlay-title');
-            if (title) title.textContent = 'Tesla 3D (Estilizado)';
-            loaderEl?.classList.add('hidden');
-
-            // Imersão mobile: esconde botões e habilita gestos
-            if (isMobile) {
-                const actions = document.querySelector('.overlay-actions');
-                if (actions) actions.style.display = 'none';
-                const hint = document.querySelector('.hud-hint');
-                if (hint) hint.style.display = 'block';
-                autoRotate = true; controls.autoRotate = true; startSystem();
-
-                const canvas = renderer.domElement;
-                let pressTimer = null; let pressed = false;
-                canvas.addEventListener('touchstart', () => {
-                    pressed = true;
-                    pressTimer = setTimeout(() => { if (pressed) simulateCharging3D(); }, 650);
-                }, { passive: true });
-                canvas.addEventListener('touchend', () => {
-                    if (pressTimer) clearTimeout(pressTimer);
-                    if (pressed) {
-                        autoRotate = !autoRotate;
-                        controls.autoRotate = autoRotate;
-                    }
-                    pressed = false;
-                });
-            }
-        }
-
-        function buildTesla() {
-            tesla = new THREE.Group();
-            // Car paint material
-            const bodyMat = new THREE.MeshStandardMaterial({ color: 0xc81e1e, metalness: 0.6, roughness: 0.3, envMapIntensity: 1.0 });
-            const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x111111, roughness: 0.05, transmission: 0.0, transparent: true, opacity: 0.75, metalness: 0.0 });
-            const blackMat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.4, roughness: 0.6 });
-            const rimMat = new THREE.MeshStandardMaterial({ color: 0xb8c2cc, metalness: 1.0, roughness: 0.2 });
-
-            // Body
-            const body = new THREE.Mesh(new RoundedBoxGeometry(2.2, 0.6, 1.2, 8, 0.1), bodyMat);
-            body.position.y = 0.7;
-            body.castShadow = true; body.receiveShadow = true;
-            tesla.add(body);
-
-            // Roof
-            const roof = new THREE.Mesh(new RoundedBoxGeometry(1.6, 0.25, 1.15, 8, 0.08), bodyMat);
-            roof.position.set(0, 0.95, 0);
-            roof.castShadow = true; tesla.add(roof);
-
-            // Windshield
-            const windshield = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.42), glassMat);
-            windshield.position.set(0.35, 0.9, 0.59);
-            windshield.rotation.set(-0.1, 0, 0);
-            windshield.rotateY(Math.PI);
-            tesla.add(windshield);
-
-            // Side windows (left/right)
-            const sideWinGeo = new THREE.PlaneGeometry(0.75, 0.35);
-            const leftWin = new THREE.Mesh(sideWinGeo, glassMat); leftWin.position.set(-0.2, 0.9, 0.61); tesla.add(leftWin);
-            const rightWin = new THREE.Mesh(sideWinGeo, glassMat); rightWin.position.set(-0.2, 0.9, -0.61); rightWin.rotateY(Math.PI); tesla.add(rightWin);
-
-            // Wheels
-            function makeWheel(x, z) {
-                const wheel = new THREE.Group();
-                const tyre = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.24, 28), blackMat);
-                tyre.rotation.z = Math.PI / 2; tyre.castShadow = true; tyre.receiveShadow = true;
-                const rim = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.03, 12, 24), rimMat);
-                rim.rotation.y = Math.PI / 2; rim.position.x = 0.01;
-                wheel.add(tyre); wheel.add(rim);
-                wheel.position.set(x, 0.35, z);
-                tesla.add(wheel);
-                wheelMeshes.push(wheel);
-            }
-            makeWheel(0.85, 0.55); // front-right
-            makeWheel(-0.85, 0.55); // rear-right
-            makeWheel(0.85, -0.55); // front-left
-            makeWheel(-0.85, -0.55); // rear-left
-
-            // Charge port indicator
-            const chargePort = new THREE.Mesh(new THREE.CircleGeometry(0.06, 16), new THREE.MeshBasicMaterial({ color: 0x00e5ff }));
-            chargePort.position.set(-1.05, 0.86, -0.62); tesla.add(chargePort);
-
-            // Headlights (off by default)
-            headLightL = new THREE.SpotLight(0x9be7ff, 0, 10, Math.PI/7, 0.6, 1);
-            headLightR = new THREE.SpotLight(0x9be7ff, 0, 10, Math.PI/7, 0.6, 1);
-            [headLightL, headLightR].forEach(l => { l.castShadow = false; tesla.add(l); tesla.add(l.target); });
-            headLightL.position.set(1.15, 0.65, 0.35); headLightL.target.position.set(3, 0.4, 0.35);
-            headLightR.position.set(1.15, 0.65, -0.35); headLightR.target.position.set(3, 0.4, -0.35);
-
-            // Position the car
-            tesla.position.y = 0;
-            scene.add(tesla);
-        }
-
-        // ---- Experiência: ligar, carregar, conduzir, resetar ----
-        function startSystem() {
-            // ring fade-in
-            if (effectRing) {
-                effectRing.material.opacity = 0.0;
-                let o = 0;
-                const t = setInterval(() => {
-                    o += 0.05; effectRing.material.opacity = Math.min(0.6, o);
-                    if (o >= 0.6) clearInterval(t);
-                }, 30); timers.push(t);
-            }
-            // headlights on
-            if (headLightL && headLightR) { headLightL.intensity = 2.2; headLightR.intensity = 2.2; }
-            updatePanelStatus('🚗 Sistema Ligado', '#28a745', [
-                '✅ Iluminação ativa',
-                '✅ Sistemas prontos',
-                '✅ Pronto para condução'
-            ]);
-        }
-
-        function simulateCharging3D() {
-            updatePanelCharging();
-        }
-
-        function simulateDriving3D() {
-            // spin wheels and slight sway
-            const spinTime = 3000; const start = performance.now();
-            const t = setInterval(() => {
-                const now = performance.now();
-                const p = Math.min(1, (now - start) / spinTime);
-                const angle = p * Math.PI * 8;
-                if (wheelMeshes.length) wheelMeshes.forEach(w => w.rotation.x = angle);
-                if (tesla) tesla.rotation.y = Math.sin(angle/4) * 0.06;
-                if (p >= 1) clearInterval(t);
-            }, 16); timers.push(t);
-            updatePanelStatus('🚗 Modo Condução', '#dc3545', [
-                'Velocidade: 80 km/h',
-                'Potência: 200 kW',
-                'Consumo: 18 kWh/100km'
-            ]);
-        }
-
-        function resetSystem() {
-            timers.forEach(id => clearInterval(id)); timers = [];
-            if (tesla) tesla.rotation.set(0,0,0);
-            if (wheelMeshes.length) wheelMeshes.forEach(w => w.rotation.x = 0);
-        }
-
-        // Painel removido nesta versão minimalista
-
-        function onResize() {
-            const w = root.clientWidth;
-            const h = root.clientHeight;
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-            renderer.setSize(w, h);
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            controls?.update();
-            renderer?.render(scene, camera);
-        }
-    </script>
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    onResize();
+    animate();
+  </script>
 </body>
 </html>
+
+

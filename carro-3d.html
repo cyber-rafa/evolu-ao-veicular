@@ -1,419 +1,268 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Carro Elétrico 3D - Evolução Veicular</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="carro-3d.css">
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="dns-prefetch" href="https://unpkg.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#0b1020">
-  <meta name="description" content="Carro elétrico 3D simples e leve com Three.js, compatível com PC e dispositivos móveis.">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050520">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Carro Elétrico 3D Interativo - Evolução Veicular</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="carro3d.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- O novo CSS futurístico será carregado via JavaScript -->
 </head>
 <body>
-  <div class="topbar">
-    <a href="index.html#how-it-works">⬅ Voltar</a>
-    <div style="color:#b7c0d1;font-weight:600;">Carro Elétrico 3D (PC e Mobile)</div>
-  </div>
+    <!-- Navigation - Barra de carregamento removida -->
+    <nav class="nav-3d">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back">← Voltar</a>
+            <h1 class="nav-title">Explore o Carro Elétrico</h1>
+        </div>
+    </nav>
 
-  <div class="stage" id="stage"></div>
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-      }
-    }
-  </script>
-  <div class="panels" id="panels">
-    <section class="panel" data-step="intro">
-      <div class="inner">
-        <h2>Carro elétrico 3D</h2>
-        <p>Role para explorar. Veja bateria, motor/rodas e porta de carregamento em destaque.</p>
-      </div>
-    </section>
-    <section class="panel" data-step="battery">
-      <div class="inner">
-        <h2>Bateria</h2>
-        <p>Pacote sob o assoalho com eficiência e baixo centro de gravidade.</p>
-      </div>
-    </section>
-    <section class="panel" data-step="motor">
-      <div class="inner">
-        <h2>Motor e rodas</h2>
-        <p>Tração elétrica instantânea. Rodas giram ao entrar nesta seção.</p>
-      </div>
-    </section>
-    <section class="panel" data-step="port">
-      <div class="inner">
-        <h2>Porta de carregamento</h2>
-        <p>Suporte a carregamento rápido DC.</p>
-      </div>
-    </section>
-    <section class="panel" data-step="outro">
-      <div class="inner">
-        <h2>Visão geral</h2>
-        <p>Gire o telefone ou use o mouse para observar enquanto conclui a rolagem.</p>
-      </div>
-    </section>
-  </div>
+    <!-- Scroll Container -->
+    <div class="scroll-container">
+        <!-- Section 1: Intro -->
+        <section class="section-3d intro-section" data-section="intro">
+            <div class="transition-overlay"></div>
+            <div class="energy-particles-container"></div>
+            <div class="section-content">
+                <h2 class="section-title">Carro Elétrico Moderno</h2>
+                <p class="section-subtitle">Descubra cada componente através do scroll</p>
+                <div class="scroll-indicator">
+                    <span>Role para explorar</span>
+                    <div class="scroll-arrow"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- O resto do HTML permanece o mesmo -->
+        <!-- Section 2: Carroceria -->
+        <section class="section-3d car-body-section" data-section="body">
+            <div class="car-3d-container">
+                <div class="car-model">
+                    <div class="car-body"></div>
+                    <div class="car-wheels wheel-front"></div>
+                    <div class="car-wheels wheel-rear"></div>
+                    <div class="car-details"></div>
+                </div>
+            </div>
+            <div class="info-panel">
+                <h3>Carroceria Aerodinâmica</h3>
+                <p>Design otimizado para máxima eficiência aerodinâmica com coeficiente de arrasto de apenas 0.21 Cd.</p>
+                <div class="specs">
+                    <div class="spec-item">
+                        <span class="spec-label">Material</span>
+                        <span class="spec-value">Alumínio + Fibra de Carbono</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Peso</span>
+                        <span class="spec-value">1,850 kg</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Comprimento</span>
+                        <span class="spec-value">4,770 mm</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <script type="module">
-    import * as THREE from 'three';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        <!-- Section 3: Bateria -->
+        <section class="section-3d battery-section" data-section="battery">
+            <div class="car-3d-container">
+                <div class="car-model">
+                    <div class="battery-pack">
+                        <div class="battery-cell" data-cell="1"></div>
+                        <div class="battery-cell" data-cell="2"></div>
+                        <div class="battery-cell" data-cell="3"></div>
+                        <div class="battery-cell" data-cell="4"></div>
+                        <div class="battery-cell" data-cell="5"></div>
+                        <div class="battery-cell" data-cell="6"></div>
+                    </div>
+                    <div class="energy-flow"></div>
+                </div>
+            </div>
+            <div class="info-panel">
+                <h3>Bateria de Íons de Lítio</h3>
+                <p>Sistema de armazenamento de energia de alta densidade com gestão térmica inteligente.</p>
+                <div class="specs">
+                    <div class="spec-item">
+                        <span class="spec-label">Capacidade</span>
+                        <span class="spec-value">100 kWh</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Voltagem</span>
+                        <span class="spec-value">400V</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Carga Rápida</span>
+                        <span class="spec-value">0-80% em 30 min</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || innerWidth < 768;
-    const container = document.getElementById('stage');
+        <!-- Section 4: Motor -->
+        <section class="section-3d motor-section" data-section="motor">
+            <div class="car-3d-container">
+                <div class="car-model">
+                    <div class="motor-unit">
+                        <div class="motor-rotor"></div>
+                        <div class="motor-stator"></div>
+                        <div class="magnetic-field"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel">
+                <h3>Motor Elétrico Síncrono</h3>
+                <p>Motor de imãs permanentes com eficiência de 95% e torque instantâneo.</p>
+                <div class="specs">
+                    <div class="spec-item">
+                        <span class="spec-label">Potência</span>
+                        <span class="spec-value">450 hp</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Torque</span>
+                        <span class="spec-value">650 Nm</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">RPM Máx</span>
+                        <span class="spec-value">16,000</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({
-      antialias: !isMobile, alpha: true, powerPreference: 'high-performance'
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
+        <!-- Section 5: Inversor -->
+        <section class="section-3d inverter-section" data-section="inverter">
+            <div class="car-3d-container">
+                <div class="car-model">
+                    <div class="inverter-unit">
+                        <div class="inverter-circuits"></div>
+                        <div class="power-flow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel">
+                <h3>Inversor de Potência</h3>
+                <p>Converte DC da bateria em AC trifásico para o motor com 98% de eficiência.</p>
+                <div class="specs">
+                    <div class="spec-item">
+                        <span class="spec-label">Tipo</span>
+                        <span class="spec-value">IGBT Silicon Carbide</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Frequência</span>
+                        <span class="spec-value">20 kHz</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Eficiência</span>
+                        <span class="spec-value">98%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    // Scene & Camera
-    const scene = new THREE.Scene();
-    scene.background = null;
+        <!-- Section 6: Sistema de Carregamento -->
+        <section class="section-3d charging-section" data-section="charging">
+            <div class="car-3d-container">
+                <div class="car-model">
+                    <div class="charging-port">
+                        <div class="port-lid"></div>
+                        <div class="charging-cable"></div>
+                        <div class="charging-indicator"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel">
+                <h3>Sistema de Carregamento</h3>
+                <p>Sistema universal compatível com todas as redes de carregamento.</p>
+                <div class="specs">
+                    <div class="spec-item">
+                        <span class="spec-label">AC</span>
+                        <span class="spec-value">22 kW</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">DC</span>
+                        <span class="spec-value">250 kW</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Conectores</span>
+                        <span class="spec-value">CCS + CHAdeMO</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    const camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 100);
-    camera.position.set(4.2, 2.2, 4.8);
+        <!-- Section 7: Sistema de Refrigeração -->
+        <section class="section-3d cooling-section" data-section="cooling">
+            <div class="car-3d-container">
+                <div class="car-model">
+                    <div class="cooling-system">
+                        <div class="coolant-flow"></div>
+                        <div class="radiators"></div>
+                        <div class="temperature-indicator"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-panel">
+                <h3>Sistema de Refrigeração</h3>
+                <p>Gestão térmica inteligente para bateria, motor e inversor.</p>
+                <div class="specs">
+                    <div class="spec-item">
+                        <span class="spec-label">Circuitos</span>
+                        <span class="spec-value">3 independentes</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Temperatura</span>
+                        <span class="spec-value">20-35°C ótima</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Refrigerante</span>
+                        <span class="spec-value">Líquido especial</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    // Lights
-    scene.add(new THREE.AmbientLight(0xffffff, 0.65));
-    const dir = new THREE.DirectionalLight(0xffffff, 1.0);
-    dir.position.set(4, 6, 3);
-    dir.castShadow = false;
-    scene.add(dir);
+        <!-- Section 8: Conclusão -->
+        <section class="section-3d conclusion-section" data-section="conclusion">
+            <div class="section-content">
+                <h2 class="section-title">O Futuro é Elétrico</h2>
+                <p class="section-subtitle">Zero emissões, máximo desempenho</p>
+                <div class="final-stats">
+                    <div class="stat">
+                        <span class="stat-number">620</span>
+                        <span class="stat-label">km de autonomia</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">emissões</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">eficiência</span>
+                    </div>
+                </div>
+                <a href="index.html" class="cta-button primary">
+                    <span>Voltar ao Início</span>
+                </a>
+            </div>
+        </section>
+    </div>
 
-    // Ground
-    const grid = new THREE.GridHelper(30, 30, 0x3b82f6, 0x1f2937);
-    grid.material.opacity = 0.25;
-    grid.material.transparent = true;
-    scene.add(grid);
-
-    // Car group
-    const car = new THREE.Group();
-    scene.add(car);
-
-    // Materials
-    const blue = new THREE.MeshStandardMaterial({ color: 0x1e40af, roughness: 0.6, metalness: 0.2 });
-    const blackRubber = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9, metalness: 0.0 });
-    const silver = new THREE.MeshStandardMaterial({ color: 0xbfc7d5, roughness: 0.3, metalness: 0.7 });
-    const glass = new THREE.MeshPhysicalMaterial({ color: 0x9dd6ff, roughness: 0.05, metalness: 0, transparent: true, opacity: 0.45, transmission: 0.6, thickness: 0.2 });
-    const headlightMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xc8ecff, emissiveIntensity: 1.4, roughness: 0.3 });
-    const taillightMat = new THREE.MeshStandardMaterial({ color: 0xff3b30, emissive: 0xff2a1f, emissiveIntensity: 1.6, roughness: 0.4 });
-    const electricMat = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, emissive: 0x20d3ff, emissiveIntensity: 0.8, roughness: 0.5 });
-
-    // Body (chassi)
-    const body = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.6, 1.2), blue);
-    body.position.y = 0.5;
-    body.castShadow = false;
-    car.add(body);
-
-    // Cabin
-    const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.5, 1.05), glass);
-    cabin.position.set(-0.1, 0.95, 0);
-    car.add(cabin);
-
-    // Small roof spoiler
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.06, 0.9), blue);
-    roof.position.set(-0.1, 1.2, 0);
-    car.add(roof);
-
-    // Wheels
-    const wheelGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.22, isMobile ? 16 : 24);
-    wheelGeo.rotateZ(Math.PI / 2);
-
-    function makeWheel() {
-      const g = new THREE.Group();
-      const tire = new THREE.Mesh(wheelGeo, blackRubber);
-      g.add(tire);
-      const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.24, 12), silver);
-      rim.rotation.z = Math.PI / 2;
-      g.add(rim);
-      return g;
-    }
-
-    const wheelFL = makeWheel(); wheelFL.position.set(0.95, 0.35, 0.55);
-    const wheelFR = makeWheel(); wheelFR.position.set(0.95, 0.35, -0.55);
-    const wheelRL = makeWheel(); wheelRL.position.set(-0.95, 0.35, 0.55);
-    const wheelRR = makeWheel(); wheelRR.position.set(-0.95, 0.35, -0.55);
-    car.add(wheelFL, wheelFR, wheelRL, wheelRR);
-
-    // Headlights & taillights
-    const headL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.22), headlightMat);
-    const headR = headL.clone();
-    headL.position.set(1.35, 0.6, 0.35);
-    headR.position.set(1.35, 0.6, -0.35);
-    car.add(headL, headR);
-
-    const tailL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.22), taillightMat);
-    const tailR = tailL.clone();
-    tailL.position.set(-1.35, 0.6, 0.35);
-    tailR.position.set(-1.35, 0.6, -0.35);
-    car.add(tailL, tailR);
-
-    // Charging port (visual azul)
-    const port = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.04, 16), electricMat);
-    port.rotation.x = Math.PI / 2;
-    port.position.set(0.4, 0.65, -0.62);
-    car.add(port);
-
-    // Battery block underfloor
-    const battery = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.12, 0.8), new THREE.MeshStandardMaterial({
-      color: 0x22c55e, emissive: 0x14e36c, emissiveIntensity: 0.35, roughness: 0.7
-    }));
-    battery.position.set(0, 0.32, 0);
-    car.add(battery);
-
-    // Section-specific 3D objects (initially hidden)
-    const batteryFX = new THREE.Group();
-    {
-      // Glowing torus around battery area
-      const ringMat = new THREE.MeshStandardMaterial({ color: 0x22c55e, emissive: 0x16ff8b, emissiveIntensity: 0.6, roughness: 0.6, metalness: 0.1 });
-      const torus = new THREE.Mesh(new THREE.TorusGeometry(0.95, 0.03, 12, 64), ringMat);
-      torus.rotation.x = Math.PI / 2;
-      torus.position.set(0, 0.34, 0);
-      batteryFX.add(torus);
-      // Small pulsing sphere
-      const pulse = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), new THREE.MeshStandardMaterial({ color: 0x22c55e, emissive: 0x16ff8b, emissiveIntensity: 1.2 }));
-      pulse.position.set(0.6, 0.5, 0);
-      batteryFX.add(pulse);
-    }
-    batteryFX.visible = false;
-    car.add(batteryFX);
-
-    const motorFX = new THREE.Group();
-    {
-      const haloMat = new THREE.MeshStandardMaterial({ color: 0x60a5fa, emissive: 0x60a5fa, emissiveIntensity: 0.9, transparent: true });
-      haloMat.depthTest = false;
-      const haloFL = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.03, 12, 64), haloMat);
-      haloFL.position.copy(new THREE.Vector3(0.95, 0.35, 0.55));
-      haloFL.rotation.set(Math.PI / 2, 0, 0);
-      const haloFR = haloFL.clone();
-      haloFR.position.set(0.95, 0.35, -0.55);
-      motorFX.add(haloFL, haloFR);
-
-      // Simple torque arrow near FL wheel
-      const arrowMat = new THREE.MeshStandardMaterial({ color: 0x93c5fd, emissive: 0x3b82f6, emissiveIntensity: 1.2, transparent: true });
-      arrowMat.depthTest = false;
-      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 12), arrowMat);
-      shaft.position.set(0.95, 0.7, 0.55);
-      const tip = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.16, 12), arrowMat);
-      tip.position.set(0.95, 0.98, 0.55);
-      motorFX.add(shaft, tip);
-    }
-    motorFX.visible = false;
-    car.add(motorFX);
-
-    const portFX = new THREE.Group();
-    {
-      // Simple charging post
-      const post = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.7, 0.18), new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.9 }));
-      post.position.set(1.2, 0.35, -1.2);
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.1, 0.14), new THREE.MeshStandardMaterial({ color: 0x0ea5e9, emissive: 0x22d3ee, emissiveIntensity: 0.8 }));
-      screen.position.set(1.2, 0.55, -1.11);
-      screen.rotation.y = Math.PI; // face the car
-      portFX.add(post, screen);
-      // Cable from post to port
-      const start = new THREE.Vector3(1.15, 0.5, -1.1);
-      const end = new THREE.Vector3(0.4, 0.65, -0.62);
-      const mid = start.clone().lerp(end, 0.5).add(new THREE.Vector3(0, 0.1, 0));
-      const curve = new THREE.CatmullRomCurve3([start, mid, end]);
-      const tube = new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 60, 0.02, 8, false),
-        new THREE.MeshStandardMaterial({ color: 0x6b7280, roughness: 0.9, metalness: 0.1 })
-      );
-      portFX.add(tube);
-      // Connector glow at the port
-      const plugMat = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, emissive: 0x22d3ee, emissiveIntensity: 1.4, transparent: true });
-      plugMat.depthTest = false;
-      const plug = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 12), plugMat);
-      plug.position.copy(end);
-      portFX.add(plug);
-    }
-    portFX.visible = false;
-    car.add(portFX);
-
-    // Immersive motor + wheel detail (exploded view near FL)
-    const motorDetail = new THREE.Group();
-    motorDetail.position.copy(wheelFL.position);
-    car.add(motorDetail);
-
-    // Detail: wheel parts
-    const detailTire = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.18, 28), blackRubber.clone());
-    detailTire.rotation.z = Math.PI / 2;
-    const detailRim = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.2, 16), silver.clone());
-    detailRim.rotation.z = Math.PI / 2;
-    const brakeDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.02, 24), new THREE.MeshStandardMaterial({ color: 0xbdbdbd, roughness: 0.5, metalness: 0.8 }));
-    brakeDisc.rotation.z = Math.PI / 2;
-    const caliper = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.14), new THREE.MeshStandardMaterial({ color: 0xff4d6d, emissive: 0xff3b5c, emissiveIntensity: 0.6 }));
-    caliper.position.set(0, 0.0, 0.2);
-
-    // Detail: motor (stator + rotor) and shaft
-    const statorMat = new THREE.MeshStandardMaterial({ color: 0x2563eb, emissive: 0x3b82f6, emissiveIntensity: 0.7, metalness: 0.3, roughness: 0.4 });
-    const rotorMat = new THREE.MeshStandardMaterial({ color: 0x93c5fd, emissive: 0x93c5fd, emissiveIntensity: 0.9, metalness: 0.1, roughness: 0.2 });
-    const stator = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.22, 32, 1, true), statorMat);
-    stator.rotation.z = Math.PI / 2;
-    const rotor = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.22, 24), rotorMat);
-    rotor.rotation.z = Math.PI / 2;
-    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.35, 12), silver.clone());
-    shaft.rotation.z = Math.PI / 2;
-
-    const motorLight = new THREE.PointLight(0x60a5fa, 0.6, 2.5);
-    motorLight.position.set(-0.25, 0.1, 0);
-
-    const motorGroup = new THREE.Group();
-    motorGroup.add(stator, rotor, shaft, motorLight);
-    motorGroup.position.set(-0.28, 0, 0); // inboard
-
-    const wheelGroup = new THREE.Group();
-    wheelGroup.add(detailTire, detailRim, brakeDisc, caliper);
-
-    motorDetail.add(motorGroup, wheelGroup);
-    motorDetail.visible = true; // we animate reveal
-
-    let showMotorDetail = false;
-    let motorRevealT = 0; // 0 hidden, 1 expanded
-
-    // Controls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 0.6, 0);
-    controls.enableDamping = true;
-    controls.dampingFactor = isMobile ? 0.05 : 0.08;
-    controls.enablePan = false;
-    controls.minDistance = 3;
-    controls.maxDistance = 10;
-    controls.minPolarAngle = 0.2;
-    controls.maxPolarAngle = Math.PI / 2.05;
-    controls.autoRotate = false;
-    controls.autoRotateSpeed = 0.8;
-
-    // Scroll storytelling
-    const panels = Array.from(document.querySelectorAll('.panel'));
-    const sectionFor = step => panels.find(p => p.dataset.step === step);
-    let spinWheels = false;
-    const desiredTarget = new THREE.Vector3(0, 0.6, 0);
-    const desiredPosition = new THREE.Vector3(4.2, 2.2, 4.8);
-
-    function setActive(step) {
-      panels.forEach(p => p.classList.toggle('active', p.dataset.step === step));
-      // Toggle 3D overlays
-      batteryFX.visible = (step === 'battery');
-      motorFX.visible = false; // replaced by immersive detail
-      portFX.visible = (step === 'port');
-      if (step === 'intro') {
-        showMotorDetail = false; wheelFL.visible = true;
-        desiredTarget.set(0, 0.6, 0);
-        desiredPosition.set(4.2, 2.2, 4.8);
-        spinWheels = false;
-      } else if (step === 'battery') {
-        showMotorDetail = false; wheelFL.visible = true;
-        desiredTarget.set(0, 0.35, 0);
-        desiredPosition.set(2.2, 1.2, 2.4);
-        spinWheels = false;
-      } else if (step === 'motor') {
-        showMotorDetail = true; wheelFL.visible = false;
-        desiredTarget.set(0.95, 0.4, 0.55);
-        desiredPosition.set(1.8, 1.2, 1.9);
-        spinWheels = true;
-      } else if (step === 'port') {
-        showMotorDetail = false; wheelFL.visible = true;
-        desiredTarget.set(0.4, 0.65, -0.62);
-        desiredPosition.set(0.9, 0.9, -0.4);
-        spinWheels = false;
-      } else if (step === 'outro') {
-        showMotorDetail = false; wheelFL.visible = true;
-        desiredTarget.set(0, 0.6, 0);
-        desiredPosition.set(5.2, 2.6, 0.6);
-        spinWheels = false;
-      }
-    }
-
-    // Observa painéis para acionar estados
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const step = entry.target.dataset.step;
-          setActive(step);
-        }
-      });
-    }, { root: null, threshold: 0.6 });
-
-    panels.forEach(p => io.observe(p));
-
-    // Resize
-    function onResize() {
-      const w = container.clientWidth, h = container.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
-    }
-    window.addEventListener('resize', onResize);
-
-    // Animate
-    const clock = new THREE.Clock();
-    let t = 0;
-    function animate() {
-      requestAnimationFrame(animate);
-      const dt = clock.getDelta();
-      t += dt;
-
-      if (spinWheels) {
-        const speed = 6.0 * dt;
-        wheelFL.rotation.x += speed;
-        wheelFR.rotation.x += speed;
-        wheelRL.rotation.x += speed;
-        wheelRR.rotation.x += speed;
-      }
-
-      // Subtle FX animations
-      if (batteryFX.visible) {
-        batteryFX.rotation.y += dt * 0.6;
-        if (batteryFX.children[1]) {
-          const s = 1 + Math.sin(t * 2.5) * 0.15;
-          batteryFX.children[1].scale.setScalar(s);
-        }
-      }
-      if (motorFX.visible) {
-        motorFX.rotation.y += dt * 0.8;
-      }
-      if (portFX.visible) {
-        portFX.rotation.y += dt * 0.2;
-      }
-
-      // Smooth camera and target transitions
-      camera.position.lerp(desiredPosition, 0.08);
-      controls.target.lerp(desiredTarget, 0.1);
-
-      // Motor detail reveal/animate
-      const targetReveal = showMotorDetail ? 1 : 0;
-      motorRevealT += (targetReveal - motorRevealT) * 0.08;
-      // Separate components along Z (outward) and X (inboard motor)
-      wheelGroup.position.z = 0.0 + motorRevealT * 0.25;
-      motorGroup.position.z = 0.0 - motorRevealT * 0.2;
-      shaft.scale.x = 1 + motorRevealT * 0.8;
-      rotor.rotation.x += dt * 6.0; // spin rotor
-      // Pulse emissive
-      rotorMat.emissiveIntensity = 0.6 + Math.sin(t * 4) * 0.4 * motorRevealT;
-      statorMat.emissiveIntensity = 0.5 + Math.sin(t * 2.5) * 0.25 * motorRevealT;
-
-      controls.update();
-      renderer.render(scene, camera);
-    }
-    onResize();
-    animate();
-  </script>
+    <script src="carro3d.js"></script>
 </body>
 </html>
 
-
+<!-- Adicionar dentro de cada .car-3d-container -->
+<div class="volumetric-light"></div>
+<div class="ambient-light"></div>
+<div class="dynamic-light"></div>
+<div class="spotlight"></div>
+<div class="light-particle"></div>
+<div class="light-particle"></div>
+<div class="light-particle"></div>
+<div class="light-particle"></div>
+<div class="light-particle"></div>

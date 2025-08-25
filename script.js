@@ -758,3 +758,173 @@ window.addEventListener('resize', function() {
         document.body.classList.remove('mobile-device');
     }
 });
+
+// Car Cursor Animation
+class CarCursor {
+  constructor() {
+    this.cursor = null;
+    this.wheels = [];
+    this.trails = [];
+    this.lastX = 0;
+    this.lastY = 0;
+    this.speed = 0;
+    this.init();
+  }
+
+  init() {
+    // Create main car cursor
+    this.cursor = document.createElement('div');
+    this.cursor.className = 'cursor';
+    document.body.appendChild(this.cursor);
+
+    // Create car wheels
+    const frontWheel = document.createElement('div');
+    frontWheel.className = 'cursor-wheel front';
+    this.cursor.appendChild(frontWheel);
+    
+    const backWheel = document.createElement('div');
+    backWheel.className = 'cursor-wheel back';
+    this.cursor.appendChild(backWheel);
+    
+    this.wheels = [frontWheel, backWheel];
+
+    // Create trail elements
+    for (let i = 0; i < 8; i++) {
+      const trail = document.createElement('div');
+      trail.className = 'cursor-trail';
+      document.body.appendChild(trail);
+      this.trails.push({
+        element: trail,
+        x: 0,
+        y: 0
+      });
+    }
+
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    let mouseX = 0, mouseY = 0;
+    let lastTime = Date.now();
+
+    // Mouse move
+    document.addEventListener('mousemove', (e) => {
+      const currentTime = Date.now();
+      const deltaTime = currentTime - lastTime;
+      
+      // Calculate speed
+      const deltaX = e.clientX - this.lastX;
+      const deltaY = e.clientY - this.lastY;
+      this.speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY) / deltaTime * 10;
+      
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      // Update car position
+      this.cursor.style.left = mouseX - 20 + 'px';
+      this.cursor.style.top = mouseY - 10 + 'px';
+      
+      // Rotate car based on movement direction
+      if (Math.abs(deltaX) > 1 || Math.abs(deltaY) > 1) {
+        const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+        this.cursor.style.transform = `rotate(${angle}deg)`;
+      }
+
+      // Update trails with delay
+      this.trails.forEach((trail, index) => {
+        setTimeout(() => {
+          trail.x += (mouseX - trail.x) * 0.1;
+          trail.y += (mouseY - trail.y) * 0.1;
+          trail.element.style.left = trail.x - 4 + 'px';
+          trail.element.style.top = trail.y - 1.5 + 'px';
+          trail.element.style.opacity = Math.max(0, 0.8 - index * 0.1);
+        }, index * 30);
+      });
+
+      // Create speed lines when moving fast
+      if (this.speed > 5) {
+        this.createSpeedLines(mouseX, mouseY);
+      }
+      
+      // Create exhaust smoke occasionally
+      if (Math.random() < 0.15 && this.speed > 2) {
+        this.createSmoke(mouseX - 15, mouseY);
+      }
+      
+      this.lastX = mouseX;
+      this.lastY = mouseY;
+      lastTime = currentTime;
+    });
+
+    // Mouse down - boost effect
+    document.addEventListener('mousedown', () => {
+      this.cursor.classList.add('cursor-click');
+      this.createSmoke(mouseX - 15, mouseY);
+      this.createSmoke(mouseX - 18, mouseY + 2);
+    });
+
+    // Mouse up
+    document.addEventListener('mouseup', () => {
+      this.cursor.classList.remove('cursor-click');
+    });
+
+    // Hover effects
+    document.querySelectorAll('a, button, .cta-button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        this.cursor.classList.add('cursor-hover');
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        this.cursor.classList.remove('cursor-hover');
+      });
+    });
+
+    // Text selection
+    document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        this.cursor.classList.add('cursor-text');
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        this.cursor.classList.remove('cursor-text');
+      });
+    });
+  }
+
+  createSmoke(x, y) {
+    const smoke = document.createElement('div');
+    smoke.className = 'cursor-smoke';
+    smoke.style.left = x + 'px';
+    smoke.style.top = y + 'px';
+    document.body.appendChild(smoke);
+
+    // Remove smoke after animation
+    setTimeout(() => {
+      if (smoke.parentNode) {
+        smoke.parentNode.removeChild(smoke);
+      }
+    }, 1500);
+  }
+  
+  createSpeedLines(x, y) {
+    const speedLine = document.createElement('div');
+    speedLine.className = 'cursor-speed-lines';
+    speedLine.style.left = x - 25 + 'px';
+    speedLine.style.top = y - 1 + Math.random() * 10 - 5 + 'px';
+    document.body.appendChild(speedLine);
+
+    // Remove speed line after animation
+    setTimeout(() => {
+      if (speedLine.parentNode) {
+        speedLine.parentNode.removeChild(speedLine);
+      }
+    }, 200);
+  }
+}
+
+// Replace the existing CustomCursor initialization
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.addEventListener('DOMContentLoaded', () => {
+    new CarCursor();
+  });
+}

@@ -460,4 +460,29 @@ footer { border-top: var(--line); padding: 1.25rem; text-align: center; color: v
   }
 }
 
+/* Estilos para animações Anime.js */
+.anime-title-1,
+.anime-title-2 {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.anime-description {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Efeito de cursor piscando para o efeito de digitação */
+.anime-title-1::after,
+.anime-title-2::after {
+    content: '|';
+    animation: blink 1s infinite;
+    opacity: 0;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
 

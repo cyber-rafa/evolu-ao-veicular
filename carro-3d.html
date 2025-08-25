@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carro Elétrico 3D - Experiência Imersiva</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Layout da página 3D */
+    body, html { height: 100%; }
+    .three-wrapper {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    .three-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 1rem; border-bottom: var(--line); background: rgba(6,10,25,.65); backdrop-filter: blur(8px);
+    }
+    .three-header .title { font-weight: 800; letter-spacing: .3px; }
+    .back-link { color: var(--color-text); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); padding: .45rem .85rem; border-radius: 999px; }
+    .back-link:hover { background: rgba(255,255,255,.14); }
+
+    .three-stage {
+      display: grid; grid-template-columns: 1fr 320px; gap: 1rem;
+      width: min(100% - 2rem, var(--container-max)); margin: 1rem auto; align-items: stretch;
+    }
+    .scene-container {
+      position: relative; border: var(--line); border-radius: 16px; overflow: hidden; background: radial-gradient(80% 80% at 50% 20%, rgba(79,140,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow-1);
+    }
+    canvas.webgl { display: block; width: 100%; height: 100%; outline: none; }
+
+    .overlay {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .hint {
+      position: absolute; left: 12px; bottom: 12px; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.12);
+      color: var(--color-text); padding: .4rem .6rem; border-radius: 8px; font-size: .85rem;
+    }
+    .label {
+      position: absolute; transform: translate(-50%, -50%); background: rgba(10,14,31,.9); color: #fff;
+      padding: .25rem .5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,.12); font-size: .8rem; white-space: nowrap;
+      pointer-events: none; opacity: 0;
+    }
+
+    .info-panel {
+      display: grid; grid-template-rows: auto 1fr auto; gap: .75rem; padding: 1rem; border: var(--line); border-radius: 16px;
+      background: rgba(255,255,255,.06); box-shadow: var(--shadow-1);
+    }
+    .info-header h3 { margin: 0; }
+    .info-body { color: var(--color-text-muted); overflow: auto; }
+    .info-body .specs { margin-top: .5rem; display: grid; gap: .35rem; }
+    .spec { display: flex; justify-content: space-between; }
+    .info-footer { display: grid; grid-template-columns: repeat(4,1fr); gap: .5rem; }
+    .control {
+      border-radius: 10px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06);
+      color: #fff; padding: .6rem .5rem; font-weight: 700; letter-spacing: .2px; cursor: pointer;
+    }
+    .control:hover { background: rgba(255,255,255,.12); }
+    .status-bar { height: 8px; border-radius: 6px; background: rgba(255,255,255,.12); overflow: hidden; }
+    .status-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); }
+
+    /* Overlay de loading da cena 3D */
+    .loading {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      background: radial-gradient(80% 80% at 50% 20%, rgba(12,16,36,.95), rgba(12,16,36,.6));
+      color: #fff; font-weight: 700; letter-spacing: .3px; transition: opacity .4s ease;
+      border-bottom: var(--line);
+      z-index: 2;
+    }
+    @media (max-width: 1024px) {
+      .three-stage { grid-template-columns: 1fr; }
+      .info-panel { order: 2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="three-wrapper">
+    <header class="three-header">
+      <a class="back-link" href="index.html">← Voltar</a>
+      <div class="title anime-title-1">Experiência Imersiva</div>
+      <div style="opacity: .5;"></div>
+    </header>
+
+    <main class="three-stage">
+      <section class="scene-container">
+        <div id="loading" class="loading">Carregando experiência 3D...</div>
+        <canvas class="webgl" id="webgl"></canvas>
+        <div class="overlay">
+          <div class="hint">Dica: arraste para girar, role para aproximar, clique nos componentes</div>
+          <div class="label" id="label-bateria">Bateria</div>
+          <div class="label" id="label-motor">Motor</div>
+          <div class="label" id="label-inversor">Inversor</div>
+          <div class="label" id="label-controlador">Controlador</div>
+        </div>
+      </section>
+
+      <aside class="info-panel">
+        <div class="info-header">
+          <h3 class="anime-title-2">Carro Elétrico 3D</h3>
+          <div class="status-bar"><div class="status-fill" id="status-fill"></div></div>
+        </div>
+        <div class="info-body" id="info-body">
+          Clique em um componente para ver detalhes. Use os botões abaixo para simular cenários.
+        </div>
+        <div class="info-footer">
+          <button class="control" id="btn-start">Iniciar</button>
+          <button class="control" id="btn-charge">Carregar</button>
+          <button class="control" id="btn-drive">Dirigir</button>
+          <button class="control" id="btn-reset">Resetar</button>
+          <button class="control" id="btn-reset-cam">Reset Câmera</button>
+        </div>
+      </aside>
+    </main>
+
+    <footer style="text-align:center; padding: .75rem; color: var(--color-text-muted); border-top: var(--line);">
+      © 2025 Evolução Veicular
+    </footer>
+  </div>
+
+  <!-- Anime.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+  <!-- Ativa o cursor personalizado (CarCursor) e outras melhorias gerais -->
+  <script src="script.js" defer></script>
+  <!-- Three.js (ESM via unpkg) carregado dentro do módulo do app -->
+  <!-- dentro do <head> OU logo antes de carregar o car3d.js -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="./car3d.js"></script>
+</body>
+</html>

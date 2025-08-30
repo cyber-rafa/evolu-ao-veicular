@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carro a Combustão 3D - Experiência Interativa</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Layout da página 3D (reuso do estilo com pequenas variações) */
+    body, html { height: 100%; }
+    .three-wrapper {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    .three-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 1rem; border-bottom: var(--line); background: rgba(20,10,6,.7); backdrop-filter: blur(8px);
+    }
+    .three-header .title { font-weight: 800; letter-spacing: .3px; }
+    .back-link { color: var(--color-text); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); padding: .45rem .85rem; border-radius: 999px; }
+    .back-link:hover { background: rgba(255,255,255,.14); }
+
+    .three-stage {
+      display: grid; grid-template-columns: 1fr 320px; gap: 1rem;
+      width: min(100% - 2rem, var(--container-max)); margin: 1rem auto; align-items: stretch;
+    }
+    .scene-container {
+      position: relative; border: var(--line); border-radius: 16px; overflow: hidden;
+      background: radial-gradient(80% 80% at 50% 20%, rgba(120,80,40,.08), rgba(10,10,14,.06));
+      box-shadow: var(--shadow-1);
+      min-height: 460px;
+    }
+    canvas.webgl { display: block; width: 100%; height: 100%; outline: none; }
+
+    .overlay {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .hint {
+      position: absolute; left: 12px; bottom: 12px; background: rgba(0,0,0,.45); color: #fff; border: 1px solid rgba(255,255,255,.14);
+      padding: .35rem .6rem; border-radius: 8px; font-size: .85rem; letter-spacing: .2px;
+    }
+    .label {
+      position: absolute; padding: .25rem .5rem; font-size: .85rem; color: #fff;
+      background: rgba(20,20,22,.6); border: 1px solid rgba(255,255,255,.18); border-radius: 6px; transform: translate(-50%, -100%);
+      pointer-events: none; white-space: nowrap; display: none;
+    }
+
+    .info-panel {
+      border: var(--line); border-radius: 16px; padding: .75rem; display: grid; grid-template-rows: auto 1fr auto;
+      gap: .75rem; background: rgba(10,10,14,.35); backdrop-filter: blur(6px);
+    }
+    .info-header { display: grid; gap: .5rem; }
+    .info-body { color: var(--color-text); font-size: .95rem; line-height: 1.45; min-height: 120px; opacity: .9; }
+    .info-footer { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .control { padding: .45rem .7rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); color: #fff; }
+    .control:hover { background: rgba(255,255,255,.12); }
+
+    .status-bar { height: 8px; border-radius: 6px; background: rgba(255,255,255,.12); overflow: hidden; }
+    .status-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff7a3d, #ffd166); }
+
+    /* Overlay de loading */
+    .loading {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      background: radial-gradient(80% 80% at 50% 20%, rgba(30,16,10,.95), rgba(30,16,10,.6));
+      color: #fff; font-weight: 700; letter-spacing: .3px; transition: opacity .4s ease;
+      border-bottom: var(--line);
+      z-index: 2;
+    }
+
+    @media (max-width: 1024px) {
+      .three-stage { grid-template-columns: 1fr; }
+      .info-panel { order: 2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="three-wrapper">
+    <header class="three-header">
+      <a class="back-link" href="index.html">← Voltar</a>
+      <div class="title anime-title-1">Carro a Combustão 3D</div>
+      <div style="opacity: .5;"></div>
+    </header>
+
+    <main class="three-stage">
+      <section class="scene-container">
+        <div id="loading" class="loading">Carregando experiência 3D...</div>
+        <canvas class="webgl" id="webgl"></canvas>
+        <div class="overlay">
+          <div class="hint">Dica: arraste para girar, role para aproximar, clique nos componentes</div>
+          <div class="label" id="label-motor">Motor</div>
+          <div class="label" id="label-tanque">Tanque</div>
+          <div class="label" id="label-escapamento">Escapamento</div>
+          <div class="label" id="label-radiador">Radiador</div>
+          <div class="label" id="label-cambio">Câmbio</div>
+        </div>
+      </section>
+
+      <aside class="info-panel">
+        <div class="info-header">
+          <h3 class="anime-title-2">Plataforma Interativa</h3>
+          <div class="status-bar"><div class="status-fill" id="status-fill"></div></div>
+        </div>
+        <div class="info-body" id="info-body">
+          Clique em um componente para ver detalhes. Use os botões abaixo para simular cenários.
+        </div>
+        <div class="info-footer">
+          <button class="control" id="btn-ignition">Ligar Motor</button>
+          <button class="control" id="btn-refuel">Abastecer</button>
+          <button class="control" id="btn-rev">Acelerar</button>
+          <button class="control" id="btn-reset">Resetar</button>
+          <button class="control" id="btn-reset-cam">Reset Câmera</button>
+        </div>
+      </aside>
+    </main>
+
+    <footer style="text-align:center; padding: .75rem; color: var(--color-text-muted); border-top: var(--line);">
+      © 2025 Evolução Veicular
+    </footer>
+  </div>
+
+  <!-- Anime.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+  <!-- Melhorias globais do seu projeto -->
+  <script src="script.js" defer></script>
+
+  <!-- Import map do Three.js -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <!-- App da cena a combustão -->
+  <script type="module" src="./combustao3d.js"></script>
+</body>
+</html>

@@ -45,7 +45,15 @@ class Car3DExperience {
 
     this.objects = {}; // referências por nome
     this.wheels = [];
+    // estado para "Separar Peças"
+    this._exploded = false;
+    this._orig = new Map();
 
+    // Estrada infinita e estado de condução
+    this.roadSegments = [];
+    this.isDriving = false;
+    this.driveSpeed = 3.2; // unidades por segundo
+    this.roadLength = 22;  // mesmo tamanho do segmento de estrada (PlaneGeometry)
     this._setupLights();
     this._setupEnvironment();
     this._buildCar();
@@ -70,14 +78,49 @@ class Car3DExperience {
   }
 
   _setupEnvironment() {
-    // Chão suave
-    const groundMat = new THREE.MeshStandardMaterial({ color: 0x0f1735, metalness: 0.2, roughness: 0.9 });
-    const ground = new THREE.Mesh(new THREE.CylinderGeometry(10, 10, 0.2, 64), groundMat);
-    ground.receiveShadow = true;
-    ground.position.y = -0.1;
-    this.scene.add(ground);
+    // Estrada com asfalto e faixa central tracejada
+    const createRoadSegment = () => {
+      const segment = new THREE.Group();
 
-    // Halo/aura de energia sutil
+      const asphaltMat = new THREE.MeshStandardMaterial({ color: 0x1a2030, roughness: 0.95, metalness: 0.05 });
+      const road = new THREE.Mesh(new THREE.PlaneGeometry(22, 6), asphaltMat);
+      road.rotation.x = -Math.PI / 2;
+      road.position.y = 0;
+      road.receiveShadow = true;
+      segment.add(road);
+
+      // Ombreiras (acostamento) discretas
+      const shoulderMat = new THREE.MeshStandardMaterial({ color: 0x121722, roughness: 0.98, metalness: 0.0 });
+      const left = new THREE.Mesh(new THREE.PlaneGeometry(22, 2), shoulderMat);
+      left.rotation.x = -Math.PI / 2; left.position.set(0, -0.001, 4);
+      const right = new THREE.Mesh(new THREE.PlaneGeometry(22, 2), shoulderMat);
+      right.rotation.x = -Math.PI / 2; right.position.set(0, -0.001, -4);
+      segment.add(left, right);
+
+      // Faixa central tracejada
+      const dashMat = new THREE.MeshBasicMaterial({ color: 0xf0f4ff });
+      for (let i = -10; i <= 10; i++) {
+        const dash = new THREE.Mesh(new THREE.PlaneGeometry(0.7, 0.12), dashMat);
+        dash.rotation.x = -Math.PI / 2;
+        dash.position.set(i, 0.002, 0);
+        segment.add(dash);
+      }
+
+      return segment;
+    };
+  
+    // Cria dois segmentos para loop contínuo
+    const segA = createRoadSegment();
+    segA.position.x = 0;
+    this.scene.add(segA);
+  
+    const segB = createRoadSegment();
+    segB.position.x = this.roadLength;
+    this.scene.add(segB);
+  
+    this.roadSegments = [segA, segB];
+
+    // Aura energética sutil (mantida)
     const ringGeo = new THREE.RingGeometry(1.4, 1.65, 64);
     const ringMat = new THREE.MeshBasicMaterial({ color: 0x4f8cff, transparent: true, opacity: 0.15, side: THREE.DoubleSide });
     const ring = new THREE.Mesh(ringGeo, ringMat);
@@ -114,6 +157,7 @@ class Car3DExperience {
     roof.position.set(0.15, 0.95, 0);
     roof.castShadow = true;
     car.add(roof);
+    this.objects.roof = roof;
 
     // Rodas
     const wheelMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.2, roughness: 0.8 });
@@ -173,6 +217,9 @@ class Car3DExperience {
     this.scene.add(car);
     this.car = car;
 
+    // Captura posições/rotações originais para explode/recolher
+    this._captureOriginalTransforms();
+
     // Flutuação sutil
     anime({
       targets: this.car.position,
@@ -184,6 +231,66 @@ class Car3DExperience {
     });
   }
 
+  // Salva transformações iniciais dos componentes e rodas
+  _captureOriginalTransforms() {
+    const save = (obj) => {
+      if (!obj) return;
+      this._orig.set(obj, {
+        pos: obj.position.clone(),
+        rot: obj.rotation.clone()
+      });
+    };
+    save(this.objects.bateria);
+    save(this.objects.inversor);
+    save(this.objects.controlador);
+    save(this.objects.motor);
+    save(this.objects.roof);
+    this.wheels.forEach(w => save(w));
+  }
+
+  // Alterna entre separar e recolher as peças
+  explode() {
+    const btn = document.getElementById('btn-explode');
+
+    const moveTo = (obj, target, duration = 700) => {
+      if (!obj) return;
+      anime.remove(obj.position);
+      anime({
+        targets: obj.position,
+        x: target.x, y: target.y, z: target.z,
+        duration,
+        easing: 'easeInOutQuad'
+      });
+    };
+
+    if (!this._exploded) {
+      const o = (obj) => this._orig.get(obj)?.pos || obj.position.clone();
+      const add = (a, b) => new THREE.Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+
+      moveTo(this.objects.motor,       add(o(this.objects.motor),       new THREE.Vector3( 1.4, 0.20,  0.0)));
+      moveTo(this.objects.bateria,     add(o(this.objects.bateria),     new THREE.Vector3(-1.4, 0.20, -1.1)));
+      moveTo(this.objects.inversor,    add(o(this.objects.inversor),    new THREE.Vector3( 0.8, 0.25,  1.1)));
+      moveTo(this.objects.controlador, add(o(this.objects.controlador), new THREE.Vector3(-0.9, 0.25,  1.1)));
+      if (this.objects.roof) {
+        moveTo(this.objects.roof, add(o(this.objects.roof), new THREE.Vector3(0, 0.9, 0)));
+      }
+      this.wheels.forEach((w, idx) => {
+        const offset = (idx % 2 === 0) ? 0.35 : -0.35;
+        moveTo(w, add(o(w), new THREE.Vector3(0, 0.1, offset)), 650);
+      });
+
+      this._ringPulse('#4f8cff');
+      this._exploded = true;
+      if (btn) btn.textContent = 'Recolher Peças';
+    } else {
+      // Restaurar posições originais
+      this._orig.forEach((val, obj) => moveTo(obj, val.pos, 650));
+      this._ringPulse('#4f8cff');
+      this._exploded = false;
+      if (btn) btn.textContent = 'Separar Peças';
+    }
+  }
+
   _bindEvents() {
     window.addEventListener('resize', () => this._onResize());
     this.canvas.addEventListener('pointermove', (e) => this._onPointerMove(e));
@@ -193,6 +300,7 @@ class Car3DExperience {
     document.getElementById('btn-start').addEventListener('click', () => this.startup());
     document.getElementById('btn-charge').addEventListener('click', () => this.charge());
     document.getElementById('btn-drive').addEventListener('click', () => this.drive());
+    document.getElementById('btn-explode').addEventListener('click', () => this.explode());
     document.getElementById('btn-reset').addEventListener('click', () => this.reset());
     document.getElementById('btn-reset-cam').addEventListener('click', () => this.resetCamera());
   }
@@ -433,32 +541,50 @@ class Car3DExperience {
   }
 
   drive() {
-    // acelera rodas + leve deslocamento
-    this._showInfo('motor');
-    const wheels = this.wheels.map(w => w.userData.spin);
-    const spin = { a: 0 };
-    anime({
-      targets: spin,
-      a: Math.PI * 8,
-      duration: 2500,
-      easing: 'easeInOutSine',
-      update: () => wheels.forEach(r => r.rotation.x = spin.a)
-    });
+    // Alterna condução contínua
+    const btn = document.getElementById('btn-drive');
+    this.isDriving = !this.isDriving;
 
-    anime({
-      targets: this.car.position,
-      x: [{ value: 0.2, duration: 800 }, { value: -0.2, duration: 800 }, { value: 0, duration: 700 }],
-      easing: 'easeInOutSine'
-    });
+    if (this.isDriving) {
+      this._showInfo('motor');
+      this._ringPulse('#dc3545');
+      if (btn) btn.textContent = 'Parar';
 
-    // vibração suave no corpo
-    anime({
-      targets: this.objects.body.rotation,
-      z: [{ value: 0.02, duration: 300 }, { value: -0.02, duration: 300 }, { value: 0, duration: 300 }],
-      easing: 'easeInOutSine'
-    });
+      // vibração contínua no corpo enquanto dirige
+      anime.remove(this.objects.body.rotation);
+      anime({
+        targets: this.objects.body.rotation,
+        z: [{ value: 0.02, duration: 300 }, { value: -0.02, duration: 300 }],
+        easing: 'easeInOutSine',
+        direction: 'alternate',
+        loop: true
+      });
 
-    this._ringPulse('#dc3545');
+      // leve deslocamento lateral enquanto dirige (opcional)
+      anime.remove(this.car.position);
+      anime({
+        targets: this.car.position,
+        x: [{ value: 0.2, duration: 800 }, { value: -0.2, duration: 800 }],
+        easing: 'easeInOutSine',
+        direction: 'alternate',
+        loop: true
+      });
+    } else {
+      if (btn) btn.textContent = 'Dirigir';
+
+      // parar vibração do corpo
+      anime.remove(this.objects.body.rotation);
+      this.objects.body.rotation.z = 0;
+
+      // reposicionar estrada e resetar rodas (evita “saltos” quando retomar)
+      if (this.roadSegments?.length >= 2) {
+        this.roadSegments[0].position.x = 0;
+        this.roadSegments[1].position.x = this.roadLength;
+      }
+      this.wheels.forEach(w => { w.userData.spin.rotation.x = 0; });
+
+      this._ringPulse('#4f8cff');
+    }
   }
 
   reset() {
@@ -485,6 +611,17 @@ class Car3DExperience {
     });
 
     this._ringPulse('#4f8cff');
+
+    // Parar condução e restaurar botão + reposicionar estrada/rodas
+    this.isDriving = false;
+    const btn = document.getElementById('btn-drive');
+    if (btn) btn.textContent = 'Dirigir';
+
+    if (this.roadSegments?.length >= 2) {
+        this.roadSegments[0].position.x = 0;
+        this.roadSegments[1].position.x = this.roadLength;
+    }
+    this.wheels.forEach(w => { w.userData.spin.rotation.x = 0; });
   }
 
   resetCamera() {
@@ -503,23 +640,40 @@ class Car3DExperience {
   animate() {
     const dt = this.clock.getDelta();
     this.controls.update();
-
-    // efeito idle nas rodas lento
-    this.wheels.forEach(w => { w.userData.spin.rotation.x += dt * 0.8; });
-
+  
+    // Movimento da estrada contínuo + rotação das rodas proporcional à velocidade
+    if (this.isDriving && this.roadSegments.length) {
+      const dx = this.driveSpeed * dt;
+  
+      this.roadSegments.forEach(seg => {
+        seg.position.x -= dx;
+        if (seg.position.x < -this.roadLength) {
+          seg.position.x += this.roadLength * 2; // recicla o segmento para a frente
+        }
+      });
+  
+      // velocidade angular das rodas ~ v / r
+      const wheelRadius = 0.33;
+      const angVel = this.driveSpeed / wheelRadius;
+      this.wheels.forEach(w => { w.userData.spin.rotation.x += angVel * dt; });
+    } else {
+      // efeito idle nas rodas lento
+      this.wheels.forEach(w => { w.userData.spin.rotation.x += dt * 0.8; });
+    }
+  
     // Render via composer (com bloom)
     if (this.composer) {
       this.composer.render();
     } else {
       this.renderer.render(this.scene, this.camera);
     }
-
+  
     // Esconde overlay no primeiro frame renderizado
     if (!this._didHideLoading) {
       this._didHideLoading = true;
       this._hideLoading();
     }
-
+  
     requestAnimationFrame(this.animate);
   }
 }

@@ -48,6 +48,14 @@ class CombustionCar3DExperience {
     this.wheels = [];
     this._exhaustPuffs = []; // efeitos temporários de escapamento
 
+    // FIX: initialize road/driving state to avoid "Cannot read properties of undefined (reading 'push')"
+    this.roadSegments = [];
+    this.roadLength = 16;   // comprimento de cada segmento da estrada (em unidades da cena)
+    this.driveSpeed = 8;    // velocidade da estrada quando "dirigindo"
+    this.isDriving = false; // começa parado
+    this._aura = null;      // halo desativado, mas mantido definido
+    this._didHideLoading = false;
+
     this._setupLights();
     this._setupEnvironment();
     this._buildCar();
@@ -77,31 +85,56 @@ class CombustionCar3DExperience {
   }
 
   _setupEnvironment() {
-    // Piso suave
-    const groundMat = new THREE.MeshStandardMaterial({ color: 0x1e1b22, roughness: 0.95, metalness: 0.0 });
-    const ground = new THREE.Mesh(new THREE.CylinderGeometry(8, 8, 0.1, 64), groundMat);
-    ground.receiveShadow = true;
-    ground.position.y = -0.005;
-    this.scene.add(ground);
+    // (Sem círculo/halo)
+    // Antes havia um RingGeometry aqui; removido para não exibir nenhum círculo.
 
-    // Halo de foco da cena
-    const ringGeo = new THREE.RingGeometry(2.4, 2.8, 64);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0xff7a3d, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = -Math.PI / 2;
-    ring.position.y = 0.001;
-    this.scene.add(ring);
+    // Estrada com 3 segmentos (loop contínuo)
+    const L = this.roadLength;      // comprimento de cada segmento
+    const roadWidth = 4.2;          // largura da via
 
-    // Pulsar leve do ring
-    if (window.anime) {
-      anime({
-        targets: ring.scale,
-        x: [{ value: 1.06, duration: 1700 }, { value: 1.0, duration: 1700 }],
-        y: [{ value: 1.06, duration: 1700 }, { value: 1.0, duration: 1700 }],
-        easing: 'easeInOutSine',
-        loop: true
-      });
-    }
+    const makeSegment = () => {
+      const g = new THREE.Group();
+
+      // Asfalto
+      const asphaltMat = new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.95, metalness: 0.0 });
+      const asphalt = new THREE.Mesh(new THREE.PlaneGeometry(L, roadWidth), asphaltMat);
+      asphalt.rotation.x = -Math.PI / 2;
+      asphalt.position.y = 0.001;
+      asphalt.receiveShadow = true;
+      g.add(asphalt);
+
+      // Linhas laterais contínuas
+      const sideMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const sideL = new THREE.Mesh(new THREE.PlaneGeometry(L, 0.06), sideMat);
+      sideL.rotation.x = -Math.PI / 2;
+      sideL.position.set(0, 0.002, roadWidth * 0.5 - 0.12);
+
+      const sideR = sideL.clone();
+      sideR.position.z = -roadWidth * 0.5 + 0.12;
+
+      g.add(sideL, sideR);
+
+      // Faixa central tracejada
+      const dashMat = new THREE.MeshBasicMaterial({ color: 0xfff6c0 });
+      const dashLen = 0.9, gap = 0.7, dashW = 0.1;
+      const count = Math.ceil(L / (dashLen + gap));
+      for (let i = 0; i < count; i++) {
+        const x = -L / 2 + i * (dashLen + gap);
+        const dash = new THREE.Mesh(new THREE.PlaneGeometry(dashLen, dashW), dashMat);
+        dash.rotation.x = -Math.PI / 2;
+        dash.position.set(x + dashLen / 2, 0.003, 0);
+        g.add(dash);
+      }
+
+      return g;
+    };
+
+    const s0 = makeSegment(); s0.position.x = -L;
+    const s1 = makeSegment();
+    const s2 = makeSegment(); s2.position.x = L;
+
+    this.scene.add(s0, s1, s2);
+    this.roadSegments.push(s0, s1, s2);
   }
 
   _material(color) {
@@ -218,6 +251,9 @@ class CombustionCar3DExperience {
     this.scene.add(car);
     this.car = car;
 
+    // Captura posições originais para separar/recolher
+    this._captureOriginalTransforms();
+
     // Oscilação sutil do carro
     if (window.anime) {
       anime({
@@ -231,6 +267,72 @@ class CombustionCar3DExperience {
     }
   }
 
+  // Salva transformações iniciais dos componentes e rodas
+  _captureOriginalTransforms() {
+    if (!this._orig) this._orig = new Map();
+    const save = (obj) => {
+      if (!obj) return;
+      this._orig.set(obj, {
+        pos: obj.position.clone(),
+        rot: obj.rotation.clone(),
+      });
+    };
+    save(this.objects.motor);
+    save(this.objects.tanque);
+    save(this.objects.escapamento);
+    save(this.objects.radiador);
+    save(this.objects.cambio);
+    save(this.objects.body);
+    this.wheels.forEach(w => save(w));
+  }
+
+  // Alterna entre separar e recolher as peças
+  explode() {
+    const btn = document.getElementById('btn-explode');
+
+    const moveTo = (obj, target, duration = 700) => {
+      if (!obj) return;
+      anime.remove(obj.position);
+      anime({
+        targets: obj.position,
+        x: target.x, y: target.y, z: target.z,
+        duration,
+        easing: 'easeInOutQuad'
+      });
+    };
+
+    if (!this._exploded) {
+      const o = (obj) => this._orig.get(obj)?.pos || obj.position.clone();
+      const add = (a, b) => new THREE.Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+
+      // Offsets para destacar cada componente
+      moveTo(this.objects.motor,       add(o(this.objects.motor),       new THREE.Vector3( 1.0, 0.25,  0.0)));
+      moveTo(this.objects.radiador,    add(o(this.objects.radiador),    new THREE.Vector3( 1.4, 0.15,  0.0)));
+      moveTo(this.objects.cambio,      add(o(this.objects.cambio),      new THREE.Vector3( 0.0, 0.25,  0.9)));
+      moveTo(this.objects.tanque,      add(o(this.objects.tanque),      new THREE.Vector3(-1.2, 0.20,  0.0)));
+      moveTo(this.objects.escapamento, add(o(this.objects.escapamento), new THREE.Vector3(-0.8, 0.10, -0.9)));
+
+      // Opcional: manter a carroceria no lugar (já salva em _orig)
+      // moveTo(this.objects.body, add(o(this.objects.body), new THREE.Vector3(0, 0.4, 0)));
+
+      // Rodas levemente deslocadas para fora
+      this.wheels.forEach((w, idx) => {
+        const offsetZ = (idx % 2 === 0) ? 0.35 : -0.35;
+        moveTo(w, add(o(w), new THREE.Vector3(0, 0.1, offsetZ)), 650);
+      });
+
+      this._ringPulse('#ffb36b');
+      this._exploded = true;
+      if (btn) btn.textContent = 'Recolher Peças';
+    } else {
+      // Restaurar posições originais
+      this._orig.forEach((val, obj) => moveTo(obj, val.pos, 650));
+      this._ringPulse('#ffb36b');
+      this._exploded = false;
+      if (btn) btn.textContent = 'Separar Peças';
+    }
+  }
+
   _bindEvents() {
     window.addEventListener('resize', () => this._onResize());
     this.canvas.addEventListener('pointermove', (e) => this._onPointerMove(e));
@@ -241,6 +343,12 @@ class CombustionCar3DExperience {
     document.getElementById('btn-rev').addEventListener('click', () => this.rev());
     document.getElementById('btn-reset').addEventListener('click', () => this.reset());
     document.getElementById('btn-reset-cam').addEventListener('click', () => this.resetCamera());
+    const driveBtn = document.getElementById('btn-drive');
+    if (driveBtn) driveBtn.addEventListener('click', () => this.drive());
+
+    // Novo: Separar Peças
+    const explodeBtn = document.getElementById('btn-explode');
+    if (explodeBtn) explodeBtn.addEventListener('click', () => this.explode());
   }
 
   _intro() {
@@ -401,31 +509,8 @@ class CombustionCar3DExperience {
   }
 
   _ringPulse(color) {
-    // Aura no chão ao redor do carro para ênfase visual
-    if (this._aura) {
-      this.scene.remove(this._aura);
-      this._aura.geometry.dispose();
-      this._aura.material.dispose();
-      this._aura = null;
-    }
-    const g = new THREE.RingGeometry(2.5, 2.8, 64);
-    const m = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.18, side: THREE.DoubleSide });
-    const mesh = new THREE.Mesh(g, m);
-    mesh.rotation.x = -Math.PI / 2;
-    mesh.position.y = 0.002;
-    this.scene.add(mesh);
-    this._aura = mesh;
-    anime({
-      targets: mesh.scale,
-      x: [{ value: 1.08, duration: 700 }, { value: 1.0, duration: 700 }],
-      y: [{ value: 1.08, duration: 700 }, { value: 1.0, duration: 700 }],
-      easing: 'easeInOutSine',
-      loop: 3
-    });
-    anime({
-      targets: mesh.material, opacity: [{ value: 0.28, duration: 300 }, { value: 0.12, duration: 700 }],
-      easing: 'easeOutQuad'
-    });
+    // Desativado: não criar círculo/halo
+    return;
   }
 
   _showInfo(comp) {
@@ -448,7 +533,13 @@ class CombustionCar3DExperience {
       easing: 'easeOutQuad'
     });
 
-    this._ringPulse(data.color);
+    // Remover qualquer aura existente ao mostrar info e não criar novas
+    if (this._aura) {
+      this.scene.remove(this._aura);
+      this._aura.geometry?.dispose?.();
+      this._aura.material?.dispose?.();
+      this._aura = null;
+    }
   }
 
   ignition() {
@@ -511,8 +602,22 @@ class CombustionCar3DExperience {
     });
 
     this._emitExhaust(6, 220);
+
+    // Inicia movimento curto da estrada para simular deslocamento
+    this.isDriving = true;
+    clearTimeout(this._driveTimeout);
+    this._driveTimeout = setTimeout(() => { this.isDriving = false; }, 1800);
   }
 
+  // Alterna direção contínua (iniciar/parar)
+  drive() {
+    this.isDriving = !this.isDriving;
+    const btn = document.getElementById('btn-drive');
+    if (btn) btn.textContent = this.isDriving ? 'Parar' : 'Dirigir';
+    if (this.isDriving) {
+      this._showInfo('escapamento');
+    }
+  }
   reset() {
     this.infoBody.innerHTML = 'Clique em um componente para ver detalhes. Use os botões abaixo para simular cenários.';
     this.statusFill.style.width = '0%';
@@ -523,23 +628,29 @@ class CombustionCar3DExperience {
       o.scale.set(1, 1, 1);
     });
 
-    anime.remove(this.car.position);
-    this.car.position.set(0, this.car.position.y, 0);
-    anime({
-      targets: this.car.position,
-      y: [this.car.position.y, this.car.position.y + 0.035],
-      duration: 2500,
-      direction: 'alternate',
-      easing: 'easeInOutSine',
-      loop: true
-    });
-
-    if (this._aura) {
-      this.scene.remove(this._aura);
-      this._aura.geometry.dispose();
-      this._aura.material.dispose();
-      this._aura = null;
+    // Recolhe todas as peças caso estejam separadas
+    if (this._orig && this._orig.size > 0) {
+      this._orig.forEach((val, obj) => {
+        if (!obj) return;
+        anime.remove(obj.position);
+        obj.position.copy(val.pos);
+        if (val.rot) obj.rotation.copy(val.rot);
+      });
     }
+    this._exploded = false;
+    const btn = document.getElementById('btn-explode');
+    if (btn) btn.textContent = 'Separar Peças';
+
+    // Parar e reposicionar estrada
+    this.isDriving = false;
+    if (this.roadSegments.length === 3) {
+      const L = this.roadLength;
+      this.roadSegments[0].position.x = -L;
+      this.roadSegments[1].position.x = 0;
+      this.roadSegments[2].position.x = L;
+    }
+    const driveBtn = document.getElementById('btn-drive');
+    if (driveBtn) driveBtn.textContent = 'Dirigir';
   }
 
   resetCamera() {
@@ -605,8 +716,21 @@ class CombustionCar3DExperience {
     const dt = this.clock.getDelta();
     this.controls.update();
 
-    // Idle das rodas
-    this.wheels.forEach(w => { w.userData.spin.rotation.x += dt * 0.8; });
+    // Idle das rodas + incremento quando dirigindo
+    const spinDelta = (this.isDriving ? (0.8 + 8.0) : 0.8) * dt;
+    this.wheels.forEach(w => { w.userData.spin.rotation.x += spinDelta; });
+
+    // Movimento da estrada (loop com 3 segmentos) enquanto "dirigindo"
+    if (this.isDriving && this.roadSegments.length === 3) {
+      const dx = this.driveSpeed * dt;
+      const L = this.roadLength;
+      for (const seg of this.roadSegments) {
+        seg.position.x -= dx;
+        if (seg.position.x < -1.5 * L) {
+          seg.position.x += 3 * L;
+        }
+      }
+    }
 
     // Reposiciona labels a cada frame
     this._positionLabels();

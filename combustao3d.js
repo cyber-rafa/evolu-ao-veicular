@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 class CombustionCar3DExperience {
+  // Dentro da classe CombustionCar3DExperience
   constructor() {
     this.canvas = document.getElementById('webgl');
     this.infoBody = document.getElementById('info-body');
@@ -324,12 +325,20 @@ class CombustionCar3DExperience {
       this._ringPulse('#ffb36b');
       this._exploded = true;
       if (btn) btn.textContent = 'Recolher Peças';
+
+      // Mostrar labels ao separar peças
+      this._labelsVisible = true;
+      this._positionLabels();
     } else {
-      // Restaurar posições originais
+      // Remover posições originais
       this._orig.forEach((val, obj) => moveTo(obj, val.pos, 650));
       this._ringPulse('#ffb36b');
       this._exploded = false;
       if (btn) btn.textContent = 'Separar Peças';
+
+      // Esconder labels ao resetar
+      this._labelsVisible = false;
+      Object.values(this.labels).forEach(el => { if (el) el.style.display = 'none'; });
     }
   }
 
@@ -433,6 +442,12 @@ class CombustionCar3DExperience {
   }
 
   _positionLabels() {
+    // Esconde tudo rapidamente se não for para mostrar
+    if (!this._labelsVisible) {
+      Object.values(this.labels).forEach(el => { if (el) el.style.display = 'none'; });
+      return;
+    }
+
     const width = this.canvas.clientWidth || this.canvas.parentElement.clientWidth;
     const height = this.canvas.clientHeight || this.canvas.parentElement.clientHeight;
     const toScreen = (obj, el) => {
@@ -640,6 +655,10 @@ class CombustionCar3DExperience {
     this._exploded = false;
     const btn = document.getElementById('btn-explode');
     if (btn) btn.textContent = 'Separar Peças';
+
+    // Esconder labels ao resetar
+    this._labelsVisible = false;
+    Object.values(this.labels).forEach(el => { if (el) el.style.display = 'none'; });
 
     // Parar e reposicionar estrada
     this.isDriving = false;

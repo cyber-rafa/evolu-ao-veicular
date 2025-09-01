@@ -127,6 +127,59 @@ class CombustionCar3DExperience {
         g.add(dash);
       }
 
+      // NOVO: gramado e árvores
+      const grassMat = new THREE.MeshStandardMaterial({ color: 0x184d2a, roughness: 1.0, metalness: 0.0 });
+      const grassLeft = new THREE.Mesh(new THREE.PlaneGeometry(L, 24), grassMat);
+      grassLeft.rotation.x = -Math.PI / 2;
+      grassLeft.position.set(0, -0.002, 12);
+      grassLeft.receiveShadow = true;
+
+      const grassRight = new THREE.Mesh(new THREE.PlaneGeometry(L, 24), grassMat);
+      grassRight.rotation.x = -Math.PI / 2;
+      grassRight.position.set(0, -0.002, -12);
+      grassRight.receiveShadow = true;
+
+      g.add(grassLeft, grassRight);
+
+      // Materiais e geometria das árvores
+      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5a3c1e, roughness: 0.9, metalness: 0.0 });
+      const leafMat = new THREE.MeshStandardMaterial({ color: 0x2e7d32, roughness: 0.85, metalness: 0.0 });
+      const trunkGeo = new THREE.CylinderGeometry(0.07, 0.09, 0.8, 8);
+      const leafGeo = new THREE.ConeGeometry(0.5, 1.2, 12);
+
+      const makeTree = () => {
+        const t = new THREE.Group();
+        const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+        trunk.position.y = 0.4;
+        trunk.castShadow = true;
+
+        const leaves = new THREE.Mesh(leafGeo, leafMat);
+        leaves.position.y = 1.2;
+        leaves.castShadow = true;
+
+        t.add(trunk, leaves);
+        return t;
+      };
+
+      const addTrees = (baseZ, qty) => {
+        const treesGroup = new THREE.Group();
+        for (let i = 0; i < qty; i++) {
+          const tree = makeTree();
+          const margin = 1.0;
+          const x = -L / 2 + margin + Math.random() * (L - 2 * margin); // espalha ao longo do segmento
+          const z = baseZ + (Math.random() * 6 - 3);                    // leve variação lateral
+          const s = 0.85 + Math.random() * 0.6;                          // variação de escala
+          tree.position.set(x, 0, z);
+          tree.rotation.y = Math.random() * Math.PI * 2;
+          tree.scale.setScalar(s);
+          treesGroup.add(tree);
+        }
+        g.add(treesGroup);
+      };
+
+      addTrees(10, 10);   // lado esquerdo (Z positivo)
+      addTrees(-10, 10);  // lado direito (Z negativo)
+
       return g;
     };
 

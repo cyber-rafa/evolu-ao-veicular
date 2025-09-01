@@ -85,29 +85,90 @@ class Car3DExperience {
     const createRoadSegment = () => {
       const segment = new THREE.Group();
 
-      const asphaltMat = new THREE.MeshStandardMaterial({ color: 0x1a2030, roughness: 0.95, metalness: 0.05 });
-      const road = new THREE.Mesh(new THREE.PlaneGeometry(22, 6), asphaltMat);
+      // Configuração igual ao carro a combustão
+      const L = this.roadLength;       // comprimento do segmento
+      const roadWidth = 4.2;           // largura da via (igual combustão)
+
+      // Asfalto
+      const asphaltMat = new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.95, metalness: 0.0 });
+      const road = new THREE.Mesh(new THREE.PlaneGeometry(L, roadWidth), asphaltMat);
       road.rotation.x = -Math.PI / 2;
-      road.position.y = 0;
+      road.position.y = 0.001;
       road.receiveShadow = true;
       segment.add(road);
 
-      // Ombreiras (acostamento) discretas
-      const shoulderMat = new THREE.MeshStandardMaterial({ color: 0x121722, roughness: 0.98, metalness: 0.0 });
-      const left = new THREE.Mesh(new THREE.PlaneGeometry(22, 2), shoulderMat);
-      left.rotation.x = -Math.PI / 2; left.position.set(0, -0.001, 4);
-      const right = new THREE.Mesh(new THREE.PlaneGeometry(22, 2), shoulderMat);
-      right.rotation.x = -Math.PI / 2; right.position.set(0, -0.001, -4);
-      segment.add(left, right);
+      // Linhas laterais contínuas
+      const sideMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const sideL = new THREE.Mesh(new THREE.PlaneGeometry(L, 0.06), sideMat);
+      sideL.rotation.x = -Math.PI / 2;
+      sideL.position.set(0, 0.002, roadWidth * 0.5 - 0.12);
+
+      const sideR = sideL.clone();
+      sideR.position.z = -roadWidth * 0.5 + 0.12;
+
+      segment.add(sideL, sideR);
 
       // Faixa central tracejada
-      const dashMat = new THREE.MeshBasicMaterial({ color: 0xf0f4ff });
-      for (let i = -10; i <= 10; i++) {
-        const dash = new THREE.Mesh(new THREE.PlaneGeometry(0.7, 0.12), dashMat);
+      const dashMat = new THREE.MeshBasicMaterial({ color: 0xfff6c0 });
+      const dashLen = 0.9, gap = 0.7, dashW = 0.1;
+      const count = Math.ceil(L / (dashLen + gap));
+      for (let i = 0; i < count; i++) {
+        const x = -L / 2 + i * (dashLen + gap);
+        const dash = new THREE.Mesh(new THREE.PlaneGeometry(dashLen, dashW), dashMat);
         dash.rotation.x = -Math.PI / 2;
-        dash.position.set(i, 0.002, 0);
+        dash.position.set(x + dashLen / 2, 0.003, 0);
         segment.add(dash);
       }
+
+      // Gramado encostado na estrada (sem espaçamento preto)
+      const grassMat = new THREE.MeshStandardMaterial({ color: 0x184d2a, roughness: 1.0, metalness: 0.0 });
+      const grassLeft = new THREE.Mesh(new THREE.PlaneGeometry(L, 24), grassMat);
+      grassLeft.rotation.x = -Math.PI / 2;
+      grassLeft.position.set(0, -0.002, roadWidth * 0.5 + 12); // colado na borda
+      grassLeft.receiveShadow = true;
+
+      const grassRight = new THREE.Mesh(new THREE.PlaneGeometry(L, 24), grassMat);
+      grassRight.rotation.x = -Math.PI / 2;
+      grassRight.position.set(0, -0.002, -roadWidth * 0.5 - 12);
+      grassRight.receiveShadow = true;
+
+      segment.add(grassLeft, grassRight);
+
+      // Materiais e geometria base das árvores (mantidas e reposicionadas conforme nova largura)
+      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5a3c1e, roughness: 0.9, metalness: 0.0 });
+      const leafMat = new THREE.MeshStandardMaterial({ color: 0x2e7d32, roughness: 0.85, metalness: 0.0 });
+      const trunkGeo = new THREE.CylinderGeometry(0.07, 0.09, 0.8, 8);
+      const leafGeo = new THREE.ConeGeometry(0.5, 1.2, 12);
+
+      const makeTree = () => {
+        const g = new THREE.Group();
+        const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+        trunk.position.y = 0.4;
+        trunk.castShadow = true;
+        const leaves = new THREE.Mesh(leafGeo, leafMat);
+        leaves.position.y = 1.2;
+        leaves.castShadow = true;
+        g.add(trunk, leaves);
+        return g;
+      };
+
+      const addTrees = (baseZ, count) => {
+        const trees = new THREE.Group();
+        for (let i = 0; i < count; i++) {
+          const t = makeTree();
+          const x = -L / 2 + 1 + Math.random() * (L - 2);          // ao longo do segmento
+          const z = baseZ + (Math.random() * 6 - 3);                // leve variação lateral
+          const s = 0.85 + Math.random() * 0.6;                     // variação de tamanho
+          t.position.set(x, 0, z);
+          t.rotation.y = Math.random() * Math.PI * 2;
+          t.scale.setScalar(s);
+          trees.add(t);
+        }
+        segment.add(trees);
+      };
+
+      addTrees(roadWidth * 0.5 + 9, 12);   // lado esquerdo
+      addTrees(-roadWidth * 0.5 - 9, 12);  // lado direito
 
       return segment;
     };
@@ -147,7 +208,7 @@ class Car3DExperience {
     car.name = 'car';
 
     // Corpo
-    const body = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.6, 1.2, 1, 1, 1), this._material(0x2955d9));
+    const body = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.6, 1.2, 1, 1, 1), this._material(0xffffff));
     body.position.y = 0.6;
     body.castShadow = true;
     body.receiveShadow = true;
@@ -156,7 +217,7 @@ class Car3DExperience {
     this.objects.body = body;
 
     // Teto
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.28, 1.1), this._material(0x3a6fff));
+    const roof = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.28, 1.1), this._material(0xffffff));
     roof.position.set(0.15, 0.95, 0);
     roof.castShadow = true;
     car.add(roof);

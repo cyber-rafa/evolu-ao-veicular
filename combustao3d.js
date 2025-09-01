@@ -10,8 +10,8 @@ class CombustionCar3DExperience {
     this.statusFill = document.getElementById('status-fill');
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x141018);
-    this.scene.fog = new THREE.Fog(0x141018, 16, 32);
+    this.scene.background = new THREE.Color(0x233047);
+    this.scene.fog = new THREE.Fog(0x233047, 20, 70);
 
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
@@ -19,7 +19,7 @@ class CombustionCar3DExperience {
     this.renderer.shadowMap.enabled = true;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.05;
+    this.renderer.toneMappingExposure = 1.28;
 
     const aspect = (this.canvas.clientWidth || 800) / (this.canvas.clientHeight || 500);
     this.camera = new THREE.PerspectiveCamera(55, aspect, 0.1, 100);
@@ -68,10 +68,13 @@ class CombustionCar3DExperience {
   }
 
   _setupLights() {
-    const hemi = new THREE.HemisphereLight(0xfff0e0, 0x221308, 0.75);
+    const hemi = new THREE.HemisphereLight(0xfff3e0, 0x2a2f45, 1.0);
     this.scene.add(hemi);
 
-    const dir = new THREE.DirectionalLight(0xffffff, 1.1);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.22);
+    this.scene.add(ambient);
+
+    const dir = new THREE.DirectionalLight(0xffffff, 1.45);
     dir.position.set(6, 7, 5);
     dir.castShadow = true;
     dir.shadow.mapSize.set(2048, 2048);
@@ -79,7 +82,7 @@ class CombustionCar3DExperience {
     dir.shadow.camera.far = 30;
     this.scene.add(dir);
 
-    const fill = new THREE.SpotLight(0xffa86b, 0.35, 0, Math.PI * 0.25, 0.3, 1);
+    const fill = new THREE.SpotLight(0xb3c7ff, 0.5, 0, Math.PI * 0.30, 0.35, 1);
     fill.position.set(-4, 4, -2);
     fill.castShadow = false;
     this.scene.add(fill);

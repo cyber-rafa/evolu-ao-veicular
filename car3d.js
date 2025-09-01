@@ -10,7 +10,8 @@ class Car3DExperience {
     this.statusFill = document.getElementById('status-fill');
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x0b1020);
+    this.scene.background = new THREE.Color(0x1b2a4b);
+    this.scene.fog = new THREE.Fog(0x1b2a4b, 24, 80);
 
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
@@ -18,7 +19,7 @@ class Car3DExperience {
     this.renderer.shadowMap.enabled = true;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.1;
+    this.renderer.toneMappingExposure = 1.35;
     this.clock = new THREE.Clock();
 
     const aspect = (this.canvas.clientWidth || 800) / (this.canvas.clientHeight || 500);
@@ -68,16 +69,24 @@ class Car3DExperience {
   }
 
   _setupLights() {
-    const hemi = new THREE.HemisphereLight(0xffffff, 0x223355, 0.6);
+    const hemi = new THREE.HemisphereLight(0xfff3e0, 0x27324a, 0.95);
     this.scene.add(hemi);
 
-    const dir = new THREE.DirectionalLight(0xffffff, 1.0);
-    dir.position.set(5, 6, 4);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.18);
+    this.scene.add(ambient);
+
+    const dir = new THREE.DirectionalLight(0xffffff, 1.35);
+    dir.position.set(5, 7.5, 4.5);
     dir.castShadow = true;
     dir.shadow.mapSize.set(2048, 2048);
     dir.shadow.camera.near = 1;
     dir.shadow.camera.far = 20;
     this.scene.add(dir);
+
+    const fill = new THREE.SpotLight(0x9fb7ff, 0.28, 0, Math.PI * 0.32, 0.35, 1);
+    fill.position.set(-4, 4, -2);
+    fill.castShadow = false;
+    this.scene.add(fill);
   }
 
   _setupEnvironment() {

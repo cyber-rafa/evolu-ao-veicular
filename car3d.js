@@ -49,6 +49,9 @@ class Car3DExperience {
     this._exploded = false;
     this._orig = new Map();
 
+    // NOVO: controlar visibilidade das labels como na combustão
+    this._labelsVisible = false;
+    Object.values(this.labels).forEach(el => { if (el) el.style.display = 'none'; });
     // Estrada infinita e estado de condução
     this.roadSegments = [];
     this.isDriving = false;
@@ -282,12 +285,20 @@ class Car3DExperience {
       this._ringPulse('#4f8cff');
       this._exploded = true;
       if (btn) btn.textContent = 'Recolher Peças';
+
+      // NOVO: mostrar labels quando separar as peças
+      this._labelsVisible = true;
+      this._positionLabels();
     } else {
       // Restaurar posições originais
       this._orig.forEach((val, obj) => moveTo(obj, val.pos, 650));
       this._ringPulse('#4f8cff');
       this._exploded = false;
       if (btn) btn.textContent = 'Separar Peças';
+
+      // NOVO: esconder labels quando recolher
+      this._labelsVisible = false;
+      Object.values(this.labels).forEach(el => { if (el) el.style.display = 'none'; });
     }
   }
 
@@ -399,33 +410,36 @@ class Car3DExperience {
   }
 
   _positionLabels() {
-    const place = (mesh, el) => {
+    // Esconde rapidamente se não for para mostrar
+    if (!this._labelsVisible) {
+      Object.values(this.labels).forEach(el => { if (el) el.style.display = 'none'; });
+      return;
+    }
+
+    const width = this.canvas.clientWidth || this.canvas.parentElement.clientWidth;
+    const height = this.canvas.clientHeight || this.canvas.parentElement.clientHeight;
+
+    const toScreen = (mesh, el) => {
       if (!mesh || !el) return;
-      const pos = mesh.position.clone();
-      mesh.updateWorldMatrix(true, false);
-      mesh.getWorldPosition(pos);
+      const p = mesh.getWorldPosition(new THREE.Vector3()).clone().project(this.camera);
 
-      const proj = pos.clone().project(this.camera);
-
-      // Esconder se estiver fora do frustum/NDC
-      if (proj.x < -1 || proj.x > 1 || proj.y < -1 || proj.y > 1 || proj.z < -1 || proj.z > 1) {
-        el.style.opacity = '0';
-        return;
+      // Mostra só se estiver no frustum e à frente da câmera
+      if (p.z < 1 && p.x >= -1 && p.x <= 1 && p.y >= -1 && p.y <= 1) {
+        const x = (p.x * 0.5 + 0.5) * width;
+        const y = (-p.y * 0.5 + 0.5) * height;
+        el.style.display = 'block';
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+        el.style.opacity = '0.95';
+      } else {
+        el.style.display = 'none';
       }
-
-      const x = (proj.x * 0.5 + 0.5) * this.canvas.clientWidth;
-      const y = (-proj.y * 0.5 + 0.5) * this.canvas.clientHeight;
-
-      const rect = this.canvas.getBoundingClientRect();
-      el.style.left = rect.left + x + 'px';
-      el.style.top = rect.top + y + 'px';
-      el.style.opacity = '1';
     };
 
-    place(this.objects.bateria, this.labels.bateria);
-    place(this.objects.motor, this.labels.motor);
-    place(this.objects.inversor, this.labels.inversor);
-    place(this.objects.controlador, this.labels.controlador);
+    toScreen(this.objects.bateria, this.labels.bateria);
+    toScreen(this.objects.motor, this.labels.motor);
+    toScreen(this.objects.inversor, this.labels.inversor);
+    toScreen(this.objects.controlador, this.labels.controlador);
   }
 
   _showInfo(component) {
@@ -622,6 +636,10 @@ class Car3DExperience {
         this.roadSegments[1].position.x = this.roadLength;
     }
     this.wheels.forEach(w => { w.userData.spin.rotation.x = 0; });
+
+    // NOVO: esconder labels ao resetar
+    this._labelsVisible = false;
+    Object.values(this.labels).forEach(el => { if (el) el.style.display = 'none'; });
   }
 
   resetCamera() {
@@ -660,6 +678,9 @@ class Car3DExperience {
       // efeito idle nas rodas lento
       this.wheels.forEach(w => { w.userData.spin.rotation.x += dt * 0.8; });
     }
+  
+    // Reposiciona as labels para ficarem corretas em cada componente
+    this._positionLabels();
   
     // Render via composer (com bloom)
     if (this.composer) {

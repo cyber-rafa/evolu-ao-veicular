@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 class CombustionCar3DExperience {
-  // Dentro da classe CombustionCar3DExperience
   constructor() {
     this.canvas = document.getElementById('webgl');
     this.infoBody = document.getElementById('info-body');
@@ -56,6 +55,10 @@ class CombustionCar3DExperience {
     this.isDriving = false; // começa parado
     this._aura = null;      // halo desativado, mas mantido definido
     this._didHideLoading = false;
+
+    // NOVO: props móveis e timer do posto de gasolina
+    this._props = [];
+    this._gasStationTimer = null;
 
     this._setupLights();
     this._setupEnvironment();
@@ -687,6 +690,16 @@ class CombustionCar3DExperience {
     if (btn) btn.textContent = this.isDriving ? 'Parar' : 'Dirigir';
     if (this.isDriving) {
       this._showInfo('escapamento');
+      // Iniciar spawn de posto a cada 5s
+      if (!this._gasStationTimer) {
+        this._gasStationTimer = setInterval(() => this._spawnGasStation(), 5000);
+      }
+    } else {
+      // Parar spawn quando parar de dirigir
+      if (this._gasStationTimer) {
+        clearInterval(this._gasStationTimer);
+        this._gasStationTimer = null;
+      }
     }
   }
   reset() {
@@ -718,6 +731,26 @@ class CombustionCar3DExperience {
 
     // Parar e reposicionar estrada
     this.isDriving = false;
+
+    // NOVO: parar timer e remover todos os postos
+    if (this._gasStationTimer) {
+      clearInterval(this._gasStationTimer);
+      this._gasStationTimer = null;
+    }
+    if (this._props && this._props.length) {
+      for (let i = this._props.length - 1; i >= 0; i--) {
+        const p = this._props[i];
+        this.scene.remove(p);
+        p.traverse((o) => {
+          if (o.isMesh) {
+            o.geometry?.dispose?.();
+            o.material?.dispose?.();
+          }
+        });
+      }
+      this._props.length = 0;
+    }
+
     if (this.roadSegments.length === 3) {
       const L = this.roadLength;
       this.roadSegments[0].position.x = -L;
@@ -791,11 +824,9 @@ class CombustionCar3DExperience {
     const dt = this.clock.getDelta();
     this.controls.update();
 
-    // Idle das rodas + incremento quando dirigindo
     const spinDelta = (this.isDriving ? (0.8 + 8.0) : 0.8) * dt;
     this.wheels.forEach(w => { w.userData.spin.rotation.x += spinDelta; });
 
-    // Movimento da estrada (loop com 3 segmentos) enquanto "dirigindo"
     if (this.isDriving && this.roadSegments.length === 3) {
       const dx = this.driveSpeed * dt;
       const L = this.roadLength;
@@ -805,11 +836,25 @@ class CombustionCar3DExperience {
           seg.position.x += 3 * L;
         }
       }
+
+      // NOVO: mover e limpar postos
+      for (let i = this._props.length - 1; i >= 0; i--) {
+        const p = this._props[i];
+        p.position.x -= dx;
+        if (p.position.x < -1.7 * L) {
+          this.scene.remove(p);
+          p.traverse((o) => {
+            if (o.isMesh) {
+              o.geometry?.dispose?.();
+              o.material?.dispose?.();
+            }
+          });
+          this._props.splice(i, 1);
+        }
+      }
     }
 
-    // Reposiciona labels a cada frame
     this._positionLabels();
-
     this.renderer.render(this.scene, this.camera);
 
     if (!this._didHideLoading) {
@@ -818,6 +863,71 @@ class CombustionCar3DExperience {
     }
 
     requestAnimationFrame(this.animate);
+  }
+
+  // Método movido para dentro da classe original (antes estava em uma classe duplicada)
+  _spawnGasStation() {
+    const L = this.roadLength;
+
+    // Grupo do posto
+    const g = new THREE.Group();
+    g.name = 'gas-station';
+
+    // Plataforma (piso do posto)
+    const padMat = new THREE.MeshStandardMaterial({ color: 0x4a4a4a, roughness: 1.0, metalness: 0.0 });
+    const pad = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), padMat);
+    pad.rotation.x = -Math.PI / 2;
+    pad.position.y = 0.0005;
+    pad.receiveShadow = true;
+    g.add(pad);
+
+    // Loja
+    const shopMat = new THREE.MeshStandardMaterial({ color: 0xb0bec5, roughness: 0.7, metalness: 0.1 });
+    const shop = new THREE.Mesh(new THREE.BoxGeometry(3, 1.4, 2), shopMat);
+    shop.position.set(0, 0.7, -0.2);
+    shop.castShadow = true; shop.receiveShadow = true;
+    g.add(shop);
+
+    // Cobertura
+    const roofMat = new THREE.MeshStandardMaterial({ color: 0xff5252, roughness: 0.4, metalness: 0.2, emissive: 0x330000, emissiveIntensity: 0.15 });
+    const roof = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.18, 2.4), roofMat);
+    roof.position.set(0, 2.0, 0.2);
+    roof.castShadow = true; roof.receiveShadow = true;
+    g.add(roof);
+
+    // Colunas
+    const colMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6, metalness: 0.1 });
+    const col1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.0, 12), colMat);
+    col1.position.set(-1.4, 1.0, 0.9); col1.castShadow = true; g.add(col1);
+    const col2 = col1.clone(); col2.position.set(1.4, 1.0, 0.9); g.add(col2);
+
+    // Bombas de combustível
+    const pumpMat = new THREE.MeshStandardMaterial({ color: 0x1976d2, roughness: 0.6, metalness: 0.1, emissive: 0x0a1b3a, emissiveIntensity: 0.1 });
+    const pump1 = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.9, 0.4), pumpMat);
+    pump1.position.set(-0.8, 0.45, 0.7); pump1.castShadow = true; g.add(pump1);
+    const pump2 = pump1.clone(); pump2.position.x = 0.8; g.add(pump2);
+
+    // Totem/placa
+    const poleMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.8, metalness: 0.2 });
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 3.2, 12), poleMat);
+    pole.position.set(2.6, 1.6, -1.8); pole.castShadow = true; g.add(pole);
+
+    const signMat = new THREE.MeshStandardMaterial({ color: 0xffd54f, roughness: 0.5, metalness: 0.1, emissive: 0x332400, emissiveIntensity: 0.2 });
+    const sign = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.7, 0.2), signMat);
+    sign.position.set(2.6, 3.0, -1.8); sign.castShadow = true; g.add(sign);
+
+    // Lado (esquerda/direita) e spawn à direita
+    const side = Math.random() < 0.5 ? 1 : -1; // 1 = z+, -1 = z-
+    const z = side * 8.5;                      // acostamento/gramado
+    const x = 1.6 * L;                         // entra pela direita
+    g.position.set(x, 0, z);
+
+    // Sombra
+    g.traverse((o) => { if (o.isMesh) o.castShadow = true; });
+
+    // Adiciona à cena e registra para mover junto com a estrada
+    this.scene.add(g);
+    this._props.push(g);
   }
 }
 

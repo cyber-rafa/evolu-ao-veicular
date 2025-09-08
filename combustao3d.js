@@ -10,8 +10,8 @@ class CombustionCar3DExperience {
     this.statusFill = document.getElementById('status-fill');
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x233047);
-    this.scene.fog = new THREE.Fog(0x233047, 20, 70);
+    this.scene.background = new THREE.Color(0x9fb8ff);
+    this.scene.fog = new THREE.Fog(0x9fb8ff, 20, 70);
 
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));

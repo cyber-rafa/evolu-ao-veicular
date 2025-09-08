@@ -10,8 +10,8 @@ class Car3DExperience {
     this.statusFill = document.getElementById('status-fill');
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x1b2a4b);
-    this.scene.fog = new THREE.Fog(0x1b2a4b, 24, 80);
+    this.scene.background = new THREE.Color(0x9fb8ff);
+    this.scene.fog = new THREE.Fog(0x9fb8ff, 24, 80);
 
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));

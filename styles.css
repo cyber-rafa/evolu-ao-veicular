@@ -202,8 +202,8 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 /* Unificar tamanho das imagens na timeline (igual ao Ford) */
 .timeline .media-container img {
     width: 100%;
-    height: 220px; /* ajuste conforme preferir */
-    object-fit: cover; /* corta o excesso sem distorcer */
+    height: 420px;            /* aumentado (antes: 320px) */
+    object-fit: cover;        /* evita distorção, recorta com foco no centro */
     border-radius: var(--radius-1);
     display: block;
 }

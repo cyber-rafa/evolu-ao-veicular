@@ -199,6 +199,37 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .electric-car-charging { width: 120px; height: 36px; border-radius: 9px; background: linear-gradient(90deg, #2563eb, #1e40af); position: relative; box-shadow: inset 0 0 0 2px rgba(0,0,0,.2); }
 .electric-car-charging::after { content: ''; position: absolute; left: 8px; top: 50%; width: 0; height: 0; border-left: 8px solid #0ea5e9; border-top: 4px solid transparent; border-bottom: 4px solid transparent; transform: translateY(-50%); animation: plugPulse 1.2s ease-in-out infinite; }
 
+/* Unificar tamanho das imagens na timeline (igual ao Ford) */
+.timeline .media-container img {
+    width: 100%;
+    height: 220px; /* ajuste conforme preferir */
+    object-fit: cover; /* corta o excesso sem distorcer */
+    border-radius: var(--radius-1);
+    display: block;
+}
+.video-placeholder .media-source { display: block; margin-top: .5rem; font-size: .85rem; color: rgba(255,255,255,.75); text-align: center; }
+.animation-container { display: grid; place-items: center; height: 120px; }
+.assembly-line { width: 100%; max-width: 420px; height: 8px; background: rgba(255,255,255,.08); border-radius: 999px; position: relative; overflow: hidden; }
+.assembly-line .car-frame { position: absolute; left: 0; top: -12px; width: 60px; height: 32px; background: linear-gradient(180deg, #a8b3c5, #6b778d); border-radius: 8px; animation: slideRight 4s linear infinite; }
+.assembly-line .worker { position: absolute; left: 10px; top: -28px; width: 8px; height: 28px; background: #ffd166; border-radius: 2px; animation: bob 1.2s ease-in-out infinite; }
+
+.chart-animation { height: 120px; display: grid; place-items: center; }
+.oil-price-chart { width: 100%; max-width: 420px; height: 90px; background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04)); border: var(--line); border-radius: var(--radius-1); position: relative; overflow: hidden; }
+.oil-price-chart::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 24px, rgba(255,255,255,.06) 24px 25px); }
+.oil-price-chart::after { content: ''; position: absolute; left: -10%; top: 40%; width: 120%; height: 3px; background: linear-gradient(90deg, #ff7b7b, #ffd166); transform: rotate(-8deg); box-shadow: 0 0 10px rgba(255,209,102,.4); }
+
+.hybrid-animation { height: 120px; display: grid; place-items: center; }
+.engine-electric-combo { width: 140px; height: 60px; border-radius: 12px; background: linear-gradient(90deg, #4b5563 0 50%, #2563eb 50% 100%); box-shadow: var(--shadow-1); position: relative; }
+.engine-electric-combo::before, .engine-electric-combo::after { content: ''; position: absolute; top: 50%; width: 26px; height: 26px; border-radius: 50%; transform: translateY(-50%); }
+.engine-electric-combo::before { left: 12px; background: radial-gradient(circle at 35% 35%, #999, #222); animation: rotateDisc 2.5s linear infinite; }
+.engine-electric-combo::after { right: 12px; background: radial-gradient(circle at 35% 35%, #7dd3fc, #111); animation: rotateDisc 1.6s linear infinite reverse; }
+
+.charging-animation { height: 120px; display: grid; place-items: center; }
+.charging-station { width: 18px; height: 66px; background: #1f2937; border-radius: 4px; position: relative; margin-right: 14px; }
+.charging-station::before { content: ''; position: absolute; inset: 6px; border-radius: 3px; background: radial-gradient(circle, #10b981, #0ea5e9); filter: blur(6px); opacity: .6; }
+.electric-car-charging { width: 120px; height: 36px; border-radius: 9px; background: linear-gradient(90deg, #2563eb, #1e40af); position: relative; box-shadow: inset 0 0 0 2px rgba(0,0,0,.2); }
+.electric-car-charging::after { content: ''; position: absolute; left: 8px; top: 50%; width: 0; height: 0; border-left: 8px solid #0ea5e9; border-top: 4px solid transparent; border-bottom: 4px solid transparent; transform: translateY(-50%); animation: plugPulse 1.2s ease-in-out infinite; }
+
 /* How it works section */
 .how-it-works { padding: var(--spacing-5) 0; }
 .how-it-works h2 { text-align: center; margin: 0 0 var(--spacing-4); font-size: clamp(1.5rem, 2.4vw + .6rem, 2.1rem); }
@@ -486,16 +517,6 @@ footer { border-top: var(--line); padding: 1.25rem; text-align: center; color: v
 @keyframes blink {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
-}
-.media-source {
-    margin-top: 8px;
-    font-size: 0.9rem;
-    opacity: 0.85;
-    text-align: center;   /* centraliza como no Ford */
-    display: block;       /* garante largura total para centralização */
-}
-.media-source a {
-    text-decoration: underline;
 }
 
 

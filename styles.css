@@ -202,8 +202,18 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 /* Unificar tamanho das imagens na timeline (igual ao Ford) */
 .timeline .media-container img {
     width: 100%;
-    height: 420px;            /* aumentado (antes: 320px) */
-    object-fit: cover;        /* evita distorção, recorta com foco no centro */
+    height: 420px;            /* tamanho padrão */
+    object-fit: cover;        /* recorte central para os demais itens */
+    border-radius: var(--radius-1);
+    display: block;
+}
+/* Mostrar imagem completa (sem corte) apenas no item 2020+ */
+.timeline .media-container img.media-contain {
+    height: auto;             /* usa a altura natural */
+    max-height: 420px;        /* limita para não “estourar” o card */
+    width: 100%;
+    object-fit: contain;      /* mostra a imagem inteira */
+    background: rgba(255,255,255,.06); /* leve fundo para as bordas (opcional) */
     border-radius: var(--radius-1);
     display: block;
 }
@@ -271,9 +281,13 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .cta-button.secondary:hover { background: rgba(255,255,255,.08); }
 
 /* Center CTA to immersive car */
+/* seção .interactive-car */
 .interactive-car { width: min(100% - 2rem, var(--container-max)); margin: 1.25rem auto 0; display: flex; flex-direction: column; align-items: center; gap: .75rem; text-align: center; }
 .interactive-car h3 { margin: 0; color: var(--color-text); }
-#show-interactive-car { margin: .5rem auto 0; font-size: 1.05rem; padding: 1rem 1.4rem; }
+/* Tamanho unificado para ambos os botões */
+.interactive-car .cta-button { width: min(100%, 420px); font-size: 1.05rem; padding: 1rem 1.4rem; justify-content: center; }
+/* Margem igual para os dois botões */
+#show-interactive-car, #show-combustion-car { margin: .5rem auto 0; }
 @media (max-width: 768px) {
   #show-interactive-car { width: 100%; font-size: 1.15rem; padding: 1.1rem 1.6rem; }
 }

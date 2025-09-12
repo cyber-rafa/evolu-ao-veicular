@@ -213,9 +213,28 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
     max-height: 420px;        /* limita para não “estourar” o card */
     width: 100%;
     object-fit: contain;      /* mostra a imagem inteira */
-    background: rgba(255,255,255,.06); /* leve fundo para as bordas (opcional) */
+    background: rgba(255,255,255,.06);
     border-radius: var(--radius-1);
     display: block;
+}
+
+/* Mobile: melhorar imagens nos cards da timeline */
+@media (max-width: 768px) {
+  .timeline .media-container img {
+    width: 100%;
+    height: auto;             /* remove altura fixa */
+    aspect-ratio: 4 / 3;      /* mantém proporção agradável */
+    object-fit: cover;        /* mantém um leve corte se necessário */
+  }
+
+  /* Para imagens que precisam aparecer por completo, sem corte */
+  .timeline .media-container img.media-img-small,
+  .timeline .media-container img.media-contain {
+    aspect-ratio: auto;       /* usa a proporção natural da imagem */
+    height: auto;
+    max-height: 60vh;         /* evita estourar a tela */
+    object-fit: contain;      /* sem corte no mobile */
+  }
 }
 .video-placeholder .media-source { display: block; margin-top: .5rem; font-size: .85rem; color: rgba(255,255,255,.75); text-align: center; }
 .animation-container { display: grid; place-items: center; height: 120px; }

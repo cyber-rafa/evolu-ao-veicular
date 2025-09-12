@@ -883,79 +883,150 @@ class CombustionCar3DExperience {
     requestAnimationFrame(this.animate);
   }
 
-  // Método movido para dentro da classe original (antes estava em uma classe duplicada)
   _spawnGasStation() {
-    const L = this.roadLength;
-
-    // Grupo do posto
-    const g = new THREE.Group();
-    g.name = 'gas-station';
-
-    // Plataforma (piso do posto)
-    const padMat = new THREE.MeshStandardMaterial({ color: 0x4a4a4a, roughness: 1.0, metalness: 0.0 });
-    const pad = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), padMat);
-    pad.rotation.x = -Math.PI / 2;
-    pad.position.y = 0.0005;
-    pad.receiveShadow = true;
-    g.add(pad);
-
-    // Loja
-    const shopMat = new THREE.MeshStandardMaterial({ color: 0xb0bec5, roughness: 0.7, metalness: 0.1 });
-    const shop = new THREE.Mesh(new THREE.BoxGeometry(3, 1.4, 2), shopMat);
-    shop.position.set(0, 0.7, -0.2);
-    shop.castShadow = true; shop.receiveShadow = true;
-    g.add(shop);
-
-    // Cobertura
-    const roofMat = new THREE.MeshStandardMaterial({ color: 0xff5252, roughness: 0.4, metalness: 0.2, emissive: 0x330000, emissiveIntensity: 0.15 });
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.18, 2.4), roofMat);
-    roof.position.set(0, 2.0, 0.2);
-    roof.castShadow = true; roof.receiveShadow = true;
-    g.add(roof);
-
-    // Colunas
-    const colMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6, metalness: 0.1 });
-    const col1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.0, 12), colMat);
-    col1.position.set(-1.4, 1.0, 0.9); col1.castShadow = true; g.add(col1);
-    const col2 = col1.clone(); col2.position.set(1.4, 1.0, 0.9); g.add(col2);
-
-    // Bombas de combustível
-    const pumpMat = new THREE.MeshStandardMaterial({ color: 0x1976d2, roughness: 0.6, metalness: 0.1, emissive: 0x0a1b3a, emissiveIntensity: 0.1 });
-    const pump1 = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.9, 0.4), pumpMat);
-    pump1.position.set(-0.8, 0.45, 0.7); pump1.castShadow = true; g.add(pump1);
-    const pump2 = pump1.clone(); pump2.position.x = 0.8; g.add(pump2);
-
-    // Totem/placa
-    const poleMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.8, metalness: 0.2 });
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 3.2, 12), poleMat);
-    pole.position.set(2.6, 1.6, -1.8); pole.castShadow = true; g.add(pole);
-
-    const signMat = new THREE.MeshStandardMaterial({ color: 0xffd54f, roughness: 0.5, metalness: 0.1, emissive: 0x332400, emissiveIntensity: 0.2 });
-    const sign = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.7, 0.2), signMat);
-    sign.position.set(2.6, 3.0, -1.8); sign.castShadow = true; g.add(sign);
-
-    // Lado (esquerda/direita) e spawn à direita
-    const side = Math.random() < 0.5 ? 1 : -1; // 1 = z+, -1 = z-
-    const z = side * 8.5;                      // acostamento/gramado
-    const x = 1.6 * L;                         // entra pela direita
-    g.position.set(x, 0, z);
-
-    // Sombra
-    g.traverse((o) => { if (o.isMesh) o.castShadow = true; });
-
-    // Adiciona à cena e registra para mover junto com a estrada
-    this.scene.add(g);
-    this._props.push(g);
+      const L = this.roadLength;
+  
+      // Grupo do posto
+      const g = new THREE.Group();
+      g.name = 'gas-station';
+  
+      // Base (piso amplo)
+      const padMat = new THREE.MeshStandardMaterial({ color: 0x4a4a4a, roughness: 1.0, metalness: 0.0 });
+      const pad = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), padMat);
+      pad.rotation.x = -Math.PI / 2;
+      pad.position.y = 0.0005;
+      pad.receiveShadow = true;
+      g.add(pad);
+  
+      // Guias/ilhotas (brancas com detalhe amarelo)
+      const islandMat = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, roughness: 0.9, metalness: 0.05 });
+      const islandDetailMat = new THREE.MeshStandardMaterial({ color: 0xffd54f, roughness: 0.6, metalness: 0.1 });
+  
+      const makeIsland = () => {
+        const ig = new THREE.Group();
+        const base = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.08, 1.0), islandMat);
+        base.position.y = 0.04;
+        base.castShadow = true; base.receiveShadow = true;
+        ig.add(base);
+  
+        // barras amarelas nas pontas
+        const stripe1 = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.06, 0.12), islandDetailMat);
+        stripe1.position.set(-1.0, 0.07, 0.44); ig.add(stripe1);
+        const stripe2 = stripe1.clone(); stripe2.position.x = 1.0; ig.add(stripe2);
+        return ig;
+      };
+  
+      const island1 = makeIsland(); island1.position.set(-3.2, 0, 0.8);
+      const island2 = makeIsland(); island2.position.set( 3.2, 0, 0.8);
+      g.add(island1, island2);
+  
+      // Marquise (estilo da imagem: branca com faixas verdes)
+      const canopyWhite = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7, metalness: 0.05 });
+      const canopyGreenDark = new THREE.MeshStandardMaterial({ color: 0x2e7d32, roughness: 0.5, metalness: 0.15 });
+      const canopyGreenLight = new THREE.MeshStandardMaterial({ color: 0x66bb6a, roughness: 0.5, metalness: 0.15 });
+  
+      const canopy = new THREE.Mesh(new THREE.BoxGeometry(10, 0.18, 3.2), canopyWhite);
+      canopy.position.set(0, 2.4, 0.2);
+      canopy.castShadow = true; canopy.receiveShadow = true;
+      g.add(canopy);
+  
+      // faixas verdes (frente e traseira)
+      const frontStrip = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.10, 0.12), canopyGreenDark);
+      frontStrip.position.set(0, 2.50, 1.70); g.add(frontStrip);
+      const frontStripLight = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.08, 0.08), canopyGreenLight);
+      frontStripLight.position.set(0, 2.58, 1.72); g.add(frontStripLight);
+  
+      const backStrip = frontStrip.clone(); backStrip.position.z = -1.30; g.add(backStrip);
+      const backStripLight = frontStripLight.clone(); backStripLight.position.z = -1.28; g.add(backStripLight);
+  
+      // Colunas brancas esbeltas
+      const colMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6, metalness: 0.1 });
+      const makeColumn = (x, z) => {
+        const c = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.4, 16), colMat);
+        c.position.set(x, 1.2, z); c.castShadow = true;
+        return c;
+      };
+      g.add(
+        makeColumn(-3.6, 1.0), makeColumn(3.6, 1.0),
+        makeColumn(-3.6, -0.6), makeColumn(3.6, -0.6)
+      );
+  
+      // Bombas (corpo branco + base verde)
+      const pumpBodyMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7, metalness: 0.05 });
+      const pumpBaseMat = new THREE.MeshStandardMaterial({ color: 0x2e7d32, roughness: 0.8, metalness: 0.05 });
+      const screenMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.9, metalness: 0.05, emissive: 0x111111, emissiveIntensity: 0.15 });
+      const hoseMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 1.0, metalness: 0.0 });
+      const nozzleMatDark = new THREE.MeshStandardMaterial({ color: 0x666666, roughness: 0.6, metalness: 0.4 });
+      const nozzleMatMetal = new THREE.MeshStandardMaterial({ color: 0x999999, roughness: 0.4, metalness: 0.8 });
+  
+      const makeHose = (dirZ = 1) => {
+        const hg = new THREE.Group();
+        const pts = [
+          new THREE.Vector3(0.28, 0.78, 0.06 * dirZ),   // sai da lateral alta
+          new THREE.Vector3(0.36, 0.55, 0.18 * dirZ),   // desce
+          new THREE.Vector3(0.12, 0.12, 0.32 * dirZ),   // quase no chão
+          new THREE.Vector3(0.28, 0.05, 0.55 * dirZ),   // encosta no piso à frente
+          new THREE.Vector3(0.46, 0.12, 0.72 * dirZ)    // sobe levemente (bico)
+        ];
+        const curve = new THREE.CatmullRomCurve3(pts);
+        const tube = new THREE.TubeGeometry(curve, 30, 0.028, 10, false);
+        const hose = new THREE.Mesh(tube, hoseMat);
+        hose.castShadow = true; hose.receiveShadow = true;
+        hg.add(hose);
+  
+        // bico
+        const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.16, 12), nozzleMatDark);
+        grip.rotation.z = Math.PI / 2;
+        grip.position.copy(pts[pts.length - 1]);
+        const spout = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.16, 10), nozzleMatMetal);
+        spout.position.copy(pts[pts.length - 1]).add(new THREE.Vector3(0.10, -0.02, 0.14 * dirZ));
+        spout.rotation.y = 0.35 * dirZ;
+  
+        hg.add(grip, spout);
+        return hg;
+      };
+  
+      const makePump = () => {
+        const p = new THREE.Group();
+        const base = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.12, 0.6), pumpBaseMat);
+        base.position.y = 0.06; base.castShadow = true; base.receiveShadow = true;
+  
+        const body = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.2, 0.45), pumpBodyMat);
+        body.position.y = 0.72; body.castShadow = true; body.receiveShadow = true;
+  
+        // tela/visor
+        const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.32, 0.20), screenMat);
+        screen.position.set(0.0, 0.95, 0.235); // frente
+        p.add(base, body, screen);
+  
+        // duas mangueiras voltadas para a pista
+        p.add(makeHose(1), makeHose(1));
+        return p;
+      };
+  
+      // Lado (esquerda/direita) e spawn à direita
+      const side = Math.random() < 0.5 ? 1 : -1; // 1 = z+, -1 = z-
+      const dirToRoad = side;                    // bombas/mangueiras voltadas para z+
+      const z = side * 8.5;                      // coloca no acostamento/gramado
+      const x = 1.6 * L;                         // entra pela direita
+      g.position.set(x, 0, z);
+  
+      // sombra
+      g.traverse((o) => { if (o.isMesh) o.castShadow = true; });
+  
+      // Adiciona à cena e registra para mover junto com a estrada
+      this.scene.add(g);
+      this._props.push(g);
+    }
   }
-}
 
-function bootstrap() {
-  const canvas = document.getElementById('webgl');
-  const parent = canvas.parentElement;
-  canvas.width = parent.clientWidth;
-  canvas.height = Math.max(360, parent.clientHeight);
+  function bootstrap() {
+    const canvas = document.getElementById('webgl');
+    const parent = canvas.parentElement;
+    canvas.width = parent.clientWidth;
+    canvas.height = Math.max(360, parent.clientHeight);
+  
+    new CombustionCar3DExperience();
+  }
 
-  new CombustionCar3DExperience();
-}
-
-document.addEventListener('DOMContentLoaded', bootstrap);
+  document.addEventListener('DOMContentLoaded', bootstrap);

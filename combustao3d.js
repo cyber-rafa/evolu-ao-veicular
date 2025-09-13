@@ -554,46 +554,73 @@ class CombustionCar3DExperience {
         title: 'Motor a Combustão (ICE)',
         color: '#d94848',
         html: `
-          <p>O motor a combustão interna converte a energia química do combustível em energia mecânica por meio da combustão controlada.</p>
-          <ul>
-            <li>Admissão, compressão, combustão e escape</li>
-            <li>Velocidade e vibração aumentam com aceleração</li>
-          </ul>
+          <div style="font-size:1.08rem; line-height:1.55;">
+            <p>Converte a energia química do combustível em energia mecânica por meio da combustão controlada.</p>
+            <ul>
+              <li>Ciclo de quatro tempos: admissão, compressão, combustão e escape</li>
+              <li>Necessita lubrificação e arrefecimento para operar com segurança</li>
+              <li>Gera ruído e emissões; desempenho aumenta com a rotação</li>
+              <li>Trabalha em conjunto com o câmbio para otimizar torque e velocidade</li>
+            </ul>
+          </div>
         `
       },
       tanque: {
         title: 'Tanque de Combustível',
         color: '#2b9348',
         html: `
-          <p>Reserva de combustível do veículo. O abastecimento repõe o nível e permite maior autonomia.</p>
-          <ul>
-            <li>Posicionado na traseira</li>
-            <li>Conectado à linha de combustível</li>
-          </ul>
+          <div style="font-size:1.08rem; line-height:1.55;">
+            <p>Reservatório de combustível do veículo.</p>
+            <ul>
+              <li>A bomba envia combustível ao motor por meio da linha pressurizada</li>
+              <li>Possui tampa com vedação e sensor de nível</li>
+              <li>Conta com sistemas de ventilação/recuperação de vapores (canister)</li>
+              <li>Posicionado na traseira para segurança e equilíbrio</li>
+            </ul>
+          </div>
         `
       },
       escapamento: {
         title: 'Sistema de Escape',
         color: '#8b8b8b',
         html: `
-          <p>Conduz os gases resultantes da combustão para fora do motor, reduz ruído e controla emissões.</p>
-          <ul>
-            <li>Ponteira evidencia fluxo durante aceleração</li>
-          </ul>
+          <div style="font-size:1.08rem; line-height:1.55;">
+            <p>Conduz os gases resultantes da combustão para fora do motor, reduz ruído e controla emissões.</p>
+            <ul>
+              <li>Inclui coletor, catalisador, silencioso e ponteira</li>
+              <li>Sensores (sonda lambda) ajudam a ajustar a mistura ar/combustível</li>
+              <li>Fluxo aumenta durante aceleração; ruídos podem indicar falhas</li>
+            </ul>
+          </div>
         `
       },
       radiador: {
         title: 'Radiador',
         color: '#4f83a1',
         html: `
-          <p>Responsável pela troca de calor do fluido de arrefecimento, mantendo a temperatura adequada de operação.</p>
+          <div style="font-size:1.08rem; line-height:1.55;">
+            <p>Realiza a troca de calor do fluido de arrefecimento, mantendo a temperatura ideal de operação.</p>
+            <ul>
+              <li>Trabalha com válvula termostática e ventilador elétrico</li>
+              <li>Fundamental para evitar superaquecimento do motor</li>
+              <li>É importante manter o nível e a qualidade do fluido</li>
+            </ul>
+          </div>
         `
       },
       cambio: {
         title: 'Câmbio',
         color: '#8c6b3e',
         html: `
-          <p>Transmite torque do motor às rodas com diferentes relações, permitindo melhor desempenho e economia.</p>
+          <div style="font-size:1.08rem; line-height:1.55;">
+            <p>Transmite o torque do motor às rodas com diferentes relações.</p>
+            <ul>
+              <li>Pode ser manual, automático, CVT ou automatizado</li>
+              <li>Relações mais curtas para força; mais longas para economia</li>
+              <li>Trabalha com o diferencial para distribuir torque às rodas</li>
+              <li>Requer manutenção periódica (ex.: fluido/óleo do câmbio)</li>
+            </ul>
+          </div>
         `
       }
     };
@@ -609,8 +636,10 @@ class CombustionCar3DExperience {
     const data = this._htmlFor(comp);
     if (!data) return;
     const html = `
-      <h4 style="margin:.25rem 0 .5rem; color:${data.color}">${data.title}</h4>
-      ${data.html}
+      <div style="font-size:1.08rem; line-height:1.55;">
+        <h4 style="margin:.25rem 0 .5rem; color:${data.color}; font-size:1.2rem;">${data.title}</h4>
+        ${data.html}
+      </div>
     `;
     const tmp = document.createElement('div');
     tmp.innerHTML = html;

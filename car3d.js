@@ -517,22 +517,54 @@ class Car3DExperience {
       bateria: {
         title: '🔋 Bateria de Íons de Lítio',
         color: '#20c997',
-        specs: [['Capacidade', '75–100 kWh'], ['Voltagem', '400V'], ['Vida útil', '8–10 anos'], ['Carregamento', '0–80% em 30min']]
+        html: `
+          <p>Armazena a energia elétrica que alimenta todo o sistema de tração do veículo.</p>
+          <ul>
+            <li>Fornece corrente contínua (CC) para o inversor</li>
+            <li>Define a autonomia e pode ser recarregada em tomadas/estações</li>
+            <li>Possui sistemas de gerenciamento térmico e de carga (BMS)</li>
+            <li>Pode recuperar energia durante frenagens (regen)</li>
+          </ul>
+        `
       },
       motor: {
         title: '⚙️ Motor Elétrico Síncrono',
         color: '#dc3545',
-        specs: [['Potência', '250–400 hp'], ['Torque', '400–600 Nm'], ['Eficiência', '≈95%'], ['RPM máx', '15.000']]
+        html: `
+          <p>Converte energia elétrica em movimento rotacional de forma silenciosa e eficiente.</p>
+          <ul>
+            <li>Entrega torque instantâneo às rodas</li>
+            <li>Tem poucas partes móveis e baixa manutenção</li>
+            <li>Opera com corrente alternada trifásica controlada pelo inversor</li>
+            <li>Pode funcionar como gerador durante a frenagem regenerativa</li>
+          </ul>
+        `
       },
       inversor: {
         title: '🔄 Inversor de Potência',
         color: '#fd7e14',
-        specs: [['Tipo', 'IGBT'], ['Frequência', '10–20 kHz'], ['Eficiência', '≈98%'], ['Refrigeração', 'Líquida']]
+        html: `
+          <p>Transforma a energia da bateria (CC) em corrente alternada (CA) para o motor, controlando velocidade e torque.</p>
+          <ul>
+            <li>Modula frequência e tensão para acelerar, manter velocidade ou frear</li>
+            <li>Gerencia o fluxo reverso de energia na regeneração</li>
+            <li>Conta com sistemas de proteção e refrigeração</li>
+            <li>Integra-se ao controlador para respostas suaves e seguras</li>
+          </ul>
+        `
       },
       controlador: {
         title: '🧠 Controlador Principal',
         color: '#17a2b8',
-        specs: [['Processador', 'ARM 32-bit'], ['Memória', '512 MB'], ['CAN Bus', '500 kbps'], ['Atualizações', 'OTA']]
+        html: `
+          <p>Unidade eletrônica que coordena todo o trem de força elétrico.</p>
+          <ul>
+            <li>Orquestra a comunicação entre bateria, inversor e motor</li>
+            <li>Gerencia modos de condução, segurança e limites de potência</li>
+            <li>Coleta dados e executa estratégias de eficiência</li>
+            <li>Permite diagnósticos e atualizações de software</li>
+          </ul>
+        `
       }
     };
 
@@ -540,11 +572,9 @@ class Car3DExperience {
     if (!data) return;
 
     const html = `
-      <div class="component-details">
-        <h4 style="margin:0 0 .25rem; color:${data.color}">${data.title}</h4>
-        <div class="specs">
-          ${data.specs.map(([k,v]) => `<div class="spec"><span>${k}</span><span style="color:${data.color}">${v}</span></div>`).join('')}
-        </div>
+      <div class="component-details" style="font-size:1.08rem; line-height:1.55;">
+        <h4 style="margin:0 0 .5rem; color:${data.color}; font-size:1.2rem;">${data.title}</h4>
+        ${data.html}
       </div>
     `;
 

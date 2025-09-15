@@ -262,15 +262,15 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 @media (max-width: 768px) {
   /* Tornar containers de mídia maiores em dispositivos móveis */
   .media-container {
-    max-width: 90vw;          /* usar 90% da largura da tela */
-    margin: 16px auto;        /* margem um pouco maior */
+    max-width: 95vw;          /* usar 95% da largura da tela - aumentado */
+    margin: 12px auto;        /* margem reduzida para mais espaço */
   }
   
   /* Vídeos do YouTube maiores em mobile */
   .video-placeholder iframe {
     width: 100%;
     height: auto;
-    min-height: 300px;        /* altura mínima aumentada para melhor visualização */
+    min-height: 350px;        /* altura mínima aumentada ainda mais para melhor visualização */
   }
   
   .timeline .media-container img {
@@ -417,12 +417,12 @@ footer { border-top: var(--line); padding: 1.25rem; text-align: center; color: v
   
   /* Vídeos do YouTube ainda maiores em smartphones */
   .media-container {
-    max-width: 98vw;          /* usar 98% da largura em telas muito pequenas */
-    margin: 15px auto;        /* margem otimizada para melhor espaçamento */
+    max-width: 99vw;          /* usar 99% da largura em telas muito pequenas - maximizado */
+    margin: 8px auto;         /* margem mínima para aproveitar ao máximo a tela */
   }
   
   .video-placeholder iframe {
-    min-height: 220px;        /* altura mínima aumentada para smartphones */
+    min-height: 250px;        /* altura mínima aumentada ainda mais para smartphones */
   }
 }
 

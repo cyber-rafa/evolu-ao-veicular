@@ -258,8 +258,21 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
     display: block;
 }
 
-/* Mobile: melhorar imagens nos cards da timeline */
+/* Mobile: melhorar imagens e vídeos nos cards da timeline */
 @media (max-width: 768px) {
+  /* Tornar containers de mídia maiores em dispositivos móveis */
+  .media-container {
+    max-width: 90vw;          /* usar 90% da largura da tela */
+    margin: 16px auto;        /* margem um pouco maior */
+  }
+  
+  /* Vídeos do YouTube maiores em mobile */
+  .video-placeholder iframe {
+    width: 100%;
+    height: auto;
+    min-height: 250px;        /* altura mínima para melhor visualização */
+  }
+  
   .timeline .media-container img {
     width: 100%;
     height: auto;             /* remove altura fixa */
@@ -401,6 +414,16 @@ footer { border-top: var(--line); padding: 1.25rem; text-align: center; color: v
   .hero-actions { gap: .6rem; }
   .cta-button { width: 100%; justify-content: center; }
   .scroll-indicator { bottom: .75rem; }
+  
+  /* Vídeos do YouTube ainda maiores em smartphones */
+  .media-container {
+    max-width: 95vw;          /* usar 95% da largura em telas muito pequenas */
+    margin: 20px auto;        /* margem maior para melhor espaçamento */
+  }
+  
+  .video-placeholder iframe {
+    min-height: 200px;        /* altura mínima ajustada para smartphones */
+  }
 }
 
 /* Cursor Animations - Car Cursor */

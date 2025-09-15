@@ -61,8 +61,6 @@ class Car3DExperience {
     this._setupLights();
     this._setupEnvironment();
     this._buildCar();
-    // Novo: construir o posto de carregamento
-    this._buildCharger();
     this._bindEvents();
     this._intro();
 
@@ -212,59 +210,6 @@ class Car3DExperience {
       roughness: 0.35,
       envMapIntensity: 1.0
     });
-  }
-
-  _buildCharger() {
-    // Criar posto de carregamento
-    const charger = new THREE.Group();
-    charger.name = 'charger';
-    charger.position.set(-4, 0, 2);
-
-    // Poste principal
-    const pole = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.12, 0.12, 2.2, 16),
-      new THREE.MeshStandardMaterial({ color: 0x34495e })
-    );
-    pole.position.y = 1.1;
-    pole.castShadow = true;
-    charger.add(pole);
-
-    // Painel de controle
-    const panel = new THREE.Mesh(
-      new THREE.BoxGeometry(0.4, 0.6, 0.15),
-      new THREE.MeshStandardMaterial({ color: 0x3498db })
-    );
-    panel.position.set(0, 1.5, 0.2);
-    panel.castShadow = true;
-    charger.add(panel);
-
-    // Aro luminoso (para efeitos visuais)
-    const ringGeo = new THREE.RingGeometry(0.6, 0.7, 32);
-    this.chargerRingMat = new THREE.MeshStandardMaterial({
-      color: 0x00ff88,
-      emissive: 0x00ff88,
-      emissiveIntensity: 0.2,
-      transparent: true,
-      opacity: 0.8
-    });
-    const ring = new THREE.Mesh(ringGeo, this.chargerRingMat);
-    ring.rotation.x = -Math.PI / 2;
-    ring.position.y = 0.12;
-    charger.add(ring);
-
-    // Cabo de carregamento (simulado)
-    const cableGeo = new THREE.CylinderGeometry(0.03, 0.03, 1.5, 8);
-    const cableMat = new THREE.MeshStandardMaterial({ color: 0x2c3e50 });
-    const cable = new THREE.Mesh(cableGeo, cableMat);
-    cable.position.set(0.3, 1.2, 0.3);
-    cable.rotation.z = Math.PI / 6;
-    charger.add(cable);
-
-    this.scene.add(charger);
-    this.objects.charger = charger;
-
-    // Elementos interativos do carregador
-    this.chargerInteract = [panel];
   }
 
   _buildCar() {
@@ -482,7 +427,7 @@ class Car3DExperience {
   }
 
   _intersectables() {
-    return [this.objects.bateria, this.objects.motor, this.objects.inversor, this.objects.controlador, this.objects.body, ...this.wheels, ...(this.chargerInteract || [])];
+    return [this.objects.bateria, this.objects.motor, this.objects.inversor, this.objects.controlador, this.objects.body, ...this.wheels];
   }
 
   _onPointerMove(e) {
@@ -708,18 +653,7 @@ class Car3DExperience {
       }
     });
 
-    // Novo: pulsar aro da estação enquanto carrega
-    if (this.chargerRingMat) {
-      anime.remove(this.chargerRingMat);
-      anime({
-        targets: this.chargerRingMat,
-        emissiveIntensity: [
-          { value: 1.2, duration: 400, easing: 'easeOutQuad' },
-          { value: 0.2, duration: 600, easing: 'easeInQuad' }
-        ],
-        loop: 4
-      });
-    }
+
   }
 
   drive() {

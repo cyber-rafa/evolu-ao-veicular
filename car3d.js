@@ -61,6 +61,8 @@ class Car3DExperience {
     this._setupLights();
     this._setupEnvironment();
     this._buildCar();
+    // Novo: construir o posto de carregamento
+    this._buildCharger();
     this._bindEvents();
     this._intro();
 
@@ -427,7 +429,7 @@ class Car3DExperience {
   }
 
   _intersectables() {
-    return [this.objects.bateria, this.objects.motor, this.objects.inversor, this.objects.controlador, this.objects.body, ...this.wheels];
+    return [this.objects.bateria, this.objects.motor, this.objects.inversor, this.objects.controlador, this.objects.body, ...this.wheels, ...(this.chargerInteract || [])];
   }
 
   _onPointerMove(e) {
@@ -652,6 +654,19 @@ class Car3DExperience {
         this.statusFill.style.width = '100%';
       }
     });
+
+    // Novo: pulsar aro da estação enquanto carrega
+    if (this.chargerRingMat) {
+      anime.remove(this.chargerRingMat);
+      anime({
+        targets: this.chargerRingMat,
+        emissiveIntensity: [
+          { value: 1.2, duration: 400, easing: 'easeOutQuad' },
+          { value: 0.2, duration: 600, easing: 'easeInQuad' }
+        ],
+        loop: 4
+      });
+    }
   }
 
   drive() {

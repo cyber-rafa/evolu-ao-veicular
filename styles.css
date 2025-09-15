@@ -176,6 +176,46 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .video-placeholder iframe { width: 100%; max-width: 100%; border-radius: var(--radius-1); }
 .video-placeholder img { width: 100%; max-width: 100%; border-radius: var(--radius-1); }
 .video-placeholder img.media-img-small { width: 100%; max-width: 100%; height: auto; display: block; margin: 0; }
+/* Timeline: padronizar tamanho de TODOS os objetos de mídia */
+.media-container {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+  margin: 12px auto;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.timeline-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* Tamanho específico apenas para o vídeo da Era Elétrica */
+.media-container.timeline-electric {
+  max-width: 560px; /* igual ao container padrão (mesmo tamanho do vídeo acima) */
+}
+.media-fill-16x9 {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;   /* define a altura do container via proporção */
+  border-radius: 12px;
+  overflow: hidden;        /* corta o excedente e mantém cantos arredondados */
+  margin: 0 auto;
+}
+
+.media-fill-16x9 > .timeline-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;         /* garante que não haja limite estreitando o vídeo */
+  max-height: none;
+  object-fit: cover;       /* preenche toda a área do container */
+  border-radius: 0;        /* borda vem do container */
+}
 .video-placeholder .media-source { display: block; margin-top: .5rem; font-size: .85rem; color: rgba(255,255,255,.75); text-align: center; }
 .animation-container { display: grid; place-items: center; height: 120px; }
 .assembly-line { width: 100%; max-width: 420px; height: 8px; background: rgba(255,255,255,.08); border-radius: 999px; position: relative; overflow: hidden; }
@@ -550,6 +590,20 @@ footer { border-top: var(--line); padding: 1.25rem; text-align: center; color: v
 @keyframes blink {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
+}
+
+/* Rodapé de crédito dentro da caixa de mídia */
+.media-container .media-source {
+  padding-top: 8px;
+  font-size: 0.9rem;
+  color: #b8c0d0;
+}
+.media-container .media-source a {
+  color: #86b1ff;
+  text-decoration: none;
+}
+.media-container .media-source a:hover {
+  text-decoration: underline;
 }
 
 

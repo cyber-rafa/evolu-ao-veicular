@@ -588,7 +588,6 @@ class CombustionCar3DExperience {
             <p>Conduz os gases resultantes da combustão para fora do motor, reduz ruído e controla emissões.</p>
             <ul>
               <li>Inclui coletor, catalisador, silencioso e ponteira</li>
-              <li>Sensores (sonda lambda) ajudam a ajustar a mistura ar/combustível</li>
               <li>Fluxo aumenta durante aceleração; ruídos podem indicar falhas</li>
             </ul>
           </div>

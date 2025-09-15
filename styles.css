@@ -180,7 +180,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 .media-container {
   position: relative;
   width: 100%;
-  max-width: 560px;
+  max-width: 720px;          /* aumentado de 560px para 720px */
   aspect-ratio: 16 / 9;
   margin: 12px auto;
   border-radius: 12px;
@@ -195,7 +195,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
 
 /* Tamanho específico apenas para o vídeo da Era Elétrica */
 .media-container.timeline-electric {
-  max-width: 560px; /* igual ao container padrão (mesmo tamanho do vídeo acima) */
+  max-width: 720px; /* aumentado para acompanhar o novo tamanho padrão */
 }
 .media-fill-16x9 {
   position: relative;
@@ -270,7 +270,7 @@ nav { display: flex; align-items: center; justify-content: space-between; gap: v
   .video-placeholder iframe {
     width: 100%;
     height: auto;
-    min-height: 250px;        /* altura mínima para melhor visualização */
+    min-height: 300px;        /* altura mínima aumentada para melhor visualização */
   }
   
   .timeline .media-container img {
@@ -417,12 +417,12 @@ footer { border-top: var(--line); padding: 1.25rem; text-align: center; color: v
   
   /* Vídeos do YouTube ainda maiores em smartphones */
   .media-container {
-    max-width: 95vw;          /* usar 95% da largura em telas muito pequenas */
-    margin: 20px auto;        /* margem maior para melhor espaçamento */
+    max-width: 98vw;          /* usar 98% da largura em telas muito pequenas */
+    margin: 15px auto;        /* margem otimizada para melhor espaçamento */
   }
   
   .video-placeholder iframe {
-    min-height: 200px;        /* altura mínima ajustada para smartphones */
+    min-height: 220px;        /* altura mínima aumentada para smartphones */
   }
 }
 
